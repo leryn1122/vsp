@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <cstdlib>
-#include "fwd.h"
-#include "cli.h"
+#include "fwd.hpp"
+#include "cli.hpp"
 
 #define CMD "vspstk"
 

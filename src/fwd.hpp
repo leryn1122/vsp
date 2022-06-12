@@ -8,7 +8,7 @@
 #include <cstddef>
 #include <cstdint>
 
-#include "version.h"
+#include "version.hpp"
 
 namespace vsp {
 
@@ -34,6 +34,6 @@ using ::std::type_info;
 using ::std::string;
 
 
-} // namespace vsp
+}; // namespace vsp
 
 #endif // _VSP_GLOBAL_H_

@@ -24,18 +24,18 @@ FUNCTION(MESSAGE_LIST)
   ENDFOREACH()
 ENDFUNCTION(MESSAGE_LIST)
 
-MESSAGE(">>> Generate version header (src/utils/version.h):")
+MESSAGE(">>> Generate version header (src/version.hpp):")
 SET(vsp_VERSION_MAJOR 0)
 SET(vsp_VERSION_MINOR 0)
 SET(vsp_VERSION_PATCH 1)
 CONFIGURE_FILE(
-  "${SRC_DIR}/version.h.in"
-  "${SRC_DIR}/version.h"
+  "${SRC_DIR}/version.hpp.in"
+  "${SRC_DIR}/version.hpp"
 )
 
-MESSAGE(">>> Source files (*.h, *.cpp):")
+MESSAGE(">>> Source files (*.hpp, *.cpp):")
 FILE(GLOB_RECURSE SRC_FILES
-  "${SRC_DIR}/*.h"
+  "${SRC_DIR}/*.hpp"
   "${SRC_DIR}/*.cpp"
 )
 FILE(GLOB_RECURSE BIN_FILES
@@ -44,11 +44,11 @@ FILE(GLOB_RECURSE BIN_FILES
 LIST(REMOVE_ITEM SRC_FILES ${BIN_FILES})
 MESSAGE_LIST(${SRC_FILES})
 
-MESSAGE(">>> Header directory (*.h):")
+MESSAGE(">>> Header directory (src/path/to/*.hpp):")
 SET(HEAD_DIR ${SRC_FILES})
 # TODO This part should be optimized in the future
-LIST(FILTER HEAD_DIR INCLUDE REGEX "(.*).h$")
-LIST(TRANSFORM HEAD_DIR REPLACE "(.*)/(.*).h$" "\\1")
+LIST(FILTER HEAD_DIR INCLUDE REGEX "(.*).hpp$")
+LIST(TRANSFORM HEAD_DIR REPLACE "(.*)/(.*).hpp$" "\\1")
 LIST(REMOVE_DUPLICATES HEAD_DIR)
 INCLUDE_DIRECTORIES(${HEAD_DIR})
 MESSAGE_LIST(${HEAD_DIR})

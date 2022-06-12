@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <cstdlib>
-#include "fwd.h"
-#include "cli.h"
+#include "fwd.hpp"
+#include "cli.hpp"
 
 #define CMD "vspc"
 
@@ -12,12 +12,19 @@ namespace vsp
 void
 do_print_help_and_exit()
 {
+#ifdef FORMAT
+  std::cout << std::format(" {} ...", CMD);
+#else
   printf(
 //==============================================================================
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""" R"(
-%s <source> [ [ --options [ params {...} ] | --options[=params{,...} ] ] {...} ]
+%s <source> [ --options {...} ]
 
-where options may any of:
+Options may be in form of
+
+    --options [ params {...} ] or --options[=params{,...} ]
+
+Where options may any of:
 
     --fast          This would ignore all other compile options.
     --feature       Enable specified feature.
@@ -25,8 +32,13 @@ where options may any of:
     --profile       Activate the specified profile to enable those APIs.
     --version       Print version info.
 
+For example:
+
+    vspc source.vsp --profile=prod --feature nightly
+
 )" """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 //==============================================================================
+#endif
     , CMD
   );
   std::exit(EXIT_SUCCESS);
@@ -37,6 +49,6 @@ where options may any of:
 int
 main(int argc, char *argv[])
 {
-  vsp::cli::fast_return(argv, CMD, vsp::do_print_help_and_exit);
+  vsp::cli::fast_return(argc, argv, CMD, vsp::do_print_help_and_exit);
   return 0;
 }

@@ -12,15 +12,15 @@ void
 do_print_help_and_exit();
 
 void
-fast_return(char *argv[], char* cmd, void(*ptr)());
+fast_return_without_primary_args(int argc, char *argv[], char* cmd, void(*help_hook)());
 
 void
-fast_return_without_primary_args(char *argv[], char* cmd);
+fast_return(int argc, char *argv[], char* cmd, void(*ptr)());
 
 void
 do_print_version_and_exit(char* cmd);
 
-} // namespace vsp::cli
-} // namespace vsp
+}; // namespace vsp::cli
+}; // namespace vsp
 
 #endif // _VSP_CLI_H_
