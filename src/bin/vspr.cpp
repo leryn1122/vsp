@@ -34,6 +34,5 @@ where options may any of:
 int
 main(int argc, char *argv[])
 {
-  vsp::fast_return(CMD);
   return 0;
 }

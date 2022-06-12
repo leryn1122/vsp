@@ -33,7 +33,8 @@ Long term:
 
 ## Install
 
-This project uses C++ and CMake. Go check them out if you don't have them locally installed.
+This project uses C++, [CMake](https://gitlab.kitware.com/cmake/cmake),
+[vcpkg](https://github.com/microsoft/vcpkg). Go check them out if you don't have them locally installed.
 
 ```bash
 # If using apt

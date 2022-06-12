@@ -37,6 +37,6 @@ where options may any of:
 int
 main(int argc, char *argv[])
 {
-  vsp::fast_return(CMD);
+  vsp::cli::fast_return(argv, CMD, vsp::do_print_help_and_exit);
   return 0;
 }

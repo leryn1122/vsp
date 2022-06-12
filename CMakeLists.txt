@@ -2,7 +2,7 @@ CMAKE_MINIMUM_REQUIRED(VERSION 3.10)
 
 PROJECT(vsp)
 
-SET(CMAKE_CXX_STANDARD 17)
+SET(CMAKE_CXX_STANDARD 20)
 SET(CMAKE_CXX_STANDARD_REQUIRED True)
 
 SET(SRC_DIR   "${PROJECT_SOURCE_DIR}/src")
@@ -12,6 +12,11 @@ SET(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${BUILD_DIR}/bin")
 SET(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${BUILD_DIR}/lib")
 SET(CMAKE_ARCHIVE_OUTPUT_DIRECTORY "${BUILD_DIR}/lib")
 
+# Support `gdb` debug.
+SET(CMAKE_BUILD_TYPE "Debug")
+SET(CMAKE_CXX_FLAGS_DEBUG "$ENV{CXXFLAGS} -O0 -Wall -g -ggdb")
+SET(CMAKE_CXX_FLAGS_RELEASE "$ENV{CXXFLAGS} -O3 -Wall")
+
 #
 FUNCTION(MESSAGE_LIST)
   FOREACH(_arg IN LISTS ARGN)
@@ -19,36 +24,53 @@ FUNCTION(MESSAGE_LIST)
   ENDFOREACH()
 ENDFUNCTION(MESSAGE_LIST)
 
-# Define source file (*.cpp, *.h)
+MESSAGE(">>> Generate version header (src/utils/version.h):")
+SET(vsp_VERSION_MAJOR 0)
+SET(vsp_VERSION_MINOR 0)
+SET(vsp_VERSION_PATCH 1)
+CONFIGURE_FILE(
+  "${SRC_DIR}/version.h.in"
+  "${SRC_DIR}/version.h"
+)
+
+MESSAGE(">>> Source files (*.h, *.cpp):")
 FILE(GLOB_RECURSE SRC_FILES
-  "${SRC_DIR}/*.cpp"
   "${SRC_DIR}/*.h"
+  "${SRC_DIR}/*.cpp"
 )
 FILE(GLOB_RECURSE BIN_FILES
   "${SRC_DIR}/bin/*.cpp"
 )
 LIST(REMOVE_ITEM SRC_FILES ${BIN_FILES})
-MESSAGE(">>> Source files (*.cpp, *.h):")
 MESSAGE_LIST(${SRC_FILES})
 
-# Define header directory (*.h)
+MESSAGE(">>> Header directory (*.h):")
 SET(HEAD_DIR ${SRC_FILES})
+# TODO This part should be optimized in the future
 LIST(FILTER HEAD_DIR INCLUDE REGEX "(.*).h$")
 LIST(TRANSFORM HEAD_DIR REPLACE "(.*)/(.*).h$" "\\1")
 LIST(REMOVE_DUPLICATES HEAD_DIR)
 INCLUDE_DIRECTORIES(${HEAD_DIR})
-MESSAGE(">>> Header directory (*.h)")
 MESSAGE_LIST(${HEAD_DIR})
 
-# Define executables (src/bin/*.cpp)
+MESSAGE(">>> Executables (src/bin/*.cpp):")
 LIST(TRANSFORM BIN_FILES REPLACE "${SRC_DIR}/bin/(.*).cpp" "\\1" OUTPUT_VARIABLE EXECUTABLES)
-MESSAGE(">>> Executables (src/bin/*.cpp)")
+ADD_EXECUTABLE(vspc "${SRC_DIR}/bin/vspc.cpp" "${SRC_FILES}")
 MESSAGE_LIST(${EXECUTABLES})
-FOREACH(_executables ${EXECUTABLES})
-  ADD_EXECUTABLE(${_executables}
-                "${SRC_DIR}/bin/${_executables}.cpp"
-                "${SRC_FILES}")
-ENDFOREACH()
+# TODO Enabled to build the multi executables
+# FOREACH(_executables ${EXECUTABLES})
+#   ADD_EXECUTABLE(${_executables}
+#                 "${SRC_DIR}/bin/${_executables}.cpp"
+#                 "${SRC_FILES}")
+# ENDFOREACH()
 
-FILE(COPY "LICENSE" "README.md"
+MESSAGE(">>> Copy conf, copyright and docs")
+FILE(COPY "conf" "LICENSE" "README.md"
      DESTINATION ${BUILD_DIR})
+
+# MESSAGE(">>> Build a CPack install package")
+# INCLUDE(InstallRequiredSystemLibraries)
+# SET(CPACK_RESOURCE_FILE_LICENSE "${CMAKE_CURRENT_SOURCE_DIR}/LICENSE")
+# SET(CPACK_PACKAGE_VERSION_MAJOR "${vsp_VERSION_MAJOR}")
+# SET(CPACK_PACKAGE_VERSION_MINOR "${vsp_VERSION_MINOR}")
+# INCLUDE(CPack)
