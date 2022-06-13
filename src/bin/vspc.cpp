@@ -1,6 +1,6 @@
 #include <cstdlib>
 #include <stdio.h>
-#include "argparse.hpp"
+#include "argparser.hpp"
 #include "cli.hpp"
 #include "fwd.hpp"
 
@@ -45,16 +45,26 @@ For example:
   std::exit(EXIT_SUCCESS);
 }
 
-} // namespace
+} // namespace vsp
 
 int
 main(int argc, char *argv[])
 {
-//  vsp::cli::fast_return(argc, argv, CMD, vsp::do_print_help_and_exit);
-  auto args = vsp::cli::ArgParser(CMD)
-      .set_description("`vspc` for `vsp` language compiler.")
+  auto arg_parser = vsp::cli::ArgParser(CMD)
+      .set_intro("Vsp Language Compiler")
       .add_help_option()
       .add_version_option()
-      .add_option("", "--verbose", "123", "");
+      .add_option("-d", "--debug", "Enable debug mode.")
+      .add_option("", "--feature", "Enable specified feature.")
+      .add_option("", "--profile", "Activate the specified profile to enable those APIs.")
+      .add_option("-v", "--verbose", "Enable verbose mode.")
+      .set_example(
+//==============================================================================
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""" R"(
+    vspc source.vsp --profile=prod --feature nightly
+)" """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+//==============================================================================
+      );
+  arg_parser.parse(argc, argv);
   return 0;
 }
