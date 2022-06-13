@@ -1,7 +1,8 @@
-#include <stdio.h>
 #include <cstdlib>
-#include "fwd.hpp"
+#include <stdio.h>
+#include "argparse.hpp"
 #include "cli.hpp"
+#include "fwd.hpp"
 
 #define CMD "vspc"
 
@@ -13,7 +14,7 @@ void
 do_print_help_and_exit()
 {
 #ifdef FORMAT
-  std::cout << std::format(" {} ...", CMD);
+  std::cout << std::format(" {} ...", CMD) << std::endl;
 #else
   printf(
 //==============================================================================
@@ -49,6 +50,11 @@ For example:
 int
 main(int argc, char *argv[])
 {
-  vsp::cli::fast_return(argc, argv, CMD, vsp::do_print_help_and_exit);
+//  vsp::cli::fast_return(argc, argv, CMD, vsp::do_print_help_and_exit);
+  auto args = vsp::cli::ArgParser(CMD)
+      .set_description("`vspc` for `vsp` language compiler.")
+      .add_help_option()
+      .add_version_option()
+      .add_option("", "--verbose", "123", "");
   return 0;
 }
