@@ -4,6 +4,7 @@
 
 #include <functional>
 #include <iostream>
+#include <sstream>
 #include <string>
 #include <typeinfo>
 #include <vector>
@@ -53,37 +54,45 @@ inline std::string type_string<std::string>()
   return "string";
 }
 
+template <typename T>
+std::string to_string(const T &value)
+{
+    std::ostringstream oss;
+    oss << value;
+    return oss.str();
+}
+
 } // namespace
 
 struct option
 {
-    option(std::string sname, std::string lname, std::string help, std::string type, std::string value)
+    option(std::string sname, std::string lname, std::string description, std::string type, std::string value)
         : short_name(std::move(sname))
         , long_name(std::move(lname))
-        , help(std::move(help))
+        , description(std::move(description))
         , type(std::move(type))
         , value(std::move(value))
     {}
 
     std::string short_name;
     std::string long_name;
-    std::string help;
+    std::string description;
     std::string type;
     std::string value;
 };
 
 struct short_circuit_option
 {
-    short_circuit_option(std::string sname, std::string lname, std::string help, std::function<void(void)> callback)
+    short_circuit_option(std::string sname, std::string lname, std::string description, std::function<void(void)> callback)
         : short_name(std::move(sname))
         , long_name(std::move(lname))
-        , help(std::move(help))
+        , description(std::move(description))
         , callback(std::move(callback))
     {}
 
     std::string short_name;
     std::string long_name;
-    std::string help;
+    std::string description;
     std::function<void(void)> callback;
 };
 
@@ -133,10 +142,12 @@ public:
       validate_option_sname(sname);
     }
     validate_option_lname(lname);
+    options.emplace_back(
+      std::move(sname), std::move(lname), std::move(description), type_string<T>(), to_string(default_value));
     return *this;
   }
 
-  ArgParser &add_option(std::string sname, std::string lname, std::string help)
+  ArgParser &add_option(std::string sname, std::string lname, std::string description)
   {
     if (sname != "")
     {
@@ -144,14 +155,14 @@ public:
     }
     validate_option_lname(lname);
     options.emplace_back(
-      std::move(sname), std::move(lname), std::move(help), "bool", "0");
+      std::move(sname), std::move(lname), std::move(description), "bool", "0");
     return *this;
   }
 
   /**
    *
    */
-  ArgParser &add_short_circuit(std::string sname, std::string lname, std::string help, std::function<void(void)> callback)
+  ArgParser &add_short_circuit_option(std::string sname, std::string lname, std::string help, std::function<void(void)> callback)
   {
     if (sname != "")
     {
@@ -163,14 +174,20 @@ public:
     return *this;
   }
 
-  ArgParser &add_version_option()
-  {
-    return *this;
-  }
-
   ArgParser &add_help_option()
   {
-    return *this;
+    return add_short_circuit_option("-h", "--help", "Print help info.",
+      [this]() {
+        print_help();
+      });
+  }
+
+  ArgParser &add_version_option()
+  {
+    return add_short_circuit_option("", "--version", "Print version info.",
+      []() {
+        std::cout << "version " << "0.0.1" << std::endl;
+      });
   }
 
   void print_help() const
@@ -227,9 +244,9 @@ Where options may any of:
       std::cout << std::string(max_name_length - printed_length, ' ');
       if (opt.type != "bool")
       {
-          std::cout << "(" << opt.type << ") ";
+        std::cout << "(" << opt.type << ") ";
       }
-      std::cout << opt.help << '\n';
+      std::cout << opt.description << '\n';
     }
 
     // Print Example
@@ -240,6 +257,10 @@ Where options may any of:
 
   void parse(int argc, char *argv[])
   {
+     if ("" == executable)
+     {
+       executable = argv[0];
+     }
      print_help();
   }
 

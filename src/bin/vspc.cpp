@@ -57,6 +57,7 @@ main(int argc, char *argv[])
       .add_option("-d", "--debug", "Enable debug mode.")
       .add_option("", "--feature", "Enable specified feature.")
       .add_option("", "--profile", "Activate the specified profile to enable those APIs.")
+      .add_option<int>("-t", "--thread", "Set the parallel thread to compile source.", 4)
       .add_option("-v", "--verbose", "Enable verbose mode.")
       .set_example(
 //==============================================================================
