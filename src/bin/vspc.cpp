@@ -1,7 +1,6 @@
 #include <cstdlib>
 #include <stdio.h>
 #include "argparser.hpp"
-#include "cli.hpp"
 #include "fwd.hpp"
 
 #define CMD "vspc"
@@ -29,7 +28,7 @@ int main(int argc, char *argv[])
     vspc source.vsp --profile=prod --feature nightly
 )" """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 //==============================================================================
-      );
-  arg_parser.parse(argc, argv);
+      )
+      .parse(argc, argv);
   return 0;
 }

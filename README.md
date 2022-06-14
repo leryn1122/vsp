@@ -22,14 +22,14 @@ A toy language compiler during learning custom compiler and modern C++ lang.
 
 Long term:
 
-| Command    | Intro                              |
-| ---------- | ---------------------------------- |
-| `vspc`     | Compiler                           |
-| `vspr`     | Runtime                            |
-| `vsps`     | Process tool                       |
-| `vspstk`   | Stack trace tool                   |
-| `vsprepl`  | REPL (Read-Eval-Print Loop)        |
-| `vspx`     | Tool of Compression and Extraction |
+| Command   | Intro                                 |
+| --------- | ------------------------------------- |
+| `vspc`    | Compiler                              |
+| `vspr`    | Runtime                               |
+| `vsps`    | Process tool                          |
+| `vspstk`  | Stack trace tool                      |
+| `vsprepl` | REPL (Read-Eval-Print Loop)           |
+| `vspx`    | Tool of Compression and Decompression |
 
 ## Install
 
@@ -67,9 +67,9 @@ vspc --version
 vspc --help
 ```
 
-### 
+###
 
-Lexer:  String => Path => File => TokenStream
+Lexer: String => Path => File => TokenStream
 Parser: TokenStream => AstNode
 Syntax: AstNode =>
 

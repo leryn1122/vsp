@@ -422,3 +422,5 @@ $RECYCLE.BIN/
 build/**
 
 CPack*.cmake
+
+*.log

@@ -109,6 +109,33 @@ struct argument
   std::string value;
 };  // struct argument
 
+/**
+ *  Create an argument parser instance in chain invocation of option registrations.
+ *  
+ *  Options are seperated into two types:
+ *    - Normal option:
+ *       
+ *    - Short circuit option
+ *      Once met short circuit, the program would invoke callback, and be 
+ *      exited immediately.
+ *  
+ *  
+ *  
+ *  
+ *  ```cpp
+ *  auto arg_parser = vsp::cli::ArgParser(CMD)
+ *      .set_intro("Vsp Language Compiler")
+ *      .add_help_option()
+ *      .add_version_option()
+ *      .add_option("-d", "--debug", "Enable debug mode.")
+ *      .add_option("", "--feature", "Enable specified feature.")
+ *      .add_option("", "--profile", "Activate the specified profile to enable those APIs.")
+ *      .add_option<int>("-t", "--thread", "Set the parallel thread to compile source.", 4)
+ *      .add_option("-v", "--verbose", "Enable verbose mode.")
+ *      .set_example("");
+ *      .parse(argc, argv);
+ *  ```
+ */
 class ArgParser
 {
 private:
@@ -149,7 +176,7 @@ public:
   {
     if (typeid(T).name() == "null")
     {
-      std::cerr << "Unsupported type for options: " << typeid(T).name() << std::endl;
+      std::cerr << "Error: Unsupported type for options: " << typeid(T).name() << std::endl;
       std::exit(EXIT_FAILURE);
     }
     if (short_name != "")
@@ -174,10 +201,8 @@ public:
     return *this;
   }
 
-  /**
-   * 
-   */
-  ArgParser &add_short_circuit_option(std::string short_name, std::string long_name, std::string help, std::function<void(void)> callback)
+  ArgParser &add_short_circuit_option(std::string short_name, std::string long_name,
+                                      std::string help, std::function<void(void)> callback)
   {
     if (short_name != "")
     {
@@ -201,6 +226,7 @@ public:
   {
     return add_short_circuit_option("", "--version", "Print version info.",
       [this]() {
+        // TODO: print arch and OS platform.
         std::cout << executable << " version " << "0.0.1" << std::endl;
       });
   }
@@ -208,8 +234,8 @@ public:
   void print_help()
   {
     // Print usage:
-    std::cout << intro << "\n\n";
-    std::cout << "Usage: " << executable << "\n\n";
+    std::cout << intro << "\n";
+    std::cout << "\nUsage: " << executable << "\n\n";
     for (const auto &arg : arguments)
     {
       std::cout << "    <" << arg.name << ">    " << arg.description;
@@ -272,31 +298,26 @@ Where options may any of:
   /**
    * Entry point to parse arguments after option registration.
    */
-  void parse(int argc, char *argv[])
+  ArgParser parse(int argc, char *argv[])
   {
-    // Use args[0] as executable if omitted.
-    if ("" == executable)
-    {
-      executable = argv[0];
-    }
     // Fast return if no argument accepted. 
     if (argc == 1)
     {
       print_help();
       std::exit(EXIT_SUCCESS);
     }
-    
+
     std::vector<std::string> tokens;
     for (int i = 1; i < argc; i++)
     {
       tokens.emplace_back(argv[i]);
     }
-    
+
     // Fast return if met short circuit option.
     for (auto &&short_circuit_option : this->short_circuit_options)
     {
       auto pos = std::find_if(tokens.cbegin(), tokens.cend(),
-        [&short_circuit_option] (const std::string &token) {
+        [&short_circuit_option](const std::string &token) {
           return token == short_circuit_option.short_name
               || token == short_circuit_option.long_name;
         });
@@ -316,31 +337,39 @@ Where options may any of:
         }
       );
 
+      // If the option does not contained the token, jump to the next loop.
       if (pos == tokens.cend())
       {
         continue;
       }
 
+      // Remove the token if matched.
       pos = tokens.erase(pos);
       if (option.type == "bool")
       {
         option.value = "1";
       }
+      // Other types need to consume next token
       else
       {
         if (pos == tokens.cend())
         {
-          std::cerr << "Error: " << option.short_name << " " << option.long_name << " not enough arguments." << std::endl;
+          std::cerr << "Error: Option " << option.short_name << " " << option.long_name
+                    << " does not have enough arguments." << std::endl;
           std::exit(EXIT_FAILURE);
         }
+        option.value = *pos;
+        pos = tokens.erase(pos);
       }
 
       // Parse arguments.
+      // Check whether the rest tokens are more than needed.
       if (tokens.size() < arguments.size())
       {
-        std::cerr << "(parse error) not enough named_arguments" << std::endl;
+        std::cerr << "Error: Does not have enough arguments." << std::endl;
         std::exit(EXIT_FAILURE);
       }
+      // Iteratively consume the arguments.
       for (auto &arg : arguments)
       {
         for (auto pos = tokens.begin(); pos != tokens.end();)
@@ -350,11 +379,11 @@ Where options may any of:
             pos = tokens.erase(pos);
             break;
           }
-          ++pos;
+          pos++;
         }
         if (arg.value == "")
         {
-          std::cerr << "(parse error) named_argument " << arg.name << " should have value" << std::endl;
+          std::cerr << "Error: Argument " << arg.name << " should have value." << std::endl;
           std::exit(EXIT_FAILURE);
         }
       }
@@ -368,16 +397,50 @@ Where options may any of:
   }
 
 private:
+  bool try_parse_argument(const std::string &line, argument &arg)
+  {
+    return true;
+  }
+  
+  using short_circuit_option_iterator = std::vector<short_circuit_option>::const_iterator;
+  using option_iterator = std::vector<option>::const_iterator;
+  
+
+  auto find_short_circuit_option_short_name(const std::string &name) const -> short_circuit_option_iterator
+  {
+    return std::find_if(short_circuit_options.cbegin(), short_circuit_options.cend(),
+        [&name](const short_circuit_option &option) { return option.short_name == name; });
+  }
+
+  auto find_short_circuit_option_long_name(const std::string &name) const -> short_circuit_option_iterator
+  {
+    return std::find_if(short_circuit_options.cbegin(), short_circuit_options.cend(),
+        [&name](const short_circuit_option &option) { return option.long_name == name; });
+  }
+
+  auto find_option_short_name(const std::string &name) const -> option_iterator
+  {
+    return std::find_if(options.cbegin(), options.cend(),
+        [&name](const option &option) { return option.short_name == name; });
+  }
+
+  auto find_option_long_name(const std::string &name) const -> option_iterator
+  {
+    return std::find_if(options.cbegin(), options.cend(),
+        [&name](const option &option) { return option.long_name == name; });
+  }
+
   void validate_option_short_name(const std::string &short_name)
   {
     if (short_name.size() != 2 || short_name.front() != '-')
     {
       std::cerr << "Error: Short option must start with `-` followed by one character:" << std::endl;
+      std::exit(EXIT_FAILURE);
     }
-    char c = short_name.back();
-    if (false)
+    if (find_option_long_name(short_name) != options.cend())
     {
-      // TODO
+      std::cerr << "Error: Short option " << short_name << " has already existed." << std::endl;
+      std::exit(EXIT_FAILURE);
     }
   }
 
@@ -386,26 +449,25 @@ private:
     if (long_name.size() < 3)
     {
       std::cerr << "Error: Long options must be at least 3 characters in length." << std::endl;
+      std::exit(EXIT_FAILURE);
     }
     if (long_name.substr(0,2) != "--")
     {
-      std::cerr << "Error: Long options must start with `--`" << std::endl;
+      std::cerr << "Error: Long options must start with `--`." << std::endl;
+      std::exit(EXIT_FAILURE);
     }
-    if (false)
+    if (find_option_long_name(long_name) != options.cend()
+        || find_short_circuit_option_long_name(long_name) != short_circuit_options.cend())
     {
-      // TODO
+      std::cerr << "Error: Long option " << long_name << " has already existed." << std::endl;
+      std::exit(EXIT_FAILURE);
     }
   }
 
-  bool try_parse_argument(const std::string &line, argument &arg)
-  {
-    return true;
-  }
+};  // class argparser
 
-}; // class argparser
+};  // namespace vsp::cli
 
-}; // namespace cli
-
-}; // namespace vsp
+};  // namespace vsp
 
 #endif // _VSP_CLI_ARGPARSE_H_
