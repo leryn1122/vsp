@@ -9,49 +9,13 @@
 namespace vsp
 {
 
-[[noreturn]]
-void
-do_print_help_and_exit()
-{
-#ifdef FORMAT
-  std::cout << std::format(" {} ...", CMD) << std::endl;
-#else
-  printf(
-//==============================================================================
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""" R"(
-%s <source> [ --options {...} ]
-
-Options may be in form of
-
-    --options [ params {...} ] or --options[=params{,...} ]
-
-Where options may any of:
-
-    --fast          This would ignore all other compile options.
-    --feature       Enable specified feature.
-    --help          Print help message.
-    --profile       Activate the specified profile to enable those APIs.
-    --version       Print version info.
-
-For example:
-
-    vspc source.vsp --profile=prod --feature nightly
-
-)" """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-//==============================================================================
-#endif
-    , CMD
-  );
-  std::exit(EXIT_SUCCESS);
-}
-
 } // namespace vsp
 
-int
-main(int argc, char *argv[])
+int main(int argc, char *argv[])
 {
   auto arg_parser = vsp::cli::ArgParser(CMD)
       .set_intro("Vsp Language Compiler")
+      //.add_argument("source", "source code file")
       .add_help_option()
       .add_version_option()
       .add_option("-d", "--debug", "Enable debug mode.")
