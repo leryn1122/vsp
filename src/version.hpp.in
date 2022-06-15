@@ -5,9 +5,10 @@
 namespace vsp
 {
 
-#define vsp_VERSION_MAJOR @vsp_VERSION_MAJOR@
-#define vsp_VERSION_MINOR @vsp_VERSION_MINOR@
-#define vsp_VERSION_PATCH @vsp_VERSION_PATCH@
+#define vsp_VERSION_MAJOR "@vsp_VERSION_MAJOR@"
+#define vsp_VERSION_MINOR "@vsp_VERSION_MINOR@"
+#define vsp_VERSION_PATCH "@vsp_VERSION_PATCH@"
+#define vsp_VERSION "@vsp_VERSION_MAJOR@.@vsp_VERSION_MINOR@.@vsp_VERSION_PATCH@"
 
 }; // namespace vsp
 

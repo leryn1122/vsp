@@ -8,7 +8,7 @@
 namespace vsp
 {
 
-} // namespace vsp
+};  // namespace vsp
 
 int main(int argc, char *argv[])
 {

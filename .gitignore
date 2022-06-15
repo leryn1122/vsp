@@ -420,6 +420,9 @@ $RECYCLE.BIN/
 
 !bin/
 build/**
+build-*/**
+release/**
+release-*/**
 
 CPack*.cmake
 

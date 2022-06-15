@@ -9,6 +9,8 @@
 #include <typeinfo>
 #include <vector>
 
+#include "version.hpp"
+
 namespace vsp
 {
 
@@ -171,10 +173,9 @@ public:
   
   template<typename T>
   ArgParser &add_option(std::string short_name, std::string long_name,
-    std::string description, T &&default_value
-  )
+                        std::string description, T &&default_value)
   {
-    if (typeid(T).name() == "null")
+    if (type_string<T>() == "null")
     {
       std::cerr << "Error: Unsupported type for options: " << typeid(T).name() << std::endl;
       std::exit(EXIT_FAILURE);
@@ -227,7 +228,7 @@ public:
     return add_short_circuit_option("", "--version", "Print version info.",
       [this]() {
         // TODO: print arch and OS platform.
-        std::cout << executable << " version " << "0.0.1" << std::endl;
+        std::cout << executable << " version " << vsp_VERSION << std::endl;
       });
   }
 
@@ -337,7 +338,7 @@ Where options may any of:
         }
       );
 
-      // If the option does not contained the token, jump to the next loop.
+      // If the option does not contain the token, jump to the next loop.
       if (pos == tokens.cend())
       {
         continue;
@@ -358,18 +359,26 @@ Where options may any of:
                     << " does not have enough arguments." << std::endl;
           std::exit(EXIT_FAILURE);
         }
-        option.value = *pos;
-        pos = tokens.erase(pos);
+        for ( ; pos == tokens.cend(); )
+        {
+          if ((*pos).substr(0,1) != "-")
+          {
+            option.value = *pos;
+            pos = tokens.erase(pos);
+          }
+        }
       }
 
       // Parse arguments.
-      // Check whether the rest tokens are more than needed.
-      if (tokens.size() < arguments.size())
+      // Check whether the rest tokens equal to needed in amount.
+      if (tokens.size() != arguments.size())
       {
+        // std::cout << tokens.size() << arguments.size() << std::endl;
+        // std::cout << tokens[0] << std::endl;
         std::cerr << "Error: Does not have enough arguments." << std::endl;
         std::exit(EXIT_FAILURE);
       }
-      // Iteratively consume the arguments.
+      // Iteratively consume the rest arguments.
       for (auto &arg : arguments)
       {
         for (auto pos = tokens.begin(); pos != tokens.end();)
@@ -394,6 +403,7 @@ Where options may any of:
         arguments[i].value = tokens[i];
       }
     }
+    return *this;
   }
 
 private:
@@ -401,10 +411,12 @@ private:
   {
     return true;
   }
-  
+
   using short_circuit_option_iterator = std::vector<short_circuit_option>::const_iterator;
   using option_iterator = std::vector<option>::const_iterator;
-  
+  using argument_iterator = std::vector<argument>::const_iterator;
+
+  // Find option.
 
   auto find_short_circuit_option_short_name(const std::string &name) const -> short_circuit_option_iterator
   {
@@ -429,6 +441,8 @@ private:
     return std::find_if(options.cbegin(), options.cend(),
         [&name](const option &option) { return option.long_name == name; });
   }
+
+  // Check option.
 
   void validate_option_short_name(const std::string &short_name)
   {
