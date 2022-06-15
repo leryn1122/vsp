@@ -5,14 +5,19 @@
 namespace vsp
 {
 
+namespace log
+
 class LogImpl
 {
 
 public:
+
   LogImpl() {}
 
 }
 
-}; // namespace vsp
+};  // namespace log
+
+};  // namespace vsp
 
 #endif // _VSP_LOGGING_LOG_H_
