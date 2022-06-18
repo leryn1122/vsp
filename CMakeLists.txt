@@ -119,8 +119,8 @@ ENDFOREACH()
 
 #-------------------------------------------------------------------------------
 
-MESSAGE(">>> Copy conf, copyright and docs")
-FILE(COPY "conf" "includes" "LICENSE" "README.md"
+MESSAGE(">>> Copy configuration, copyright and docs")
+FILE(COPY "etc" "includes" "LICENSE" "README.md"
      DESTINATION ${vsp_BUILD_DIR})
 
 

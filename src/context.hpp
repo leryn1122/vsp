@@ -1,13 +1,22 @@
 #pragma once
 #ifndef _VSP_CONTEXT_H_
 
+#include "argparser.hpp"
+
 namespace vsp
 {
 
 class Context
 {
 
+private:
+  ArgParser args;
+
+
 public:
+  
+  Context() {}
+  ~Context() {}
 
 
 private:

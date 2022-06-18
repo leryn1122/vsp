@@ -128,7 +128,7 @@ struct argument
  *  
  *  
  *  ```cpp
- *  auto arg_parser = vsp::cli::ArgParser(CMD)
+ *  ArgParser arg_parser = vsp::cli::ArgParser(CMD)
  *      .set_intro("Vsp Language Compiler")
  *      .add_help_option()
  *      .add_version_option()
@@ -308,7 +308,7 @@ Where options may any of:
     }
 
     std::vector<std::string> tokens;
-    for (int i = 1; i < argc; i++)
+    for (int i = 2; i < argc; i++)
     {
       tokens.emplace_back(argv[i]);
     }
@@ -333,6 +333,7 @@ Where options may any of:
     {
       auto pos = std::find_if(tokens.cbegin(), tokens.cend(),
         [&option](const std::string &token) {
+          std::cout << token << "," << option.short_name << "," << option.long_name << std::endl;
           return token == option.short_name || token == option.long_name;
         }
       );
