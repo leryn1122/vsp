@@ -66,7 +66,7 @@ MESSAGE("    Current version: ${vsp_VERSION_MAJOR}.${vsp_VERSION_MINOR}.${vsp_VE
 #-------------------------------------------------------------------------------
 
 MESSAGE(">>> Set the build directory:")
-SET(vsp_BUILD_DIR "${PROJECT_BINARY_DIR}/build-${vsp_VERSION}-${vsp_BUILD_OS}-${vsp_BUILD_ARCH}")
+SET(vsp_BUILD_DIR "${PROJECT_BINARY_DIR}/release-${vsp_VERSION}-${vsp_BUILD_OS}-${vsp_BUILD_ARCH}")
 SET(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${vsp_BUILD_DIR}/bin")
 SET(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${vsp_BUILD_DIR}/lib")
 SET(CMAKE_ARCHIVE_OUTPUT_DIRECTORY "${vsp_BUILD_DIR}/lib")
@@ -96,6 +96,7 @@ SET(vsp_HEAD_DIR ${vsp_SRC_FILES})
 LIST(FILTER vsp_HEAD_DIR INCLUDE REGEX "(.*).hpp$")
 LIST(TRANSFORM vsp_HEAD_DIR REPLACE "(.*)/(.*).hpp$" "\\1")
 LIST(REMOVE_DUPLICATES vsp_HEAD_DIR)
+LIST(SORT vsp_HEAD_DIR)
 INCLUDE_DIRECTORIES(${vsp_HEAD_DIR})
 MESSAGE_LIST(${vsp_HEAD_DIR})
 

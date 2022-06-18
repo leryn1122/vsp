@@ -2,13 +2,15 @@
 #ifndef _VSP_LOG_LOG_H_
 #define _VSP_LOG_LOG_H_
 
+#include "log_level.hpp"
+
 namespace vsp
 {
 
 namespace log
 {
 
-#define log_error(...) (!log_is_enaled(Error, ))
+// #define log_enabled(level, ...) (LogImpl::is_level(LogLevelType))
 
 class LogImpl
 {
@@ -16,6 +18,8 @@ class LogImpl
 public:
 
   LogImpl() {}
+
+  static bool is_enabled(LogLevelType level);
 
 }
 

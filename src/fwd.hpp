@@ -1,13 +1,16 @@
 #pragma once
-#ifndef _VSP_GLOBAL_H_
-#define _VSP_GLOBAL_H_
+#ifndef _VSP_FWD_H_
+#define _VSP_FWD_H_
 
+#include <cstddef>
+#include <cstdint>
 #include <cstring>
+#include <cstdlib>
+#include <iostream>
 #include <stdexcept>
 #include <string>
 #include <typeinfo>
-#include <cstddef>
-#include <cstdint>
+#include <vector>
 
 #include "version.hpp"
 
@@ -35,6 +38,6 @@ using ::std::type_info;
 using ::std::string;
 
 
-}; // namespace vsp
+};  // namespace vsp
 
-#endif // _VSP_GLOBAL_H_
+#endif  // _VSP_FWD_H_

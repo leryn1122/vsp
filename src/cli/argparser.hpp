@@ -11,6 +11,9 @@
 
 #include "version.hpp"
 
+/**
+ * Reference on: https://github.com/0382/util/cpp/argparse/argparse.hpp
+ */
 namespace vsp
 {
 
@@ -283,10 +286,6 @@ Where options may any of:
       std::cout << opt.long_name;
       printed_length += opt.long_name.length();
       std::cout << std::string(max_name_length - printed_length, ' ');
-      if (opt.type != "bool")
-      {
-        std::cout << "(" << opt.type << ") ";
-      }
       std::cout << opt.description << '\n';
     }
 
@@ -301,7 +300,7 @@ Where options may any of:
    */
   ArgParser parse(int argc, char *argv[])
   {
-    // Fast return if no argument accepted. 
+    // Fast return if no arguments accepted. 
     if (argc == 1)
     {
       print_help();
@@ -332,13 +331,13 @@ Where options may any of:
     // Iterate on this->options.
     for (auto &&option : this->options)
     {
-      auto pos = std::find_if(tokens.cend(), tokens.cbegin(),
+      auto pos = std::find_if(tokens.cbegin(), tokens.cend(),
         [&option](const std::string &token) {
           return token == option.short_name || token == option.long_name;
         }
       );
 
-      // If the option does not contain the token, jump to the next loop.
+      // If the option is any one of tokens, jump to the next loop.
       if (pos == tokens.cend())
       {
         continue;
@@ -350,7 +349,7 @@ Where options may any of:
       {
         option.value = "1";
       }
-      // Other types need to consume next token
+      // Other types need to consume following tokens
       else
       {
         if (pos == tokens.cend())
@@ -361,54 +360,71 @@ Where options may any of:
         }
         for ( ; pos == tokens.cend(); )
         {
-          if ((*pos).substr(0,1) != "-")
+          if ((*pos).front() != '-')
           {
             option.value = *pos;
             pos = tokens.erase(pos);
           }
-        }
-      }
-
-      // Parse arguments.
-      // Check whether the rest tokens equal to needed in amount.
-      if (tokens.size() != arguments.size())
-      {
-        // std::cout << tokens.size() << arguments.size() << std::endl;
-        // std::cout << tokens[0] << std::endl;
-        std::cerr << "Error: Does not have enough arguments." << std::endl;
-        std::exit(EXIT_FAILURE);
-      }
-      // Iteratively consume the rest arguments.
-      for (auto &arg : arguments)
-      {
-        for (auto pos = tokens.begin(); pos != tokens.end();)
-        {
-          if (try_parse_argument(*pos, arg))
+          else
           {
-            pos = tokens.erase(pos);
             break;
           }
-          pos++;
-        }
-        if (arg.value == "")
-        {
-          std::cerr << "Error: Argument " << arg.name << " should have value." << std::endl;
-          std::exit(EXIT_FAILURE);
         }
       }
+      
+      std::cout << "option=" << option.long_name << ", value=" << option.value << std::endl;
 
-      // 
-      for (std::size_t i = 0; i < tokens.size(); i++)
+    }
+
+    for (auto &token : tokens)
+    {
+      std::cout << ',' << token << std::endl;
+    }
+
+    // Parse arguments.
+    // Check whether the rest tokens equal to needed in amount.
+    if (tokens.size() != arguments.size())
+    {
+      // std::cout << tokens.size() << arguments.size() << std::endl;
+      // std::cout << tokens[0] << std::endl;
+      std::cerr << "Error: Does not have enough arguments." << std::endl;
+      std::exit(EXIT_FAILURE);
+    }
+    // Iteratively consume the rest arguments.
+    for (auto &arg : arguments)
+    {
+      for (auto pos = tokens.begin(); pos != tokens.end();)
       {
-        arguments[i].value = tokens[i];
+        if (try_parse_argument(*pos, arg))
+        {
+          pos = tokens.erase(pos);
+          break;
+        }
+        pos++;
+      }
+      if (arg.value == "")
+      {
+        std::cerr << "Error: Argument " << arg.name << " should have value." << std::endl;
+        std::exit(EXIT_FAILURE);
       }
     }
+
+    //for (std::size_t i = 0; i < tokens.size(); i++)
+    //{
+    //  arguments[i].value = tokens[i];
+    //}
+
     return *this;
   }
 
 private:
   bool try_parse_argument(const std::string &line, argument &arg)
   {
+    if ((line).substr(0,2) != "--")
+    {
+      std::cerr << "Error: Invalid options :"  << line << std::endl;
+      std::exit(EXIT_FAILURE);
+    }
     return true;
   }
 
