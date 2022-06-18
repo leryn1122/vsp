@@ -2,6 +2,7 @@
 #ifndef _VSP_GLOBAL_H_
 #define _VSP_GLOBAL_H_
 
+#include <cstring>
 #include <stdexcept>
 #include <string>
 #include <typeinfo>

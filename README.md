@@ -2,7 +2,7 @@
 
 ## TL;DR
 
-A toy language compiler during learning custom compiler and Rust lang.
+A toy language compiler during learning custom compiler and modern C++ lang.
 
 ## Table of Contents
 

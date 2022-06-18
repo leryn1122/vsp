@@ -64,7 +64,7 @@ std::string to_string(const T &value)
   return oss.str();
 }
 
-} // namespace
+}  // namespace
 
 struct option
 {

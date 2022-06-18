@@ -2,6 +2,7 @@ CMAKE_MINIMUM_REQUIRED(VERSION 3.10)
 
 PROJECT(vsp)
 
+ADD_COMPILE_OPTIONS(-std=c++20)
 SET(CMAKE_CXX_STANDARD 20)
 SET(CMAKE_CXX_STANDARD_REQUIRED True)
 
@@ -58,7 +59,7 @@ CONFIGURE_FILE(
   "${vsp_SRC_DIR}/version.hpp.in"
   "${vsp_SRC_DIR}/version.hpp"
 )
-MESSAGE("    Current version is ${vsp_VERSION_MAJOR}.${vsp_VERSION_MINOR}.${vsp_VERSION_PATCH}")
+MESSAGE("    Current version: ${vsp_VERSION_MAJOR}.${vsp_VERSION_MINOR}.${vsp_VERSION_PATCH}")
 
 
 
