@@ -16,15 +16,15 @@ int main(int argc, char *argv[])
 {
   auto arg_parser = vsp::cli::ArgParser(CMD)
       .set_intro("Vsp Language Compiler")
-      //.add_argument("source", "source code file")
+      .add_argument("source", "source code file")
       .add_help_option()
       .add_version_option()
       .add_option("", "--debug", "Enable debug mode.")
       .add_option("", "--deprecation", "Locate where deprecated APIs are used.")
       .add_option("", "--depress-warning", "Depress warning info.")
       .add_option("", "--dry-run", "")
-      .add_option("", "--feature", "Enable specified feature.")
-      .add_option("-o", "--output", "Specify the output file.")
+      .add_option<std::string>("", "--feature", "Enable specified feature.", "")
+      .add_option<std::string>("-o", "--output", "Specify the output file.", "")
       .add_option<std::string>("-p", "--profile", "Activate the specified profile to enable those APIs.", "default")
       .add_option("", "--release", "Specify the release of APIs.")
       .add_option("-s", "--source", "Specify the source file.")
@@ -41,5 +41,6 @@ int main(int argc, char *argv[])
 //==============================================================================
       )
       .parse(argc, argv);
+  // Context::initial_from_cli(&arg_parser);
   return 0;
 }

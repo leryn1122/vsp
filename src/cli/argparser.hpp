@@ -154,6 +154,7 @@ private:
 public:
 
   ArgParser(std::string executable) : executable(std::move(executable)) {}
+  ~ArgParser() {}
 
   ArgParser &set_intro(std::string intro)
   {
@@ -297,7 +298,7 @@ Where options may any of:
 
   /**
    * Entry point to parse arguments after option registration.
-    --*/
+   */
   ArgParser parse(int argc, char *argv[])
   {
     // Fast return if no arguments accepted. 
@@ -333,7 +334,6 @@ Where options may any of:
     {
       auto pos = std::find_if(tokens.cbegin(), tokens.cend(),
         [&option](const std::string &token) {
-          std::cout << token << "," << option.short_name << "," << option.long_name << std::endl;
           return token == option.short_name || token == option.long_name;
         }
       );
@@ -345,9 +345,7 @@ Where options may any of:
       }
 
       // Remove the token if matched.
-      std::cout << "========before erase: " << *pos << std::endl;
       pos = tokens.erase(pos);
-      std::cout << "======== after erase: " << *pos << std::endl;
       if (option.type == "bool")
       {
         option.value = "1";
@@ -357,12 +355,11 @@ Where options may any of:
       {
         if (pos == tokens.cend())
         {
-          std::cerr << "Error: Option " << option.short_name << " " << option.long_name
-                    << " does not have enough arguments." << std::endl;
+          std::cerr << "Error: Option `" << option.short_name << "`, `" << option.long_name
+                    << "` does not have enough arguments." << std::endl;
           std::exit(EXIT_FAILURE);
         }
-        std::cout << "Pos=" << *pos << ", Front=" << (*pos).front() << std::endl;
-        while(pos == tokens.cend())
+        for( ; pos != tokens.cend() ; pos++)
         {
           if ((*pos).front() != '-')
           {
@@ -374,21 +371,13 @@ Where options may any of:
             break;
           }
         }
-        std::cout << "\noption=" << option.long_name << ", value=" << option.value << std::endl;
       }
-    }
-
-    for (auto &token : tokens)
-    {
-      std::cout << ',' << token << std::endl;
     }
 
     // Parse arguments.
     // Check whether the rest tokens equal to needed in amount.
     if (tokens.size() != arguments.size())
     {
-      // std::cout << tokens.size() << arguments.size() << std::endl;
-      // std::cout << tokens[0] << std::endl;
       std::cerr << "Error: Does not have enough arguments." << std::endl;
       std::exit(EXIT_FAILURE);
     }
@@ -399,6 +388,7 @@ Where options may any of:
       {
         if (try_parse_argument(*pos, arg))
         {
+          arg.value = *pos;
           pos = tokens.erase(pos);
           break;
         }
@@ -406,7 +396,7 @@ Where options may any of:
       }
       if (arg.value == "")
       {
-        std::cerr << "Error: Argument " << arg.name << " should have value." << std::endl;
+        std::cerr << "Error: Argument `" << arg.name << "` should have value." << std::endl;
         std::exit(EXIT_FAILURE);
       }
     }
@@ -422,7 +412,7 @@ Where options may any of:
 private:
   bool try_parse_argument(const std::string &line, argument &arg)
   {
-    if ((line).substr(0,2) != "--")
+    if ((line).substr(0,2) == "--")
     {
       std::cerr << "Error: Invalid options :"  << line << std::endl;
       std::exit(EXIT_FAILURE);

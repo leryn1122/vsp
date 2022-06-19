@@ -12,6 +12,7 @@ fi
 
 LOG_FILE="$(date +"%Y%m%d").log"
 
-cmake . && make
-
+cmake . -B build && cd build && make && cd .. && pwd
+BUILD_DIR="$(find ./build -maxdepth 1 -iname "release-*-*-*")"
+ln -sf $BUILD_DIR release
 $(cd release && tree -a . > "../${LOG_FILE}") 
