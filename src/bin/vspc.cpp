@@ -1,3 +1,5 @@
+#include <string>
+#include <cstdlib>
 #include "argparser.hpp"
 #include "fwd.hpp"
 
@@ -8,6 +10,8 @@ namespace vsp
 
 };  /*--  namespace vsp  --*/
 
+using std::string;
+
 int main(int argc, char *argv[])
 {
   auto arg_parser = vsp::cli::ArgParser(CMD)
@@ -15,19 +19,20 @@ int main(int argc, char *argv[])
       //.add_argument("source", "source code file")
       .add_help_option()
       .add_version_option()
-      .add_option("-d", "--directory", "Specify the output directory.")
+      .add_option("", "--debug", "Enable debug mode.")
       .add_option("", "--deprecation", "Locate where deprecated APIs are used.")
       .add_option("", "--depress-warning", "Depress warning info.")
-      .add_option("", "--debug", "Enable debug mode.")
+      .add_option("", "--dry-run", "")
       .add_option("", "--feature", "Enable specified feature.")
       .add_option("-o", "--output", "Specify the output file.")
-      .add_option("-p", "--profile", "Activate the specified profile to enable those APIs.")
+      .add_option<std::string>("-p", "--profile", "Activate the specified profile to enable those APIs.", "default")
       .add_option("", "--release", "Specify the release of APIs.")
       .add_option("-s", "--source", "Specify the source file.")
-      .add_option("", "--source-path", "Specify the source path.")
-      .add_option<int>("-t", "--thread", "Set the parallel thread to compile source.", 4)
-      .add_option("-v", "--verbose", "Enable verbose mode.")
-      .add_option("", "--system", "")
+      .add_option("", "--source-path", "Specify the path to source file.")
+      .add_option("-t", "--target", "Specify the target file.")
+      .add_option("", "--target-path", "Specify the path to target file.")
+      .add_option<int>("-T", "--thread", "Set the parallel thread to compile source.", 4)
+      .add_option("-V", "--verbose", "Enable verbose mode.")
       .set_example(
 //==============================================================================
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""" R"(

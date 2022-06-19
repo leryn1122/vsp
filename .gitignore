@@ -419,6 +419,7 @@ $RECYCLE.BIN/
 # End of https://www.toptal.com/developers/gitignore/api/macos,linux,eclipse,windows,intellij+all,jetbrains+all,visualstudiocode,c++,clion+all,cmake
 
 !bin/
+build/
 release
 release/**
 release-*/**

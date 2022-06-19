@@ -228,7 +228,7 @@ public:
 
   ArgParser &add_version_option()
   {
-    return add_short_circuit_option("", "--version", "Print version info.",
+    return add_short_circuit_option("-v", "--version", "Print version info.",
       [this]() {
         // TODO: print arch and OS platform.
         std::cout << executable << " version " << vsp_VERSION << std::endl;
@@ -345,7 +345,9 @@ Where options may any of:
       }
 
       // Remove the token if matched.
+      std::cout << "========before erase: " << *pos << std::endl;
       pos = tokens.erase(pos);
+      std::cout << "======== after erase: " << *pos << std::endl;
       if (option.type == "bool")
       {
         option.value = "1";
@@ -359,7 +361,8 @@ Where options may any of:
                     << " does not have enough arguments." << std::endl;
           std::exit(EXIT_FAILURE);
         }
-        for ( ; pos == tokens.cend(); )
+        std::cout << "Pos=" << *pos << ", Front=" << (*pos).front() << std::endl;
+        while(pos == tokens.cend())
         {
           if ((*pos).front() != '-')
           {
@@ -371,10 +374,8 @@ Where options may any of:
             break;
           }
         }
+        std::cout << "\noption=" << option.long_name << ", value=" << option.value << std::endl;
       }
-      
-      std::cout << "\noption=" << option.long_name << ", value=" << option.value << std::endl;
-
     }
 
     for (auto &token : tokens)
