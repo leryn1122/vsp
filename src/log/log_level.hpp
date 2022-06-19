@@ -38,12 +38,12 @@ enum type {
 private:
   static const char* _name[];
 
-};  // class LogLevel
+};  /*--  class LogLevel  --*/
 
 typedef LogLevel::type LogLevelType;
 
-};  // namespace log
+};  /*--  namespace vsp::log  --*/
 
-};  // namespace vsp
+};  /*--  namespace vsp  --*/
 
-#endif  // _VSP_LOG_LOG_LEVEL_H_
+#endif  /*--  _VSP_LOG_LOG_LEVEL_H_  --*/

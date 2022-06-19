@@ -67,7 +67,7 @@ std::string to_string(const T &value)
   return oss.str();
 }
 
-}  // namespace
+};  /*--  namespace  --*/
 
 struct option
 {
@@ -84,7 +84,7 @@ struct option
   std::string description;
   std::string type;
   std::string value;
-};  // struct option
+};  /*--  struct option  --*/
 
 struct short_circuit_option
 {
@@ -99,7 +99,7 @@ struct short_circuit_option
   std::string long_name;
   std::string description;
   std::function<void(void)> callback;
-};  // struct short_circuit_option
+};  /*--  struct short_circuit_option  --*/
 
 struct argument
 {
@@ -112,7 +112,7 @@ struct argument
   std::string description;
   std::string type;
   std::string value;
-};  // struct argument
+};  /*--  struct argument  --*/
 
 /**
  *  Create an argument parser instance in chain invocation of option registrations.
@@ -269,7 +269,7 @@ Where options may any of:
       }
       max_name_length = std::max(max_name_length, length);
     }
-    max_name_length = std::max(max_name_length, std::size_t(21));
+    max_name_length = std::max(max_name_length, std::size_t(25));
 
     for (const auto &opt : options)
     {
@@ -297,7 +297,7 @@ Where options may any of:
 
   /**
    * Entry point to parse arguments after option registration.
-   */
+    --*/
   ArgParser parse(int argc, char *argv[])
   {
     // Fast return if no arguments accepted. 
@@ -308,7 +308,7 @@ Where options may any of:
     }
 
     std::vector<std::string> tokens;
-    for (int i = 2; i < argc; i++)
+    for (int i = 1; i < argc; i++)
     {
       tokens.emplace_back(argv[i]);
     }
@@ -373,7 +373,7 @@ Where options may any of:
         }
       }
       
-      std::cout << "option=" << option.long_name << ", value=" << option.value << std::endl;
+      std::cout << "\noption=" << option.long_name << ", value=" << option.value << std::endl;
 
     }
 
@@ -495,10 +495,10 @@ private:
     }
   }
 
-};  // class argparser
+};  /*--  class argparser  --*/
 
-};  // namespace vsp::cli
+};  /*--  namespace vsp::cli  --*/
 
-};  // namespace vsp
+};  /*--  namespace vsp  --*/
 
-#endif // _VSP_CLI_ARGPARSE_H_
+#endif  /*--  _VSP_CLI_ARGPARSE_H_  --*/

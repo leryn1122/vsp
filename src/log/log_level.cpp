@@ -26,6 +26,6 @@ LogLevelType LogLevel::from_string(const char* str)
   return LogLevel::type::Off;
 }
 
-};  // namespace log
+};  /*--  namespace vsp::log  --*/
 
-};  // namespace vsp
+};  /*--  namespace vsp  --*/

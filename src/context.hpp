@@ -22,8 +22,8 @@ public:
 private:
 
 
-};  // class Context
+};  /*--  class Context  --*/
 
-};  // namespace vsp
+};  /*--  namespace vsp  --*/
 
-#endif  // _VSP_CONTEXT_H_
+#endif  /*--  _VSP_CONTEXT_H_  --*/

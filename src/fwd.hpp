@@ -38,6 +38,6 @@ using ::std::type_info;
 using ::std::string;
 
 
-};  // namespace vsp
+};  /*--  namespace vsp  --*/
 
-#endif  // _VSP_FWD_H_
+#endif  /*--  _VSP_FWD_H_  --*/

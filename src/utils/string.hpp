@@ -5,4 +5,4 @@
 
 
 
-#endif // _VSP_UTILS_STRING_H_
+#endif  /*--  _VSP_UTILS_STRING_H_  --*/

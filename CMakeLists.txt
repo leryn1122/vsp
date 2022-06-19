@@ -13,7 +13,7 @@ SET(CMAKE_BUILD_TYPE "Debug")
 SET(CMAKE_CXX_FLAGS_DEBUG "$ENV{CXXFLAGS} -O0 -Wall -g -ggdb")
 SET(CMAKE_CXX_FLAGS_RELEASE "$ENV{CXXFLAGS} -O3 -Wall")
 
-#-------------------------------------------------------------------------------
+#-----------------------------------------------------------
 
 FUNCTION(MESSAGE_LIST)
   FOREACH(_arg IN LISTS ARGN)
@@ -23,7 +23,7 @@ ENDFUNCTION(MESSAGE_LIST)
 
 
 
-#-------------------------------------------------------------------------------
+#-----------------------------------------------------------
 
 MESSAGE(">>> Determine current system and architecture.")
 IF(CMAKE_SIZEOF_VOID_P EQUAL 8)
@@ -48,7 +48,7 @@ MESSAGE("    Current build OS: ${vsp_BUILD_OS}")
 
 
 
-#-------------------------------------------------------------------------------
+#-----------------------------------------------------------
 
 MESSAGE(">>> Generate version header (src/version.hpp):")
 SET(vsp_VERSION_MAJOR 0)
@@ -59,11 +59,11 @@ CONFIGURE_FILE(
   "${vsp_SRC_DIR}/version.hpp.in"
   "${vsp_SRC_DIR}/version.hpp"
 )
-MESSAGE("    Current version: ${vsp_VERSION_MAJOR}.${vsp_VERSION_MINOR}.${vsp_VERSION_PATCH}")
+MESSAGE("    Current version: ${vsp_VERSION}")
 
 
 
-#-------------------------------------------------------------------------------
+#-----------------------------------------------------------
 
 MESSAGE(">>> Set the build directory:")
 SET(vsp_BUILD_DIR "${PROJECT_BINARY_DIR}/release-${vsp_VERSION}-${vsp_BUILD_OS}-${vsp_BUILD_ARCH}")
@@ -73,7 +73,7 @@ SET(CMAKE_ARCHIVE_OUTPUT_DIRECTORY "${vsp_BUILD_DIR}/lib")
 MESSAGE("    Current build directory: ${vsp_BUILD_DIR}")
 
 
-#-------------------------------------------------------------------------------
+#-----------------------------------------------------------
 
 MESSAGE(">>> Source files (*.hpp, *.cpp):")
 FILE(GLOB_RECURSE vsp_SRC_FILES
@@ -88,7 +88,7 @@ MESSAGE_LIST(${vsp_SRC_FILES})
 
 
 
-#-------------------------------------------------------------------------------
+#-----------------------------------------------------------
 
 MESSAGE(">>> Header directory (src/path/to/*.hpp):")
 SET(vsp_HEAD_DIR ${vsp_SRC_FILES})
@@ -102,7 +102,7 @@ MESSAGE_LIST(${vsp_HEAD_DIR})
 
 
 
-#-------------------------------------------------------------------------------
+#-----------------------------------------------------------
 
 MESSAGE(">>> Executables (src/bin/*.cpp):")
 LIST(TRANSFORM vsp_BIN_FILES REPLACE "${vsp_SRC_DIR}/bin/(.*).cpp" "\\1" OUTPUT_VARIABLE vsp_EXECUTABLES)
@@ -117,7 +117,7 @@ ENDFOREACH()
 
 
 
-#-------------------------------------------------------------------------------
+#-----------------------------------------------------------
 
 MESSAGE(">>> Copy configuration, copyright and docs")
 FILE(COPY "etc" "includes" "LICENSE" "README.md"
@@ -125,7 +125,7 @@ FILE(COPY "etc" "includes" "LICENSE" "README.md"
 
 
 
-#-------------------------------------------------------------------------------
+#-----------------------------------------------------------
 
 # MESSAGE(">>> Build a CPack install package")
 # INCLUDE(InstallRequiredSystemLibraries)

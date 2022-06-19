@@ -5,11 +5,6 @@
 
 #define CMD "vspr"
 
-namespace vsp
-{
-
-} // namespace vsp
-
 int
 main(int argc, char *argv[])
 {

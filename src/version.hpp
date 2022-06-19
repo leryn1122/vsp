@@ -10,6 +10,6 @@ namespace vsp
 #define vsp_VERSION_PATCH "1"
 #define vsp_VERSION "0.0.1"
 
-};  // namespace vsp
+};  /*--  namespace vsp  --*/
 
-#endif  // _VSP_VERSION_H_
+#endif  /*--  _VSP_VERSION_H_  --*/

@@ -23,8 +23,8 @@ public:
 
 }
 
-};  // namespace log
+};  /*--  namespace vsp::log  --*/
 
-};  // namespace vsp
+};  /*--  namespace vsp  --*/
 
-#endif  // _VSP_LOG_LOG_H_
+#endif  /*--  _VSP_LOG_LOG_H_  --*/

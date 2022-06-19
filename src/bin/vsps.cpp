@@ -5,11 +5,6 @@
 
 #define CMD "vsps"
 
-namespace vsp
-{
-
-} // namespace vsp
-
 int main(int argc, char *argv[])
 {
   auto arg_parser = vsp::cli::ArgParser(CMD)

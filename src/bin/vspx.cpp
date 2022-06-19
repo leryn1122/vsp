@@ -1,14 +1,10 @@
 #include <stdio.h>
 #include <cstdlib>
+
 #include "argparser.hpp"
 #include "fwd.hpp"
 
 #define CMD "vspx"
-
-namespace vsp
-{
-
-} // namespace vsp
 
 int main(int argc, char *argv[])
 {
