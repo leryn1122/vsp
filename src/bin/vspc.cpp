@@ -1,6 +1,7 @@
 #include <string>
 #include <cstdlib>
 #include "argparser.hpp"
+#include "context.hpp"
 #include "fwd.hpp"
 
 #define CMD "vspc"
@@ -41,6 +42,6 @@ int main(int argc, char *argv[])
 //==============================================================================
       )
       .parse(argc, argv);
-  // Context::initial_from_cli(&arg_parser);
+  vsp::Context context = vsp::Context::initial_from_cli_args(arg_parser);
   return 0;
 }

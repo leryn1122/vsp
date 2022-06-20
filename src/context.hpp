@@ -8,19 +8,22 @@ namespace vsp
 
 class Context
 {
+public:
+
+  static Context initial_from_cli_args(vsp::cli::ArgParser args)
+  {
+    Context context;
+    context.args = args;
+    return context;
+  }
 
 private:
-  ArgParser args;
-
+  vsp::cli::ArgParser args;
 
 public:
-  
-  Context() {}
+
+  Context(void) {}
   ~Context() {}
-
-
-private:
-
 
 };  /*--  class Context  --*/
 

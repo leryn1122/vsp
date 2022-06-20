@@ -6,7 +6,7 @@ ADD_COMPILE_OPTIONS(-std=c++20)
 SET(CMAKE_CXX_STANDARD 20)
 SET(CMAKE_CXX_STANDARD_REQUIRED True)
 
-SET(vsp_SRC_DIR   "${PROJECT_SOURCE_DIR}/src")
+SET(vsp_SRC_DIR "${PROJECT_SOURCE_DIR}/src")
 
 # Support `gdb` debug.
 SET(CMAKE_BUILD_TYPE "Debug")
@@ -106,7 +106,7 @@ MESSAGE_LIST(${vsp_HEAD_DIR})
 
 MESSAGE(">>> Executables (src/bin/*.cpp):")
 LIST(TRANSFORM vsp_BIN_FILES REPLACE "${vsp_SRC_DIR}/bin/(.*).cpp" "\\1" OUTPUT_VARIABLE vsp_EXECUTABLES)
-# set(vsp_EXECUTABLES "vspc") # This is a test code.
+set(vsp_EXECUTABLES "vspc" "vsps") # This is a test code.
 MESSAGE_LIST(${vsp_EXECUTABLES})
 # TODO Enabled to build the multi executables
 FOREACH(_executables ${vsp_EXECUTABLES})

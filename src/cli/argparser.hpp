@@ -153,6 +153,7 @@ private:
 
 public:
 
+  ArgParser() {}
   ArgParser(std::string executable) : executable(std::move(executable)) {}
   ~ArgParser() {}
 
@@ -251,7 +252,7 @@ public:
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""" R"(
 Options may be in form of:
 
-    --options [ params {...} ] or --options[=params{,...} ]
+    --options [ params {...} ]
 
 Where options may any of:
 
@@ -291,9 +292,13 @@ Where options may any of:
     }
 
     // Print Example
-    std::cout << "\nFor example:\n";
-    std::cout << example;
-    std::cout << std::endl;
+    if (this->example.size() > 0)
+    {
+      std::cout << "\nFor example:\n";
+      std::cout << example;
+      std::cout << std::endl;
+    }
+
   }
 
   /**
