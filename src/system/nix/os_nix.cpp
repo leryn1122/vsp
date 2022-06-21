@@ -8,10 +8,10 @@ namespace vsp
 namespace sys
 {
 
-string get_passwd_name()
+std::string get_passwd_name()
 {
-	struct passwd *pwd = getpwuid(getuid());
-	return pwd->pw_name;
+  struct passwd *pwd = getpwuid(getuid());
+  return pwd->pw_name;
 }
 
 };  /*--  namespace vsp::sys  --*/

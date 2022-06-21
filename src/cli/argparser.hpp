@@ -12,7 +12,33 @@
 #include "version.hpp"
 
 /**
- * Reference on: https://github.com/0382/util/cpp/argparse/argparse.hpp
+ *  Reference on: https://github.com/0382/util/cpp/argparse/argparse.hpp
+ *  
+ *  Create an argument parser instance in chain invocation of option registrations.
+ *  
+ *  Options are seperated into two types:
+ *    - Normal option:
+ *       
+ *    - Short circuit option
+ *      Once met short circuit, the program would invoke callback, and be 
+ *      exited immediately.
+ *  
+ *  
+ *  
+ *  
+ *  ```cpp
+ *  ArgParser arg_parser = vsp::cli::ArgParser(CMD)
+ *      .set_intro("Vsp Language Compiler")
+ *      .add_help_option()
+ *      .add_version_option()
+ *      .add_option("-d", "--debug", "Enable debug mode.")
+ *      .add_option("", "--feature", "Enable specified feature.")
+ *      .add_option("", "--profile", "Activate the specified profile to enable those APIs.")
+ *      .add_option<int>("-t", "--thread", "Set the parallel thread to compile source.", 4)
+ *      .add_option("-v", "--verbose", "Enable verbose mode.")
+ *      .set_example("");
+ *      .parse(argc, argv);
+ *  ```
  */
 namespace vsp
 {
@@ -114,33 +140,6 @@ struct argument
   std::string value;
 };  /*--  struct argument  --*/
 
-/**
- *  Create an argument parser instance in chain invocation of option registrations.
- *  
- *  Options are seperated into two types:
- *    - Normal option:
- *       
- *    - Short circuit option
- *      Once met short circuit, the program would invoke callback, and be 
- *      exited immediately.
- *  
- *  
- *  
- *  
- *  ```cpp
- *  ArgParser arg_parser = vsp::cli::ArgParser(CMD)
- *      .set_intro("Vsp Language Compiler")
- *      .add_help_option()
- *      .add_version_option()
- *      .add_option("-d", "--debug", "Enable debug mode.")
- *      .add_option("", "--feature", "Enable specified feature.")
- *      .add_option("", "--profile", "Activate the specified profile to enable those APIs.")
- *      .add_option<int>("-t", "--thread", "Set the parallel thread to compile source.", 4)
- *      .add_option("-v", "--verbose", "Enable verbose mode.")
- *      .set_example("");
- *      .parse(argc, argv);
- *  ```
- */
 class ArgParser
 {
 private:
@@ -232,7 +231,6 @@ public:
   {
     return add_short_circuit_option("-v", "--version", "Print version info.",
       [this]() {
-        // TODO: print arch and OS platform.
         std::cout << executable << " version " << vsp_VERSION << std::endl;
       });
   }

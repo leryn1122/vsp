@@ -10,7 +10,7 @@ class Context
 {
 public:
 
-  static Context initial_from_cli_args(vsp::cli::ArgParser args)
+  static Context initial_from_cli_args(cli::ArgParser args)
   {
     Context context;
     context.args = args;
@@ -18,12 +18,17 @@ public:
   }
 
 private:
-  vsp::cli::ArgParser args;
+  cli::ArgParser args;
 
 public:
 
   Context(void) {}
   ~Context() {}
+
+  cli::ArgParser* get_arg_parser()
+  {
+    return &(this->args);
+  }
 
 };  /*--  class Context  --*/
 

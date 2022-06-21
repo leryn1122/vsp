@@ -1,17 +1,9 @@
-#include <string>
-#include <cstdlib>
 #include "argparser.hpp"
+#include "compiler.hpp"
 #include "context.hpp"
 #include "fwd.hpp"
 
 #define CMD "vspc"
-
-namespace vsp
-{
-
-};  /*--  namespace vsp  --*/
-
-using std::string;
 
 int main(int argc, char *argv[])
 {
@@ -43,5 +35,6 @@ int main(int argc, char *argv[])
       )
       .parse(argc, argv);
   vsp::Context context = vsp::Context::initial_from_cli_args(arg_parser);
+  vsp::comp::Compiler compiler = vsp::comp::Compiler(context);
   return 0;
 }
