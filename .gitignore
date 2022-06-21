@@ -426,4 +426,5 @@ release-*/**
 
 CPack*.cmake
 
+core
 *.log

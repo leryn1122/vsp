@@ -305,7 +305,7 @@ Where options may any of:
   ArgParser parse(int argc, char *argv[])
   {
     // Fast return if no arguments accepted. 
-    if (argc == 1)
+    if (argc == 1 && arguments.size() > 0)
     {
       print_help();
       std::exit(EXIT_SUCCESS);
@@ -410,6 +410,12 @@ Where options may any of:
     //}
 
     return *this;
+  }
+
+  bool has_option(std::string name)
+  {
+    return std::any_of(options.cbegin(), options.cend(),
+        [&name](const option &option) { return option.long_name == name; });
   }
 
 private:
