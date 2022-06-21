@@ -24,13 +24,15 @@ namespace vsp
 namespace cli
 {
 
-void execute(cli::ArgParser arg_parser)
+void execute(cli::ArgParser* arg_parser)
 {
-  std::vector<vsp::stat::VMProcess> processes = vsp::stat::get_pids();
+  bool quiet = arg_parser->has_option("--quiet");
+  std::vector<vsp::stat::VMProcessSketch> processes = vsp::stat::get_pids();
   for (auto &process : processes)
   {
     std::cout << process.pid;
-    if (!arg_parser.has_option("--quiet")) {
+    if (!quiet)
+    {
       std::cout << " " << process.pname;
     }
     std::cout << std::endl;
@@ -58,6 +60,6 @@ int main(int argc, char *argv[])
 //==============================================================================
       )
       .parse(argc, argv);
-  vsp::cli::execute(arg_parser);
+  vsp::cli::execute(&arg_parser);
   return 0;
 }

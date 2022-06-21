@@ -14,6 +14,10 @@ A toy language compiler during learning custom compiler and modern C++ lang.
 - [Maintainers](#maintainers)
 - [License](#license)
 
+## Etymology
+
+`vsp` originated from Latin [vespera](https://en.wiktionary.org/wiki/vespera), meaning **of or related to evening**. It was formally called `vesperace`, but it was too long.
+
 ## Background
 
 A toy language compiler during learning custom compiler and modern C++ lang.

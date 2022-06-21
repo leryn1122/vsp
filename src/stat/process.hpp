@@ -15,7 +15,7 @@ namespace vsp
 namespace stat
 {
 
-struct VMProcess
+struct VMProcessSketch
 {
   uint         pid;
   std::string  pname;
@@ -23,9 +23,9 @@ struct VMProcess
 
 int get_pid();
 
-std::vector<VMProcess> get_pids()
+std::vector<VMProcessSketch> get_pids()
 {
-  std::vector<VMProcess> pids;
+  std::vector<VMProcessSketch> pids;
 #ifdef __linux__
   std::string proc_dir;
   proc_dir = proc_dir + "/tmp" + "/" + "vsproc.d" + "/" + vsp::sys::get_passwd_name();

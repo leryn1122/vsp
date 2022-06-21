@@ -34,7 +34,7 @@ int main(int argc, char *argv[])
 //==============================================================================
       )
       .parse(argc, argv);
-  vsp::Context context = vsp::Context::initial_from_cli_args(arg_parser);
+  vsp::Context context = vsp::Context::initial_from_cli_args(&arg_parser);
   vsp::comp::Compiler compiler = vsp::comp::Compiler(context);
   return 0;
 }

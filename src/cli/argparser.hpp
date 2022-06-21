@@ -2,6 +2,7 @@
 #ifndef _VSP_CLI_ARGPARSE_H_
 #define _VSP_CLI_ARGPARSE_H_
 
+#include <cstring>
 #include <functional>
 #include <iostream>
 #include <sstream>
@@ -16,9 +17,10 @@
  *  
  *  Create an argument parser instance in chain invocation of option registrations.
  *  
+ *  Options are registered with a long name and an alternaitive short name.
  *  Options are seperated into two types:
  *    - Normal option:
- *       
+ *      
  *    - Short circuit option
  *      Once met short circuit, the program would invoke callback, and be 
  *      exited immediately.
@@ -93,6 +95,15 @@ std::string to_string(const T &value)
   return oss.str();
 }
 
+template <typename T>
+T parse_value(const std::string &value)
+{
+  std::istringstream iss(value);
+  T result;
+  iss >> result;
+  return result;
+}
+
 };  /*--  namespace  --*/
 
 struct option
@@ -154,7 +165,7 @@ public:
 
   ArgParser() {}
   ArgParser(std::string executable) : executable(std::move(executable)) {}
-  ~ArgParser() {}
+  virtual ~ArgParser() {}
 
   ArgParser &set_intro(std::string intro)
   {
@@ -412,13 +423,38 @@ Where options may any of:
     return *this;
   }
 
-  bool has_option(std::string name)
+  template <typename T>
+  T get_option(const std::string name) const
   {
-    return std::any_of(options.cbegin(), options.cend(),
-        [&name](const option &option) { return option.long_name == name; });
+    auto pos = find_option(name);
+    return parse_value<T>(pos->value);
+  }
+
+  // alias exactly
+
+  bool has_option(const std::string name) const
+  {
+    return get_option<bool>(name);
   }
 
 private:
+
+  auto find_option(const std::string name) const
+  {
+    auto pos = find_option_short_name(name);
+    if (pos == options.cend())
+    {
+        pos = find_option_long_name(name);
+    }
+    if (pos == options.cend())
+    {
+        std::cerr << "Error: Option `" << name << "` not found." << std::endl;
+        std::exit(EXIT_FAILURE);
+    }
+    return pos;
+  }
+
+
   bool try_parse_argument(const std::string &line, argument &arg)
   {
     if ((line).substr(0,2) == "--")
