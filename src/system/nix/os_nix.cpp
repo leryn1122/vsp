@@ -14,6 +14,11 @@ std::string get_passwd_name()
   return pwd->pw_name;
 }
 
+std::string get_tempdir()
+{
+  return "/tmp";
+}
+
 };  /*--  namespace vsp::sys  --*/
 
 };  /*--  namespace vsp  --*/

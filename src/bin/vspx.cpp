@@ -3,10 +3,13 @@
 
 #define CMD "vspx"
 
+/**
+ *  Entrypoint of Vesperace Tool of Compression and Decompression.
+ */
 int main(int argc, char *argv[])
 {
   auto arg_parser = vsp::cli::ArgParser(CMD)
-      .set_intro("Vsp Tool of Compression and Decompression")
+      .set_intro("Vesperace Tool of Compression and Decompression")
       .add_help_option()
       .add_version_option();
   return 0;

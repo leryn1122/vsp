@@ -3,10 +3,13 @@
 
 #define CMD "vspstk"
 
+/**
+ *  Entrypoint of Vesperace Stack Trace Tool.
+ */
 int main(int argc, char *argv[])
 {
   auto arg_parser = vsp::cli::ArgParser(CMD)
-      .set_intro("Vsp Stack Trace Tool")
+      .set_intro("Vesperace Stack Trace Tool")
       .add_help_option()
       .add_version_option();
   return 0;

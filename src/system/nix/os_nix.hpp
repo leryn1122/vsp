@@ -11,7 +11,9 @@ namespace vsp
 namespace sys
 {
 
-string get_passwd_name();
+std::string get_passwd_name();
+
+std::string get_tempdir();
 
 class Nix
 {

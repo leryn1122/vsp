@@ -423,22 +423,6 @@ Where options may any of:
     return *this;
   }
 
-  template <typename T>
-  T get_option(const std::string name) const
-  {
-    auto pos = find_option(name);
-    return parse_value<T>(pos->value);
-  }
-
-  // alias exactly
-
-  bool has_option(const std::string name) const
-  {
-    return get_option<bool>(name);
-  }
-
-private:
-
   auto find_option(const std::string name) const
   {
     auto pos = find_option_short_name(name);
@@ -454,6 +438,21 @@ private:
     return pos;
   }
 
+  template <typename T>
+  T get_option(const std::string name) const
+  {
+    auto pos = find_option(name);
+    return parse_value<T>(pos->value);
+  }
+
+  // alias exactly
+
+  bool has_option(const std::string name) const
+  {
+    return get_option<bool>(name);
+  }
+
+private:
 
   bool try_parse_argument(const std::string &line, argument &arg)
   {

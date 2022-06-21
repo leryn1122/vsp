@@ -5,10 +5,13 @@
 
 #define CMD "vspc"
 
+/**
+ *  Entrypoint of Vesperace Language Compiler.
+ */
 int main(int argc, char *argv[])
 {
   auto arg_parser = vsp::cli::ArgParser(CMD)
-      .set_intro("Vsp Language Compiler")
+      .set_intro("Vesperace Language Compiler")
       .add_argument("source", "source code file")
       .add_help_option()
       .add_version_option()

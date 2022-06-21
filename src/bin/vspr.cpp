@@ -5,11 +5,13 @@
 
 #define CMD "vspr"
 
-int
-main(int argc, char *argv[])
+/**
+ *  Entrypoint of Vesperace Runtime Launcher.
+ */
+int main(int argc, char *argv[])
 {
   auto arg_parser = vsp::cli::ArgParser(CMD)
-      .set_intro("Vsp Runtime Launcher")
+      .set_intro("Vesperace Runtime Launcher")
       .add_help_option()
       .add_version_option()
       .add_option("-d", "--daemon", "Run the application in daemon mode.")

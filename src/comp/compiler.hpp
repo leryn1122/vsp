@@ -17,7 +17,7 @@ private:
 
 public:
   Compiler(vsp::Context context) : context(std::move(context)) {}
-  ~Compiler(){}
+  virtual ~Compiler(){}
 
 };  /*--  class Compiler  --*/
 

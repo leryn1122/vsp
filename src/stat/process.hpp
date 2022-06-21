@@ -17,6 +17,10 @@ namespace stat
 
 struct VMProcessSketch
 {
+  VMProcessSketch(uint pid, std::string pname)
+    : pid(std::move(pid))
+    , pname(std::move(pname))
+  {}
   uint         pid;
   std::string  pname;
 };  /*--  struct process  --*/
@@ -28,7 +32,8 @@ std::vector<VMProcessSketch> get_pids()
   std::vector<VMProcessSketch> pids;
 #ifdef __linux__
   std::string proc_dir;
-  proc_dir = proc_dir + "/tmp" + "/" + "vsproc.d" + "/" + vsp::sys::get_passwd_name();
+  // Path: /tmp/vsproc.d/<username>
+  proc_dir = proc_dir + sys::get_tempdir() + "/" + "vsproc.d" + "/" + sys::get_passwd_name();
   for (auto& dir_entry: std::filesystem::directory_iterator(proc_dir))
   {
     int pid = std::atoi(dir_entry.path().filename().c_str());
