@@ -1,6 +1,6 @@
 #pragma once
-#ifndef _VSP_LOG_LOG_H_
-#define _VSP_LOG_LOG_H_
+#ifndef _VSP_LOGGING_LOG_H_
+#define _VSP_LOGGING_LOG_H_
 
 #include "log_level.hpp"
 
@@ -27,4 +27,4 @@ public:
 
 };  /*--  namespace vsp  --*/
 
-#endif  /*--  _VSP_LOG_LOG_H_  --*/
+#endif  /*--  _VSP_LOGGING_LOG_H_  --*/

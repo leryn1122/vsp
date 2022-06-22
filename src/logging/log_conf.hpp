@@ -1,6 +1,6 @@
 #pragma once
-#ifndef _VSP_LOG_CONF_H_
-#define _VSP_LOG_CONF_H_
+#ifndef _VSP_LOGGING_LOG_CONF_H_
+#define _VSP_LOGGING_LOG_CONF_H_
 
 namespace vsp
 {
@@ -17,4 +17,4 @@ class LogConfiguration
 
 };  /*--  namespace vsp  --*/
 
-#endif  /*--  _VSP_LOG_CONF_H_  --*/
+#endif  /*--  _VSP_LOGGING_LOG_CONF_H_  --*/

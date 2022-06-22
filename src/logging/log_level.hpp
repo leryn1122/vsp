@@ -1,6 +1,6 @@
 #pragma once
-#ifndef _VSP_LOG_LOG_LEVEL_H_
-#define _VSP_LOG_LOG_LEVEL_H_
+#ifndef _VSP_LOGGING_LOG_LEVEL_H_
+#define _VSP_LOGGING_LOG_LEVEL_H_
 
 #define LOG_LEVEL_LIST        \
   LOG_LEVEL(Trace, trace)     \
@@ -46,4 +46,4 @@ typedef LogLevel::type LogLevelType;
 
 };  /*--  namespace vsp  --*/
 
-#endif  /*--  _VSP_LOG_LOG_LEVEL_H_  --*/
+#endif  /*--  _VSP_LOGGING_LOG_LEVEL_H_  --*/

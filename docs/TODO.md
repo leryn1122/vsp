@@ -5,3 +5,8 @@ Configuration
 Build
 
 [ ] Sparse CMake List
+
+String
+- Immutable
+- Unicode ?
+- 
