@@ -29,6 +29,13 @@ std::vector<VMProcessSketch> get_pids()
            + VM_PROC_DIR
            + std::filesystem::path::preferred_separator
            + sys::get_passwd_name();
+
+  std::filesystem::path proc_dir_path = proc_dir;  
+  if (!std::filesystem::exists(proc_dir_path))
+  {
+    return pids; 
+  }
+
   for (auto& dir_entry: std::filesystem::directory_iterator(proc_dir))
   {
     int pid = std::atoi(dir_entry.path().filename().c_str());

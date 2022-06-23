@@ -8,7 +8,6 @@
   LOG_LEVEL(Info, info)       \
   LOG_LEVEL(Warning, warning) \
   LOG_LEVEL(Error, error)
-#define LOG_LEVEL_LIST
 
 namespace vsp
 {
@@ -23,7 +22,7 @@ public:
 
 enum type {
   Off,
-#define LogLevel(name, text) name,
+#define LOG_LEVEL(name, text) name,
   LOG_LEVEL_LIST
 #undef LOG_LEVEL
 };

@@ -9,7 +9,7 @@ namespace log
 
 const char* LogLevel::_name[] = {
   "off",
-#define LOG_LEVEL(name, text) text,
+#define LOG_LEVEL(name, text) #text,
   LOG_LEVEL_LIST
 #undef LOG_LEVEL
 };
