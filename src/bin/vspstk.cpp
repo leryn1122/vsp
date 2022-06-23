@@ -8,7 +8,7 @@
  */
 int main(int argc, char *argv[])
 {
-  auto arg_parser = vsp::cli::ArgParser(CMD)
+  auto argparser = vsp::cli::ArgParser(CMD)
       .set_intro("Vesperace Stack Trace Tool")
       .add_help_option()
       .add_version_option();

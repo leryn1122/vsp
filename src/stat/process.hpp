@@ -1,13 +1,6 @@
 #pragma once
-#ifndef _VSP_SAMPLE_H_
-#define _VSP_SAMPLE_H_
-
-#include <filesystem>
-#include "fwd.hpp"
-
-#ifdef __linux__
-#include "os_nix.hpp"
-#endif
+#ifndef _VSP_STAT_PROCESS_H_
+#define _VSP_STAT_PROCESS_H_
 
 namespace vsp
 {
@@ -27,27 +20,10 @@ struct VMProcessSketch
 
 int get_pid();
 
-std::vector<VMProcessSketch> get_pids()
-{
-  std::vector<VMProcessSketch> pids;
-#ifdef __linux__
-  std::string proc_dir;
-  // Path: /tmp/vsproc.d/<username>
-  proc_dir = proc_dir + sys::get_tempdir() + "/" + "vsproc.d" + "/" + sys::get_passwd_name();
-  for (auto& dir_entry: std::filesystem::directory_iterator(proc_dir))
-  {
-    int pid = std::atoi(dir_entry.path().filename().c_str());
-    std::string pname = "vsp";
-    // std::cout << std::atoi(dir_entry.path().filename().c_str()) << '\n';
-    pids.emplace_back(pid, pname);
-  }
-#elif _WIN32
-#endif
-  return pids;
-}
+std::vector<VMProcessSketch> get_pids();
 
 };  /*--  namespace vsp::stat  --*/
 
 };  /*--  namespace vsp  --*/
 
-#endif  /*--  _VSP_SAMPLE_H_  --*/
+#endif  /*--  _VSP_STAT_PROCESS_H_  --*/

@@ -5,7 +5,7 @@
 #define LOG_LEVEL_LIST        \
   LOG_LEVEL(Trace, trace)     \
   LOG_LEVEL(Debug, debug)     \
-  LOG_LEVEL(Info, info)       \ 
+  LOG_LEVEL(Info, info)       \
   LOG_LEVEL(Warning, warning) \
   LOG_LEVEL(Error, error)
 #define LOG_LEVEL_LIST

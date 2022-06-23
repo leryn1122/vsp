@@ -1,5 +1,4 @@
 #include "argparser.hpp"
-#include "context.hpp"
 #include "fwd.hpp"
 #include "process.hpp"
 
@@ -24,9 +23,9 @@ namespace vsp
 namespace cli
 {
 
-void execute(cli::ArgParser* arg_parser)
+void execute(cli::ArgParser* argparser)
 {
-  bool quiet = arg_parser->has_option("--quiet");
+  bool quiet = argparser->has_option("--quiet");
   std::vector<vsp::stat::VMProcessSketch> processes = vsp::stat::get_pids();
   for (auto &process : processes)
   {
@@ -46,7 +45,7 @@ void execute(cli::ArgParser* arg_parser)
 
 int main(int argc, char *argv[])
 {
-  auto arg_parser = vsp::cli::ArgParser(CMD)
+  auto argparser = vsp::cli::ArgParser(CMD)
       .set_intro("Vesperace Process Tool")
       // .add_argument("PID", "process id")
       .add_help_option()
@@ -61,6 +60,6 @@ int main(int argc, char *argv[])
 //==============================================================================
       )
       .parse(argc, argv);
-  vsp::cli::execute(&arg_parser);
+  vsp::cli::execute(&argparser);
   return 0;
 }

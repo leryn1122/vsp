@@ -29,7 +29,7 @@
  *  
  *  
  *  ```cpp
- *  ArgParser arg_parser = vsp::cli::ArgParser(CMD)
+ *  ArgParser argparser = vsp::cli::ArgParser(CMD)
  *      .set_intro("Vsp Language Compiler")
  *      .add_help_option()
  *      .add_version_option()
@@ -450,6 +450,30 @@ Where options may any of:
   bool has_option(const std::string name) const
   {
     return get_option<bool>(name);
+  }
+
+  auto find_argument(const std::string name) const
+  {
+    auto pos = std::find_if(arguments.cbegin(), arguments.cend(),
+        [&name](const argument &argument) { return argument.name == name; });
+    if (pos == arguments.cend())
+    {
+      std::cerr << "Error: Argument `" << name << "` not found." << std::endl;
+      std::exit(EXIT_FAILURE);
+    }
+    return pos;
+  }
+  
+  template <typename T>
+  T get_argument(const std::string name) const
+  {
+    auto pos = find_argument(name);
+    return parse_value<T>(pos->value);
+  }
+
+  bool has_argument(const std::string name) const
+  {
+    return get_argument<bool>(name);
   }
 
 private:

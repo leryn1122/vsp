@@ -1,6 +1,5 @@
 #include "argparser.hpp"
 #include "compiler.hpp"
-#include "context.hpp"
 #include "fwd.hpp"
 
 #define CMD "vspc"
@@ -10,7 +9,7 @@
  */
 int main(int argc, char *argv[])
 {
-  auto arg_parser = vsp::cli::ArgParser(CMD)
+  auto argparser = vsp::cli::ArgParser(CMD)
       .set_intro("Vesperace Language Compiler")
       .add_argument("source", "source code file")
       .add_help_option()
@@ -37,7 +36,7 @@ int main(int argc, char *argv[])
 //==============================================================================
       )
       .parse(argc, argv);
-  vsp::Context context = vsp::Context::initial_from_cli_args(&arg_parser);
-  vsp::comp::Compiler compiler = vsp::comp::Compiler(context);
+  vsp::comp::Compiler compiler = vsp::comp::Compiler(argparser);
+  compiler.compile();
   return 0;
 }

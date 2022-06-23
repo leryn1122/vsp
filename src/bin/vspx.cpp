@@ -8,7 +8,7 @@
  */
 int main(int argc, char *argv[])
 {
-  auto arg_parser = vsp::cli::ArgParser(CMD)
+  auto argparser = vsp::cli::ArgParser(CMD)
       .set_intro("Vesperace Tool of Compression and Decompression")
       .add_help_option()
       .add_version_option();

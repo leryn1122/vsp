@@ -1,0 +1,11 @@
+public class String
+{
+
+private:
+  unint  size;
+  char[] values;
+
+public:
+
+
+}

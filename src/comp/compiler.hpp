@@ -2,7 +2,7 @@
 #ifndef _VSP_COMP_COMPILER_H_
 #define _VSP_COMP_COMPILER_H_
 
-#include "context.hpp"
+#include <filesystem>
 
 namespace vsp
 {
@@ -13,11 +13,18 @@ namespace comp
 class Compiler
 {
 private:
-  vsp::Context context;
+  vsp::cli::ArgParser argparser;
 
 public:
-  Compiler(vsp::Context context) : context(std::move(context)) {}
+
+  Compiler(vsp::cli::ArgParser argparser): argparser(std::move(argparser)){}
   virtual ~Compiler(){}
+
+  void compile()
+  {
+    std::cout << argparser.get_argument<std::string>("source");
+    std::cout << std::filesystem::path::preferred_separator;
+  }
 
 };  /*--  class Compiler  --*/
 
