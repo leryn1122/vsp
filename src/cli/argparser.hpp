@@ -445,13 +445,6 @@ Where options may any of:
     return parse_value<T>(pos->value);
   }
 
-  // alias exactly
-
-  bool has_option(const std::string name) const
-  {
-    return get_option<bool>(name);
-  }
-
   auto find_argument(const std::string name) const
   {
     auto pos = std::find_if(arguments.cbegin(), arguments.cend(),
@@ -471,10 +464,13 @@ Where options may any of:
     return parse_value<T>(pos->value);
   }
 
-  bool has_argument(const std::string name) const
-  {
-    return get_argument<bool>(name);
-  }
+  // alias exactly
+
+  bool has_option(const std::string name) const { return get_option<bool>(name); }
+  std::string get_option_str(const std::string name) const { return get_option<std::string>(name); }
+
+  bool has_argument(const std::string name) const { return get_argument<bool>(name); }
+  std::string get_argument_str(const std::string name) const { return get_argument<std::string>(name); }
 
 private:
 

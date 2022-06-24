@@ -83,6 +83,7 @@ FILE(GLOB_RECURSE vsp_SRC_FILES
 FILE(GLOB_RECURSE vsp_BIN_FILES
   "${vsp_SRC_DIR}/bin/*.cpp"
 )
+# LIST(SORT vsp_SRC_FILES ORDER DESCENDING)
 LIST(REMOVE_ITEM vsp_SRC_FILES ${vsp_BIN_FILES})
 MESSAGE_LIST(${vsp_SRC_FILES})
 
@@ -106,7 +107,7 @@ MESSAGE_LIST(${vsp_HEAD_DIR})
 
 MESSAGE(">>> Executables (src/bin/*.cpp):")
 LIST(TRANSFORM vsp_BIN_FILES REPLACE "${vsp_SRC_DIR}/bin/(.*).cpp" "\\1" OUTPUT_VARIABLE vsp_EXECUTABLES)
-# set(vsp_EXECUTABLES "vspc" "vsps") # This is a test code.
+set(vsp_EXECUTABLES "vspc") # This is a test code.
 MESSAGE_LIST(${vsp_EXECUTABLES})
 # TODO Enabled to build the multi executables
 FOREACH(_executables ${vsp_EXECUTABLES})

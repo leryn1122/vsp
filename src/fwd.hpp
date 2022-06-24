@@ -6,6 +6,7 @@
 #include <cstdint>
 #include <cstring>
 #include <cstdlib>
+#include <filesystem>
 #include <iostream>
 #include <stdexcept>
 #include <string>
@@ -14,7 +15,11 @@
 
 #include "version.hpp"
 
+namespace fs = std::filesystem;
+
 namespace vsp {
+
+using namespace fs;
 
 using ::std::nullptr_t;
 using ::std::max_align_t;
