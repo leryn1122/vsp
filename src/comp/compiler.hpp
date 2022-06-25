@@ -18,7 +18,7 @@ namespace comp
 enum CompileResult
 {
 #define _COMPILE_RESULT_M_(name, code) name,
-    _COMPILE_RESULT_LIST_M_
+  _COMPILE_RESULT_LIST_M_
 #undef _COMPILE_RESULT_M_
 };
 

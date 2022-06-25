@@ -106,9 +106,9 @@ T parse_value(const std::string &value)
 
 };  /*--  namespace  --*/
 
-struct option
+struct Option
 {
-  option(std::string short_name, std::string long_name, std::string description, std::string type, std::string value)
+  Option(std::string short_name, std::string long_name, std::string description, std::string type, std::string value)
     : short_name(std::move(short_name))
     , long_name(std::move(long_name))
     , description(std::move(description))
@@ -123,9 +123,9 @@ struct option
   std::string value;
 };  /*--  struct option  --*/
 
-struct short_circuit_option
+struct ShortCircuitOption
 {
-  short_circuit_option(std::string short_name, std::string long_name, std::string description, std::function<void(void)> callback)
+  ShortCircuitOption(std::string short_name, std::string long_name, std::string description, std::function<void(void)> callback)
     : short_name(std::move(short_name))
     , long_name(std::move(long_name))
     , description(std::move(description))
@@ -138,9 +138,9 @@ struct short_circuit_option
   std::function<void(void)> callback;
 };  /*--  struct short_circuit_option  --*/
 
-struct argument
+struct Argument
 {
-  argument(std::string name, std::string description)
+  Argument(std::string name, std::string description)
     : name(std::move(name))
     , description(std::move(description))
   {}
@@ -154,34 +154,34 @@ struct argument
 class ArgParser
 {
 private:
-  std::string executable;
-  std::string intro;
-  std::vector<argument> arguments;
-  std::vector<option> options;
-  std::vector<short_circuit_option> short_circuit_options;
-  std::string example;
+  std::string _executable;
+  std::string _intro;
+  std::vector<Argument> _arguments;
+  std::vector<Option>   _options;
+  std::vector<ShortCircuitOption> _short_circuit_options;
+  std::string _example;
 
 public:
 
   ArgParser() {}
-  ArgParser(std::string executable) : executable(std::move(executable)) {}
+  ArgParser(std::string executable) : _executable(std::move(executable)) {}
   virtual ~ArgParser() {}
 
   ArgParser &set_intro(std::string intro)
   {
-    this->intro = std::move(intro);
+    this->_intro = std::move(intro);
     return *this;
   }
 
   ArgParser &set_example(std::string example)
   {
-    this->example = std::move(example);
+    this->_example = std::move(example);
     return *this;
   }
 
   ArgParser &add_argument(std::string name, std::string description)
   {
-    this->arguments.emplace_back(
+    this->_arguments.emplace_back(
       std::move(name), std::move(description));
     return *this;
   }
@@ -200,7 +200,7 @@ public:
       validate_option_short_name(short_name);
     }
     validate_option_long_name(long_name);
-    options.emplace_back(
+    this->_options.emplace_back(
       std::move(short_name), std::move(long_name), std::move(description), type_string<T>(), to_string(default_value));
     return *this;
   }
@@ -212,7 +212,7 @@ public:
       validate_option_short_name(short_name);
     }
     validate_option_long_name(long_name);
-    options.emplace_back(
+    this->_options.emplace_back(
       std::move(short_name), std::move(long_name), std::move(description), "bool", "0");
     return *this;
   }
@@ -225,7 +225,7 @@ public:
       validate_option_short_name(short_name);
     }
     validate_option_long_name(long_name);
-    short_circuit_options.emplace_back(
+    this->_short_circuit_options.emplace_back(
       std::move(short_name), std::move(long_name), std::move(help), std::move(callback));
     return *this;
   }
@@ -242,16 +242,16 @@ public:
   {
     return add_short_circuit_option("-v", "--version", "Print version info.",
       [this]() {
-        std::cout << executable << " version " << vsp_VERSION << std::endl;
+        std::cout << _executable << " version " << vsp_VERSION << std::endl;
       });
   }
 
   void print_help()
   {
     // Print usage:
-    std::cout << intro << "\n";
-    std::cout << "\nUsage: " << executable << "\n\n";
-    for (const auto &arg : arguments)
+    std::cout << this->_intro << "\n";
+    std::cout << "\nUsage: " << this->_executable << "\n\n";
+    for (const auto &arg : this->_arguments)
     {
       std::cout << "    <" << arg.name << ">    " << arg.description;
     }
@@ -271,7 +271,7 @@ Where options may any of:
 
     // Max options name used for format.
     std::size_t max_name_length = 0;
-    for (const auto &opt : options)
+    for (const auto &opt : this->_options)
     {
       std::size_t length = opt.long_name.length();
       if (!opt.short_name.empty())
@@ -282,7 +282,7 @@ Where options may any of:
     }
     max_name_length = std::max(max_name_length, std::size_t(25));
 
-    for (const auto &opt : options)
+    for (const auto &opt : this->_options)
     {
       std::cout << "    ";
       std::size_t printed_length = 4;
@@ -301,10 +301,10 @@ Where options may any of:
     }
 
     // Print Example
-    if (this->example.size() > 0)
+    if (this->_example.size() > 0)
     {
       std::cout << "\nFor example:\n";
-      std::cout << example;
+      std::cout << this->_example;
       std::cout << std::endl;
     }
 
@@ -316,7 +316,7 @@ Where options may any of:
   ArgParser parse(int argc, char *argv[])
   {
     // Fast return if no arguments accepted. 
-    if (argc == 1 && arguments.size() > 0)
+    if (argc == 1 && this->_arguments.size() > 0)
     {
       print_help();
       std::exit(EXIT_SUCCESS);
@@ -329,7 +329,7 @@ Where options may any of:
     }
 
     // Fast return if met short circuit option.
-    for (auto &&short_circuit_option : this->short_circuit_options)
+    for (auto &&short_circuit_option : this->_short_circuit_options)
     {
       auto pos = std::find_if(tokens.cbegin(), tokens.cend(),
         [&short_circuit_option](const std::string &token) {
@@ -344,7 +344,7 @@ Where options may any of:
     }
 
     // Iterate on this->options.
-    for (auto &&option : this->options)
+    for (auto &&option : this->_options)
     {
       auto pos = std::find_if(tokens.cbegin(), tokens.cend(),
         [&option](const std::string &token) {
@@ -390,13 +390,13 @@ Where options may any of:
 
     // Parse arguments.
     // Check whether the rest tokens equal to needed in amount.
-    if (tokens.size() != arguments.size())
+    if (tokens.size() != this->_arguments.size())
     {
       std::cerr << "Error: Does not have enough arguments." << std::endl;
       std::exit(EXIT_FAILURE);
     }
     // Iteratively consume the rest arguments.
-    for (auto &arg : arguments)
+    for (auto &arg : this->_arguments)
     {
       for (auto pos = tokens.begin(); pos != tokens.end();)
       {
@@ -426,11 +426,11 @@ Where options may any of:
   auto find_option(const std::string name) const
   {
     auto pos = find_option_short_name(name);
-    if (pos == options.cend())
+    if (pos == this->_options.cend())
     {
         pos = find_option_long_name(name);
     }
-    if (pos == options.cend())
+    if (pos == this->_options.cend())
     {
         std::cerr << "Error: Option `" << name << "` not found." << std::endl;
         std::exit(EXIT_FAILURE);
@@ -447,9 +447,9 @@ Where options may any of:
 
   auto find_argument(const std::string name) const
   {
-    auto pos = std::find_if(arguments.cbegin(), arguments.cend(),
-        [&name](const argument &argument) { return argument.name == name; });
-    if (pos == arguments.cend())
+    auto pos = std::find_if(this->_arguments.cbegin(), this->_arguments.cend(),
+        [&name](const Argument &argument) { return argument.name == name; });
+    if (pos == this->_arguments.cend())
     {
       std::cerr << "Error: Argument `" << name << "` not found." << std::endl;
       std::exit(EXIT_FAILURE);
@@ -474,7 +474,7 @@ Where options may any of:
 
 private:
 
-  bool try_parse_argument(const std::string &line, argument &arg)
+  bool try_parse_argument(const std::string &line, Argument &arg)
   {
     if ((line).substr(0,2) == "--")
     {
@@ -484,34 +484,34 @@ private:
     return true;
   }
 
-  using short_circuit_option_iterator = std::vector<short_circuit_option>::const_iterator;
-  using option_iterator = std::vector<option>::const_iterator;
-  using argument_iterator = std::vector<argument>::const_iterator;
+  using ShortCircuitOptionIterator = std::vector<ShortCircuitOption>::const_iterator;
+  using OptionIterator = std::vector<Option>::const_iterator;
+  using ArgumentIterator = std::vector<Argument>::const_iterator;
 
   // Find option.
 
-  auto find_short_circuit_option_short_name(const std::string &name) const -> short_circuit_option_iterator
+  auto find_short_circuit_option_short_name(const std::string &name) const -> ShortCircuitOptionIterator
   {
-    return std::find_if(short_circuit_options.cbegin(), short_circuit_options.cend(),
-        [&name](const short_circuit_option &option) { return option.short_name == name; });
+    return std::find_if(this->_short_circuit_options.cbegin(), this->_short_circuit_options.cend(),
+        [&name](const ShortCircuitOption &option) { return option.short_name == name; });
   }
 
-  auto find_short_circuit_option_long_name(const std::string &name) const -> short_circuit_option_iterator
+  auto find_short_circuit_option_long_name(const std::string &name) const -> ShortCircuitOptionIterator
   {
-    return std::find_if(short_circuit_options.cbegin(), short_circuit_options.cend(),
-        [&name](const short_circuit_option &option) { return option.long_name == name; });
+    return std::find_if(this->_short_circuit_options.cbegin(), this->_short_circuit_options.cend(),
+        [&name](const ShortCircuitOption &option) { return option.long_name == name; });
   }
 
-  auto find_option_short_name(const std::string &name) const -> option_iterator
+  auto find_option_short_name(const std::string &name) const -> OptionIterator
   {
-    return std::find_if(options.cbegin(), options.cend(),
-        [&name](const option &option) { return option.short_name == name; });
+    return std::find_if(this->_options.cbegin(), this->_options.cend(),
+        [&name](const Option &option) { return option.short_name == name; });
   }
 
-  auto find_option_long_name(const std::string &name) const -> option_iterator
+  auto find_option_long_name(const std::string &name) const -> OptionIterator
   {
-    return std::find_if(options.cbegin(), options.cend(),
-        [&name](const option &option) { return option.long_name == name; });
+    return std::find_if(this->_options.cbegin(), this->_options.cend(),
+        [&name](const Option &option) { return option.long_name == name; });
   }
 
   // Check option.
@@ -523,7 +523,7 @@ private:
       std::cerr << "Error: Short option must start with `-` followed by one character:" << std::endl;
       std::exit(EXIT_FAILURE);
     }
-    if (find_option_long_name(short_name) != options.cend())
+    if (find_option_long_name(short_name) != this->_options.cend())
     {
       std::cerr << "Error: Short option " << short_name << " has already existed." << std::endl;
       std::exit(EXIT_FAILURE);
@@ -542,8 +542,8 @@ private:
       std::cerr << "Error: Long options must start with `--`." << std::endl;
       std::exit(EXIT_FAILURE);
     }
-    if (find_option_long_name(long_name) != options.cend()
-        || find_short_circuit_option_long_name(long_name) != short_circuit_options.cend())
+    if (find_option_long_name(long_name) != this->_options.cend()
+        || find_short_circuit_option_long_name(long_name) != this->_short_circuit_options.cend())
     {
       std::cerr << "Error: Long option " << long_name << " has already existed." << std::endl;
       std::exit(EXIT_FAILURE);

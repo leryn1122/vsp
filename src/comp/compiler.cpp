@@ -25,7 +25,7 @@ namespace comp
       std::cerr << "Error: Cannot open source file `" << source << "`" << std::endl;
       std::exit(EXIT_FAILURE);
     }
-    
+
     std::string buff;
     while (ifs >> buff)
     {
