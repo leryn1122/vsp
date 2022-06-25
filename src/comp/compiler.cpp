@@ -12,12 +12,12 @@ namespace vsp
 namespace comp
 {
 
-/*--  begin of class Compiler  --*/
-//class Compiler
+/*--  begin of class vps::comp::Compiler  --*/
+//class Compiler {
 
   void Compiler::compile(vsp::cli::ArgParser argparser)
   {
-    std::string source = argparser.get_argument_str("source");
+    string source = argparser.get_argument_str("source");
 
     std::ifstream ifs(source, std::ios::in);
     if (!ifs.is_open())
@@ -33,7 +33,7 @@ namespace comp
     }
   }
 
-/*--  class Compiler  --*/
+/*--  class vps::comp::Compiler  --*/
 
 };  /*--  namespace vsp::comp  --*/
 

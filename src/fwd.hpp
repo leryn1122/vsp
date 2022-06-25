@@ -15,8 +15,9 @@
 
 #include "version.hpp"
 
-namespace fs = std::filesystem;
+// Global aliases
 typedef std::string string;
+namespace fs = std::filesystem;
 
 namespace vsp {
 

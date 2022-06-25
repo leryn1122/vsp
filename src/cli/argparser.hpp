@@ -10,6 +10,7 @@
 #include <typeinfo>
 #include <vector>
 
+#include "fwd.hpp"
 #include "version.hpp"
 
 /**
@@ -52,43 +53,43 @@ namespace
 {
 
 template <typename T>
-inline std::string type_string()
+inline string type_string()
 {
   return "null";
 }
 
 template <>
-inline std::string type_string<bool>()
+inline string type_string<bool>()
 {
   return "bool";
 }
 
 template <>
-inline std::string type_string<int>()
+inline string type_string<int>()
 {
   return "int";
 }
 
 template <>
-inline std::string type_string<int64_t>()
+inline string type_string<int64_t>()
 {
   return "int64_t";
 }
 
 template <>
-inline std::string type_string<double>()
+inline string type_string<double>()
 {
   return "double";
 }
 
 template <>
-inline std::string type_string<std::string>()
+inline string type_string<string>()
 {
   return "string";
 }
 
 template <typename T>
-std::string to_string(const T &value)
+string to_string(const T &value)
 {
   std::ostringstream oss;
   oss << value;
@@ -96,7 +97,7 @@ std::string to_string(const T &value)
 }
 
 template <typename T>
-T parse_value(const std::string &value)
+T parse_value(const string &value)
 {
   std::istringstream iss(value);
   T result;
@@ -108,7 +109,7 @@ T parse_value(const std::string &value)
 
 struct Option
 {
-  Option(std::string short_name, std::string long_name, std::string description, std::string type, std::string value)
+  Option(string short_name, string long_name, string description, string type, string value)
     : short_name(std::move(short_name))
     , long_name(std::move(long_name))
     , description(std::move(description))
@@ -116,70 +117,70 @@ struct Option
     , value(std::move(value))
   {}
 
-  std::string short_name;
-  std::string long_name;
-  std::string description;
-  std::string type;
-  std::string value;
+  string short_name;
+  string long_name;
+  string description;
+  string type;
+  string value;
 };  /*--  struct option  --*/
 
 struct ShortCircuitOption
 {
-  ShortCircuitOption(std::string short_name, std::string long_name, std::string description, std::function<void(void)> callback)
+  ShortCircuitOption(string short_name, string long_name, string description, std::function<void(void)> callback)
     : short_name(std::move(short_name))
     , long_name(std::move(long_name))
     , description(std::move(description))
     , callback(std::move(callback))
   {}
 
-  std::string short_name;
-  std::string long_name;
-  std::string description;
+  string short_name;
+  string long_name;
+  string description;
   std::function<void(void)> callback;
 };  /*--  struct short_circuit_option  --*/
 
 struct Argument
 {
-  Argument(std::string name, std::string description)
+  Argument(string name, string description)
     : name(std::move(name))
     , description(std::move(description))
   {}
 
-  std::string name;
-  std::string description;
-  std::string type;
-  std::string value;
+  string name;
+  string description;
+  string type;
+  string value;
 };  /*--  struct argument  --*/
 
 class ArgParser
 {
 private:
-  std::string _executable;
-  std::string _intro;
+  string _executable;
+  string _intro;
   std::vector<Argument> _arguments;
   std::vector<Option>   _options;
   std::vector<ShortCircuitOption> _short_circuit_options;
-  std::string _example;
+  string _example;
 
 public:
 
   ArgParser() {}
-  ArgParser(std::string executable) : _executable(std::move(executable)) {}
+  ArgParser(string executable) : _executable(std::move(executable)) {}
   virtual ~ArgParser() {}
 
-  ArgParser &set_intro(std::string intro)
+  ArgParser &set_intro(string intro)
   {
     this->_intro = std::move(intro);
     return *this;
   }
 
-  ArgParser &set_example(std::string example)
+  ArgParser &set_example(string example)
   {
     this->_example = std::move(example);
     return *this;
   }
 
-  ArgParser &add_argument(std::string name, std::string description)
+  ArgParser &add_argument(string name, string description)
   {
     this->_arguments.emplace_back(
       std::move(name), std::move(description));
@@ -187,8 +188,8 @@ public:
   }
   
   template<typename T>
-  ArgParser &add_option(std::string short_name, std::string long_name,
-                        std::string description, T &&default_value)
+  ArgParser &add_option(string short_name, string long_name,
+                        string description, T &&default_value)
   {
     if (type_string<T>() == "null")
     {
@@ -205,7 +206,7 @@ public:
     return *this;
   }
 
-  ArgParser &add_option(std::string short_name, std::string long_name, std::string description)
+  ArgParser &add_option(string short_name, string long_name, string description)
   {
     if (short_name != "")
     {
@@ -217,8 +218,8 @@ public:
     return *this;
   }
 
-  ArgParser &add_short_circuit_option(std::string short_name, std::string long_name,
-                                      std::string help, std::function<void(void)> callback)
+  ArgParser &add_short_circuit_option(string short_name, string long_name,
+                                      string help, std::function<void(void)> callback)
   {
     if (short_name != "")
     {
@@ -296,7 +297,7 @@ Where options may any of:
       }
       std::cout << opt.long_name;
       printed_length += opt.long_name.length();
-      std::cout << std::string(max_name_length - printed_length, ' ');
+      std::cout << string(max_name_length - printed_length, ' ');
       std::cout << opt.description << '\n';
     }
 
@@ -322,7 +323,7 @@ Where options may any of:
       std::exit(EXIT_SUCCESS);
     }
 
-    std::vector<std::string> tokens;
+    std::vector<string> tokens;
     for (int i = 1; i < argc; i++)
     {
       tokens.emplace_back(argv[i]);
@@ -332,7 +333,7 @@ Where options may any of:
     for (auto &&short_circuit_option : this->_short_circuit_options)
     {
       auto pos = std::find_if(tokens.cbegin(), tokens.cend(),
-        [&short_circuit_option](const std::string &token) {
+        [&short_circuit_option](const string &token) {
           return token == short_circuit_option.short_name
               || token == short_circuit_option.long_name;
         });
@@ -347,7 +348,7 @@ Where options may any of:
     for (auto &&option : this->_options)
     {
       auto pos = std::find_if(tokens.cbegin(), tokens.cend(),
-        [&option](const std::string &token) {
+        [&option](const string &token) {
           return token == option.short_name || token == option.long_name;
         }
       );
@@ -423,7 +424,7 @@ Where options may any of:
     return *this;
   }
 
-  auto find_option(const std::string name) const
+  auto find_option(const string name) const
   {
     auto pos = find_option_short_name(name);
     if (pos == this->_options.cend())
@@ -439,13 +440,13 @@ Where options may any of:
   }
 
   template <typename T>
-  T get_option(const std::string name) const
+  T get_option(const string name) const
   {
     auto pos = find_option(name);
     return parse_value<T>(pos->value);
   }
 
-  auto find_argument(const std::string name) const
+  auto find_argument(const string name) const
   {
     auto pos = std::find_if(this->_arguments.cbegin(), this->_arguments.cend(),
         [&name](const Argument &argument) { return argument.name == name; });
@@ -458,7 +459,7 @@ Where options may any of:
   }
   
   template <typename T>
-  T get_argument(const std::string name) const
+  T get_argument(const string name) const
   {
     auto pos = find_argument(name);
     return parse_value<T>(pos->value);
@@ -466,15 +467,15 @@ Where options may any of:
 
   // alias exactly
 
-  bool has_option(const std::string name) const { return get_option<bool>(name); }
-  std::string get_option_str(const std::string name) const { return get_option<std::string>(name); }
+  bool has_option(const string name) const { return get_option<bool>(name); }
+  string get_option_str(const string name) const { return get_option<string>(name); }
 
-  bool has_argument(const std::string name) const { return get_argument<bool>(name); }
-  std::string get_argument_str(const std::string name) const { return get_argument<std::string>(name); }
+  bool has_argument(const string name) const { return get_argument<bool>(name); }
+  string get_argument_str(const string name) const { return get_argument<string>(name); }
 
 private:
 
-  bool try_parse_argument(const std::string &line, Argument &arg)
+  bool try_parse_argument(const string &line, Argument &arg)
   {
     if ((line).substr(0,2) == "--")
     {
@@ -490,25 +491,25 @@ private:
 
   // Find option.
 
-  auto find_short_circuit_option_short_name(const std::string &name) const -> ShortCircuitOptionIterator
+  auto find_short_circuit_option_short_name(const string &name) const -> ShortCircuitOptionIterator
   {
     return std::find_if(this->_short_circuit_options.cbegin(), this->_short_circuit_options.cend(),
         [&name](const ShortCircuitOption &option) { return option.short_name == name; });
   }
 
-  auto find_short_circuit_option_long_name(const std::string &name) const -> ShortCircuitOptionIterator
+  auto find_short_circuit_option_long_name(const string &name) const -> ShortCircuitOptionIterator
   {
     return std::find_if(this->_short_circuit_options.cbegin(), this->_short_circuit_options.cend(),
         [&name](const ShortCircuitOption &option) { return option.long_name == name; });
   }
 
-  auto find_option_short_name(const std::string &name) const -> OptionIterator
+  auto find_option_short_name(const string &name) const -> OptionIterator
   {
     return std::find_if(this->_options.cbegin(), this->_options.cend(),
         [&name](const Option &option) { return option.short_name == name; });
   }
 
-  auto find_option_long_name(const std::string &name) const -> OptionIterator
+  auto find_option_long_name(const string &name) const -> OptionIterator
   {
     return std::find_if(this->_options.cbegin(), this->_options.cend(),
         [&name](const Option &option) { return option.long_name == name; });
@@ -516,7 +517,7 @@ private:
 
   // Check option.
 
-  void validate_option_short_name(const std::string &short_name)
+  void validate_option_short_name(const string &short_name)
   {
     if (short_name.size() != 2 || short_name.front() != '-')
     {
@@ -530,7 +531,7 @@ private:
     }
   }
 
-  void validate_option_long_name(const std::string &long_name)
+  void validate_option_long_name(const string &long_name)
   {
     if (long_name.size() < 3)
     {
