@@ -16,6 +16,7 @@
 #include "version.hpp"
 
 namespace fs = std::filesystem;
+typedef std::string string;
 
 namespace vsp {
 

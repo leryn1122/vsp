@@ -2,7 +2,7 @@
 #ifndef _VSP_COMP_COMPILER_H_
 #define _VSP_COMP_COMPILER_H_
 
-#include <filesystem>
+#include "fwd.hpp"
 
 namespace vsp
 {
@@ -20,11 +20,7 @@ public:
   Compiler(vsp::cli::ArgParser argparser): argparser(std::move(argparser)){}
   virtual ~Compiler(){}
 
-  void compile()
-  {
-    std::cout << argparser.get_argument<std::string>("source");
-    std::cout << std::filesystem::path::preferred_separator;
-  }
+  void compile(void);
 
 };  /*--  class Compiler  --*/
 
