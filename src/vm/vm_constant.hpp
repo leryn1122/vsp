@@ -5,8 +5,9 @@
 namespace vsp
 {
 
+#if __linux__
 #define VM_PROC_DIR "vsproc.d"
-
+#endif
 
 };  /*--  namespace vsp  --*/
 

@@ -6,6 +6,9 @@
 
 /**
  *  Entrypoint of Vesperace Language Compiler.
+ *  
+ *  
+ *  
  */
 int main(int argc, char *argv[])
 {
@@ -36,7 +39,7 @@ int main(int argc, char *argv[])
 //==============================================================================
       )
       .parse(argc, argv);
-  // vsp::comp::Compiler compiler(argparser);
-  // compiler.compile();
+  vsp::comp::Compiler compiler(argparser);
+  compiler.compile(argparser);
   return 0;
 }

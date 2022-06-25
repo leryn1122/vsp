@@ -1,7 +1,9 @@
 #include <stdio.h>
 #include <cstdlib>
+
 #include "argparser.hpp"
 #include "fwd.hpp"
+#include "vm.hpp"
 
 #define CMD "vspr"
 
@@ -26,5 +28,6 @@ int main(int argc, char *argv[])
 )" """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 //==============================================================================
       );
+  vsp::vm::VirtualMachine vm = vsp::vm::VirtualMachine::create_vm();
   return 0;
 }

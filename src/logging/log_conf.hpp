@@ -1,6 +1,8 @@
 #pragma once
-#ifndef _VSP_LOGGING_LOG_CONF_H_
-#define _VSP_LOGGING_LOG_CONF_H_
+#ifndef _VSP_LOG_CONF_H_
+#define _VSP_LOG_CONF_H_
+
+#include "log_appender.hpp"
 
 namespace vsp
 {
@@ -8,13 +10,26 @@ namespace vsp
 namespace log
 {
 
+/**
+ *  Log configuration: Singleton class.
+ *  
+ */
 class LogConfiguration
 {
 
-};  /*--  class LogConfiguration  --*/
+private:
+
+  static LogAppender** _appenders;
+
+public:
+
+  LogConfiguration(){}
+  virtual ~LogConfiguration(){}
+
+};  /*--  class vsp::log::LogConfiguration  --*/
 
 };  /*--  namespace vsp::log  --*/
 
 };  /*--  namespace vsp  --*/
 
-#endif  /*--  _VSP_LOGGING_LOG_CONF_H_  --*/
+#endif  /*--  _VSP_LOG_CONF_H_  --*/

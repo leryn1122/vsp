@@ -3,6 +3,7 @@
 #include <string>
 
 #include "argparser.hpp"
+#include "compiler.hpp"
 #include "fwd.hpp"
 
 namespace vsp
@@ -11,17 +12,10 @@ namespace vsp
 namespace comp
 {
 
-class Compiler
-{
-private:
-  vsp::cli::ArgParser argparser;
+/*--  begin of class Compiler  --*/
+//class Compiler
 
-public:
-
-  Compiler(vsp::cli::ArgParser argparser): argparser(std::move(argparser)){}
-  virtual ~Compiler(){}
-
-  void compile()
+  void Compiler::compile(vsp::cli::ArgParser argparser)
   {
     std::string source = argparser.get_argument_str("source");
 
@@ -33,13 +27,13 @@ public:
     }
     
     std::string buff;
-    if (ifs >> buff)
+    while (ifs >> buff)
     {
       std::cout << buff << std::endl;
     }
   }
 
-};  /*--  class Compiler  --*/
+/*--  class Compiler  --*/
 
 };  /*--  namespace vsp::comp  --*/
 
