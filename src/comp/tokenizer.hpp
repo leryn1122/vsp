@@ -4,6 +4,10 @@
 
 #include "fwd.hpp"
 
+/**
+ *  - Use precompile macro to generate the enumeration class of token.
+ *  
+ */
 namespace vsp
 {
 
@@ -45,19 +49,64 @@ namespace comp
   _TOKEN_M_(WHERE    , where    ) \
   _TOKEN_M_(WHILE    , while    )
 
+#define _PUNCTUATION_LIST_M_           \
+  _TOKEN_M_(DOT           , "."      ) \
+  _TOKEN_M_(COMMA         , ","      ) \
+  _TOKEN_M_(SEMI_COLON    , ";"      ) \
+  _TOKEN_M_(COLON         , ":"      ) \
+  _TOKEN_M_(PLUS          , "+"      ) \
+  _TOKEN_M_(MINUS         , "-"      ) \
+  _TOKEN_M_(ASTERISK      , "*"      ) \
+  _TOKEN_M_(SLASH         , "/"      ) \
+  _TOKEN_M_(PERCENTAGE    , "%"      ) \
+  _TOKEN_M_(L_PARENTHESIS , "("      ) \
+  _TOKEN_M_(R_PARENTHESIS , ")"      ) \
+  _TOKEN_M_(L_BRACKET     , "["      ) \
+  _TOKEN_M_(R_BRACKET     , "]"      ) \
+  _TOKEN_M_(L_BRACE       , "{"      ) \
+  _TOKEN_M_(R_BRACE       , "}"      ) \
+  _TOKEN_M_(LESS          , "<"      ) \
+  _TOKEN_M_(GREATER       , ">"      ) \
+  _TOKEN_M_(LESS_EQUAL    , "<="     ) \
+  _TOKEN_M_(GREATER_EQUAL , ">="     ) \
+  _TOKEN_M_(EQUAL         , "=="     ) \
+  _TOKEN_M_(NOT_EQUAL     , "!="     ) \
+  _TOKEN_M_(ASSIGMENT     , "="      ) \
+  _TOKEN_M_(NOT           , "!"      ) \
+  _TOKEN_M_(AND           , "&&"     ) \
+  _TOKEN_M_(OR            , "||"     ) \
+  _TOKEN_M_(XOR           , "^"      ) \
+  _TOKEN_M_(QUESTION      , "?"      ) \
+  _TOKEN_M_(S_QUOTE       , "'"      ) \
+  _TOKEN_M_(D_QUOTE       , "\""     ) \
+  _TOKEN_M_(T_QUOTE       , "\"\"\"" ) \
+  _TOKEN_M_(ARROW         , "->"     ) \
+  _TOKEN_M_(D_ARROW       , "=>"     ) \
+  _TOKEN_M_(D_COLON       , "::"     ) \
+
 enum Token
 {
   EOF,
   ERROR,
-#define _TOKEN_M_(name, text) (name,)
+  IDENTIFIER,
+  NUMERIC,
+  LITERAL,
+#define _TOKEN_M_(name, literal) (name,)
   _RESERVE_WORD_LIST_M_
+#undef _TOKEN_M_
+#define _TOKEN_M_(name, literal) (name,)
+  _PUNCTUATION_LIST_M_
 #undef _TOKEN_M_
 };  /*--  enum Token::token  --*/
 
 class Tokenizer
 {
 
-};  /*--  class Tokenizer  --*/
+public:
+
+  void parse_token(string lexeme);
+
+};  /*--  class vsp::comp::Tokenizer  --*/
 
 };  /*--  namespace vsp::comp  --*/
 

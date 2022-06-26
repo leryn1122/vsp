@@ -1,4 +1,5 @@
 #include "fwd.hpp"
+#include "lexer.hpp"
 
 namespace vsp
 {
@@ -6,11 +7,12 @@ namespace vsp
 namespace comp
 {
 
-/*--  begin of class vps::comp::Tokenizer  --*/
-//class Tokenizer {
+/*--  begin of class vsp::comp::Lexer  --*/
+//class Lexer
 
 
-/*--  class vps::comp::Tokenizer  --*/
+
+/*--  class vsp::comp::Lexer  --*/
 
 };  /*--  namespace vsp::comp  --*/
 

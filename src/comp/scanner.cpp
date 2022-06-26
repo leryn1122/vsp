@@ -6,11 +6,12 @@ namespace vsp
 namespace comp
 {
 
-/*--  begin of class vps::comp::Tokenizer  --*/
-//class Tokenizer {
+/*--  begin of class vsp::comp::Scanner  --*/
+//class Scanner
 
 
-/*--  class vps::comp::Tokenizer  --*/
+
+/*--  class vsp::comp::Scanner  --*/
 
 };  /*--  namespace vsp::comp  --*/
 

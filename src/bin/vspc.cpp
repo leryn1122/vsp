@@ -39,7 +39,6 @@ int main(int argc, char *argv[])
 //==============================================================================
       )
       .parse(argc, argv);
-  vsp::comp::Compiler compiler(argparser);
-  compiler.compile(argparser);
+  vsp::comp::compile(argparser);
   return 0;
 }

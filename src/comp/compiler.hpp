@@ -3,6 +3,7 @@
 #define _VSP_COMP_COMPILER_H_
 
 #include "argparser.hpp"
+#include "comp_ctx.hpp"
 #include "fwd.hpp"
 
 namespace vsp
@@ -10,6 +11,8 @@ namespace vsp
 
 namespace comp
 {
+
+void compile(vsp::cli::ArgParser argparser);
 
 #define _COMPILE_RESULT_LIST_M_ \
   _COMPILE_RESULT_M_(Ok, 0) \
@@ -33,7 +36,15 @@ public:
   Compiler(vsp::cli::ArgParser argparser): _argparser(std::move(argparser)){}
   virtual ~Compiler(){}
 
-  void compile(vsp::cli::ArgParser argparser);
+  void execute(vsp::cli::ArgParser argparser, Context context);
+
+private:
+
+  void do_prepare();
+
+  void do_compile();
+
+  void do_precompile();
 
 };  /*--  class Compiler  --*/
 
