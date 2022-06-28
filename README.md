@@ -28,17 +28,23 @@ Long term:
 
 | Command   | Intro                                 |
 | --------- | ------------------------------------- |
-| `vspc`    | Compiler                              |
-| `vspr`    | Runtime                               |
-| `vsps`    | Process tool                          |
-| `vspstk`  | Stack trace tool                      |
+| `vspc`    | Vesperace Language Compiler           |
+| `vspr`    | Runtime Launcher                      |
+| `vsps`    | Process Status Tool                   |
+| `vspstk`  | Stack Trace Tool                      |
 | `vsprepl` | REPL (Read-Eval-Print Loop)           |
 | `vspx`    | Tool of Compression and Decompression |
 
 ## Install
 
-This project uses C++, [CMake](https://gitlab.kitware.com/cmake/cmake),
-[vcpkg](https://github.com/microsoft/vcpkg). Go check them out if you don't have them locally installed.
+This project uses
+  - C++ as develop language
+  - [g++](https://github.com/gcc-mirror/gcc) or [clang](https://github.com/llvm-mirror/clang): The choice of compiler is not compulsory, both `g++` and `clang` is available.
+  - [CMake](https://gitlab.kitware.com/cmake/cmake): Advanced build tools.
+  - [vcpkg](https://github.com/microsoft/vcpkg) (Optional): Package manager.
+  - [upx](https://github.com/upx/upx) (Optional): Packer for executables.
+
+Go check them out if you don't have them locally installed.
 
 ```bash
 # If using apt
@@ -84,6 +90,10 @@ Those repos are referenced on:
 - [Xie-Jason/GloomScript](https://github.com/Xie-Jason/GloomScript)
 - [douchuan/jvm](https://github.com/douchuan/jvm)
 - [rhaiscript/rhai](https://github1s.com/rhaiscript/rhai)
+
+The project was developped in Rust in the early stages:
+
+- [leryn1122/vsp-rust](https://github.com/leryn1122/vsp-rust)
 
 ## Maintainers
 

@@ -28,8 +28,6 @@ public:
   Shell(){}
   virtual ~Shell(){}
 
-  void attach_tty(std::ostream output);
-
   void run();
 
   string get_prompt(int rownum);

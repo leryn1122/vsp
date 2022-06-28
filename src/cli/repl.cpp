@@ -19,7 +19,6 @@ namespace cli
 void repl(vsp::cli::ArgParser argparser)
 {
   Shell shell;
-  // shell.attach_tty(std::cout);
   shell.register_builtin_shutdown_hook();
   shell.run();
 }
@@ -27,14 +26,9 @@ void repl(vsp::cli::ArgParser argparser)
 /*--  begin of class vsp::cli::Shell  --*/
 //class Shell
 
-  void Shell::attach_tty(std::ostream output)
-  {
-    // this->_output = output;
-  }
-
   void Shell::run()
   {
-    std::cout << "Hello, it's Vesperace ~" << std::endl;
+    std::cout << "\n  Hello, it's Vesperace ~\n" << std::endl;
     std::cout << this->get_prompt(this->_rownum);
     string line;
     while(getline(std::cin, line))

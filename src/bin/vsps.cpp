@@ -5,7 +5,7 @@
 #define CMD "vsps"
 
 /**
- *  Entrypoint of Vesperace Process Tool.
+ *  Entrypoint of Vesperace Process Status Tool.
  *  
  *  The instinct is very simple inspired by JVM.
  *  When a runtime program ran through `vspr`, it created a file named with process
@@ -46,7 +46,7 @@ void execute(cli::ArgParser* argparser)
 int main(int argc, char *argv[])
 {
   auto argparser = vsp::cli::ArgParser(CMD)
-      .set_intro("Vesperace Process Tool")
+      .set_intro("Vesperace Process Status Tool")
       // .add_argument("PID", "process id")
       .add_help_option()
       .add_version_option()
