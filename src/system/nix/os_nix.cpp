@@ -8,13 +8,19 @@ namespace vsp
 namespace sys
 {
 
-std::string get_passwd_name()
+string get_passwd_name()
 {
   struct passwd *pwd = getpwuid(getuid());
   return pwd->pw_name;
 }
 
-std::string get_tempdir()
+string get_homedir()
+{
+  struct passwd *pwd = getpwuid(getuid());
+  return string(pwd->pw_dir);
+}
+
+string get_tempdir()
 {
   return "/tmp";
 }

@@ -1,6 +1,5 @@
 #include <filesystem>
 #include <fstream>
-#include <string>
 
 #include "argparser.hpp"
 #include "compiler.hpp"

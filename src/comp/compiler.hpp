@@ -15,7 +15,7 @@ namespace comp
 void compile(vsp::cli::ArgParser argparser);
 
 #define _COMPILE_RESULT_LIST_M_ \
-  _COMPILE_RESULT_M_(Ok, 0) \
+  _COMPILE_RESULT_M_(Ok, 0)     \
   _COMPILE_RESULT_M_(Error, 1)
 
 enum CompileResult

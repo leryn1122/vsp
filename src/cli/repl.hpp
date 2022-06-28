@@ -19,7 +19,9 @@ class Shell
 {
 
 private:
-  std::string   _prompt = "vsp> ";
+  string _prompt = "vsp> ";
+  int _rownum = 0;
+  std::list<std::function<void(void)>> _shutdown_hooks;
 
 public:
   
@@ -29,6 +31,21 @@ public:
   void attach_tty(std::ostream output);
 
   void run();
+
+  string get_prompt(int rownum);
+
+  string eval(string line);
+
+  [[noreturn]]
+  int terminate();
+
+  void register_shutdown_hook(std::function<void(void)> shutdown_hook);
+
+  void register_builtin_shutdown_hook();
+
+  void store_history();
+
+private:
 
 };  /*--  class cli  --*/
 
