@@ -1,6 +1,6 @@
-#include "argparser.hpp"
+#include "Argparser.hpp"
 #include "fwd.hpp"
-#include "process.hpp"
+#include "Process.hpp"
 
 #define CMD "vsps"
 

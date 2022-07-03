@@ -3,7 +3,7 @@
 #define _VSP_VM_VM_H_
 
 #include "fwd.hpp"
-#include "vm_property.hpp"
+#include "VmProperty.hpp"
 
 namespace vsp
 {

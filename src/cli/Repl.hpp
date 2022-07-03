@@ -4,9 +4,17 @@
 
 #include <iostream>
 
-#include "argparser.hpp"
+#include "Argparser.hpp"
 #include "fwd.hpp"
 
+/**
+ *  Create a interactive shell to Vesperace runtime interpreter.
+ *  
+ *  
+ *  
+ *  
+ *  
+ */
 namespace vsp
 {
 
@@ -20,7 +28,7 @@ class Shell
 
 private:
   string _prompt = "vsp> ";
-  int _rownum = 0;
+  int    _rownum = 0;
   std::list<std::function<void(void)>> _shutdown_hooks;
 
 public:
@@ -45,7 +53,7 @@ public:
 
 private:
 
-};  /*--  class cli  --*/
+};  /*--  class vsp::cli::Shell  --*/
 
 };  /*--  namespace vsp::cli  --*/
 

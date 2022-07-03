@@ -7,7 +7,8 @@ A toy language compiler during learning custom compiler and modern C++ lang.
 ## Table of Contents
 
 - [Background](#background)
-- [RoadMap](#RoadMap)
+- [Etymology](#etymology)
+- [RoadMap](#roadMap)
 - [Install](#install)
 - [Usage](#usage)
 - [Related Efforts](#related-efforts)
@@ -39,7 +40,7 @@ Long term:
 
 This project uses
   - C++ as develop language
-  - [g++](https://github.com/gcc-mirror/gcc) or [clang](https://github.com/llvm-mirror/clang): The choice of compiler is not compulsory, both `g++` and `clang` is available.
+  - [g++](https://github.com/gcc-mirror/gcc) or [Clang](https://github.com/llvm-mirror/clang): The choice of compiler is not compulsory, both `g++` and `clang` is available.
   - [CMake](https://gitlab.kitware.com/cmake/cmake): Advanced build tools.
   - [vcpkg](https://github.com/microsoft/vcpkg) (Optional): Package manager.
   - [upx](https://github.com/upx/upx) (Optional): Packer for executables.

@@ -9,4 +9,4 @@ CURRENT_BRANCH="$(git branch --show-current)"
 
 git add .
 # shellcheck disable=SC2145
-git commit -m "$(date +%Y%m%d): ${@-Updates}."
+git commit -m "${@-Updates}."

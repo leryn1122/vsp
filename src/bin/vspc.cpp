@@ -1,5 +1,5 @@
-#include "argparser.hpp"
-#include "compiler.hpp"
+#include "Argparser.hpp"
+#include "Compiler.hpp"
 #include "fwd.hpp"
 
 #define CMD "vspc"
@@ -21,9 +21,9 @@ int main(int argc, char *argv[])
       .add_option("", "--deprecation", "Locate where deprecated APIs are used.")
       .add_option("", "--depress-warning", "Depress warning info.")
       .add_option("", "--dry-run", "")
-      .add_option<std::string>("", "--feature", "Enable specified feature.", "")
-      .add_option<std::string>("-o", "--output", "Specify the output file.", "")
-      .add_option<std::string>("-p", "--profile", "Activate the specified profile to enable those APIs.", "default")
+      .add_option<string>("", "--feature", "Enable specified feature.", "")
+      .add_option<string>("-o", "--output", "Specify the output file.", "")
+      .add_option<string>("-p", "--profile", "Activate the specified profile to enable those APIs.", "default")
       .add_option("", "--release", "Specify the release of APIs.")
       .add_option("-s", "--source", "Specify the source file.")
       .add_option("", "--source-path", "Specify the path to source file.")

@@ -2,8 +2,9 @@
 #ifndef _VSP_COMP_COMPILER_H_
 #define _VSP_COMP_COMPILER_H_
 
-#include "argparser.hpp"
-#include "comp_ctx.hpp"
+#include "Argparser.hpp"
+#include "CompilationContext.hpp"
+#include "Timer.hpp"
 #include "fwd.hpp"
 
 namespace vsp
@@ -30,10 +31,21 @@ class Compiler
 
 private:
   vsp::cli::ArgParser _argparser;
+  string        _name;
+  bool          _verbose;
+  std::set<string>  _input_files;
+  
+  /// Compiler Timer
+  vsp::util::Timer   _timer;
 
 public:
 
-  Compiler(vsp::cli::ArgParser argparser): _argparser(std::move(argparser)){}
+  Compiler(vsp::cli::ArgParser argparser)
+    : _argparser(std::move(argparser))
+  {
+    this->_name = this->_argparser.has_argument("source");
+    this->_verbose = this->_argparser.has_option("--verbose");
+  }
   virtual ~Compiler(){}
 
   void execute(vsp::cli::ArgParser argparser, Context context);
@@ -47,6 +59,15 @@ private:
   void do_precompile();
 
 };  /*--  class Compiler  --*/
+
+class CompilationUnit
+{
+
+public:
+  CompilationUnit(){}
+  virtual ~CompilationUnit(){}
+
+};  /*--  vsp::comp::CompilationUnit  --*/
 
 };  /*--  namespace vsp::comp  --*/
 

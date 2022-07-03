@@ -1,9 +1,9 @@
 #include <stdio.h>
 #include <cstdlib>
 
-#include "argparser.hpp"
+#include "Argparser.hpp"
 #include "fwd.hpp"
-#include "vm.hpp"
+#include "Vm.hpp"
 
 #define CMD "vspr"
 

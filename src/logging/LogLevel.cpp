@@ -1,5 +1,5 @@
 #include "fwd.hpp"
-#include "log_level.hpp"
+#include "LogLevel.hpp"
 
 namespace vsp
 {

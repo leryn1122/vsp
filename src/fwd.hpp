@@ -8,13 +8,16 @@
 #include <cstdlib>
 #include <filesystem>
 #include <iostream>
-#include <list>
 #include <stdexcept>
 #include <string>
 #include <typeinfo>
+
+#include <list>
+#include <map>
+#include <set>
 #include <vector>
 
-#include "version.hpp"
+#include "Version.hpp"
 
 // Global aliases
 typedef std::string string;
@@ -23,6 +26,11 @@ namespace fs = std::filesystem;
 namespace vsp {
 
 using namespace fs;
+
+using ::std::list;
+using ::std::set;
+using ::std::map;
+using ::std::vector;
 
 using ::std::nullptr_t;
 using ::std::max_align_t;

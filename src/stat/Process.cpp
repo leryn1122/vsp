@@ -1,8 +1,8 @@
-#include "process.hpp"
+#include "Process.hpp"
 
 #ifdef __linux__
 #include "os_nix.hpp"
-#include "vm_constant.hpp"
+#include "VmConstant.hpp"
 #endif
 
 namespace vsp

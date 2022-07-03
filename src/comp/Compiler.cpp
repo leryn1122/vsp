@@ -1,9 +1,9 @@
 #include <filesystem>
 #include <fstream>
 
-#include "argparser.hpp"
-#include "compiler.hpp"
-#include "comp_ctx.hpp"
+#include "Argparser.hpp"
+#include "CompilationContext.hpp"
+#include "Compiler.hpp"
 #include "fwd.hpp"
 
 namespace vsp
@@ -45,6 +45,8 @@ void compile(vsp::cli::ArgParser argparser)
 
   void Compiler::do_compile()
   {
+    this->_timer.tik();
+
     std::cout << "Do compilation." << std::endl;
 
     string source = this->_argparser.get_argument_str("source");
@@ -57,12 +59,13 @@ void compile(vsp::cli::ArgParser argparser)
     }
 
     string buff;
-    while (ifs >> buff)
+    while (getline(ifs, buff))
     {
       std::cout << buff << std::endl;
     }
     ifs.close();
   
+    this->_timer.tok();
   }
 
 

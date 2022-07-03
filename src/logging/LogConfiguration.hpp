@@ -2,7 +2,7 @@
 #ifndef _VSP_LOG_CONF_H_
 #define _VSP_LOG_CONF_H_
 
-#include "log_appender.hpp"
+#include "LogAppender.hpp"
 
 namespace vsp
 {

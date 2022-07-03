@@ -1,8 +1,8 @@
 #include <fstream>
 
-#include "argparser.hpp"
+#include "Argparser.hpp"
 #include "fwd.hpp"
-#include "repl.hpp"
+#include "Repl.hpp"
 
 #define VSP_HISTORY_FILE ".vsp_history"
 
@@ -83,7 +83,7 @@ void repl(vsp::cli::ArgParser argparser)
 
   void Shell::store_history()
   {
-    std::string history_file = "";
+    string history_file = "";
 #ifdef __linux__
     history_file = history_file + vsp::sys::get_homedir()
           + fs::path::preferred_separator

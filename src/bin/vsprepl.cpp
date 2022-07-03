@@ -1,6 +1,6 @@
-#include "argparser.hpp"
+#include "Argparser.hpp"
 #include "fwd.hpp"
-#include "repl.hpp"
+#include "Repl.hpp"
 
 #define CMD "vsprepl"
 

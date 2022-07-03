@@ -1,5 +1,5 @@
 #include "fwd.hpp"
-#include "lexer.hpp"
+#include "Lexer.hpp"
 
 namespace vsp
 {
