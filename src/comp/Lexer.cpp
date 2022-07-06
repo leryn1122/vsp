@@ -13,7 +13,7 @@ namespace comp
 
 void Lexer::init_internal(const char *buffer_start, const char *buffer_end, const char *buffer_ptr)
 {
-
+  _source_location = SourceLocation::START;
   _scan_mode = ScanMode::PLAIN;
 }
 
