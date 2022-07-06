@@ -12,6 +12,12 @@ namespace vsp
 namespace comp
 {
 
+#define IS_BLANK(c) ((c) == ' ' || (c) == '\t')
+#define IS_DIGIT(c) ((c) >= '0' && (c) <= '9')
+#define IS_ALPHA(c) ( ((c) >= 'a' && (c) <= 'z') || ((c) >= 'A' && (c) <= 'Z') )
+#define IS_ALPHADIGIT(c) ( ((c) >= 'a' && (c) <= 'z') || ((c) >= 'A' && (c) <= 'Z') || ((c) >= '0' && (c) <= '9') )
+#define IS_HEX_DIGIT(c) (((c) >= 'A' && (c) <= 'F') || ((c) >= 'a' && (c) <= 'f'))
+
 void compile(vsp::cli::ArgParser argparser)
 {
   Compiler compiler(argparser);
@@ -61,10 +67,17 @@ void compile(vsp::cli::ArgParser argparser)
     string buff;
     while (getline(ifs, buff))
     {
-      std::cout << buff << std::endl;
+      // for (char c : buff)
+      for (size_t i = 0, j = 0; i < buff.size(); i++)
+      {
+        char ch = buff.at(i);
+        if (IS_ALPHADIGIT(ch)) {
+
+        }
+      }
     }
     ifs.close();
-  
+
     this->_timer.tok();
   }
 

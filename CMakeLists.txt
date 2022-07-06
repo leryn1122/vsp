@@ -110,11 +110,11 @@ MESSAGE(">>> Executables (src/bin/*.cpp):")
 LIST(TRANSFORM vsp_BIN_FILES REPLACE "${vsp_SRC_DIR}/bin/(.*).cpp" "\\1" OUTPUT_VARIABLE vsp_EXECUTABLES)
 set(vsp_EXECUTABLES
   "vspc"
-  "vspr"
-  "vsprepl"
-  "vsps"
-  "vspstk"
-  "vspx"
+  # "vspr"
+  # "vsprepl"
+  # "vsps"
+  # "vspstk"
+  # "vspx"
 )
 MESSAGE_LIST(${vsp_EXECUTABLES})
 # TODO Enabled to build the multi executables

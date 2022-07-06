@@ -84,7 +84,7 @@ namespace comp
   _TOKEN_M_(D_ARROW       , "=>"     ) \
   _TOKEN_M_(D_COLON       , "::"     ) \
 
-enum Token
+enum TokenType
 {
   EOF,
   ERROR,
@@ -98,6 +98,13 @@ enum Token
   _PUNCTUATION_LIST_M_
 #undef _TOKEN_M_
 };  /*--  enum Token::token  --*/
+
+
+struct Token
+{
+  TokenType   type;
+  std::string attribute;
+}
 
 class Tokenizer
 {

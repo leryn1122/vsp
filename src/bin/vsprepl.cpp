@@ -7,7 +7,7 @@
 /**
  *  Entrypoint of Vesperace REPL (Read-Eval-Print Loop) or Vesperace Shell.
  *  
- *  Like `jshell` in Java, `node` in Node.js, `vsprepl` is an interactive
+ *  Similar to `jshell` in Java, `node` in Node.js, `vsprepl` is an interactive
  *  shell / command line interface for Vesperace.
  *  
  */
