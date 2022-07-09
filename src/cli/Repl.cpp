@@ -23,7 +23,7 @@ void repl(vsp::cli::ArgParser argparser)
   shell.run();
 }
 
-/*--  begin of class vsp::cli::Shell  --*/
+//  begin of class vsp::cli::Shell
 //class Shell
 
   void Shell::run()
@@ -95,8 +95,8 @@ void repl(vsp::cli::ArgParser argparser)
     ofs << "hello" << std::endl;
   }
 
-/*--  class vsp::cli::Shell  --*/
+//  class vsp::cli::Shell
 
-};  /*--  namespace vsp::cli  --*/
+};  //  namespace vsp::cli
 
-};  /*--  namespace vsp  --*/
+};  //  namespace vsp

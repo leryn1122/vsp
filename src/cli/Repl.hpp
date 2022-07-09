@@ -53,10 +53,10 @@ public:
 
 private:
 
-};  /*--  class vsp::cli::Shell  --*/
+};  //  class vsp::cli::Shell
 
-};  /*--  namespace vsp::cli  --*/
+};  //  namespace vsp::cli
 
-};  /*--  namespace vsp  --*/
+};  //  namespace vsp
 
-#endif  /*--  _VSP_CLI_REPL_H_  --*/
+#endif  //  _VSP_CLI_REPL_H_

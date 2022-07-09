@@ -18,6 +18,7 @@
 #include <vector>
 
 #include "Version.hpp"
+#include "basic/Lang.hpp"
 
 // Global aliases
 typedef std::string string;
@@ -54,6 +55,7 @@ using ::std::type_info;
 using ::std::string;
 
 
-};  /*--  namespace vsp  --*/
 
-#endif  /*--  _VSP_FWD_H_  --*/
+};  //  namespace vsp
+
+#endif  //  _VSP_FWD_H_

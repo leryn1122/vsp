@@ -42,6 +42,6 @@ std::vector<VMProcessSketch> get_pids()
   return pids;
 }
 
-};  /*--  namespace vsp::stat  --*/
+};  //  namespace vsp::stat
 
-};  /*--  namespace vsp  --*/
+};  //  namespace vsp

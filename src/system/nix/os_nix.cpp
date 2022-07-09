@@ -25,6 +25,6 @@ string get_tempdir()
   return "/tmp";
 }
 
-};  /*--  namespace vsp::sys  --*/
+};  //  namespace vsp::sys
 
-};  /*--  namespace vsp  --*/
+};  //  namespace vsp

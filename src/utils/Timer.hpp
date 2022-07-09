@@ -21,10 +21,10 @@ public:
   void tik(){}
   void tok(){}
 
-};  /*--  class vsp::util::Timer  --*/
+};  //  class vsp::util::Timer
 
-};  /*--  namespace vsp::util  --*/
+};  //  namespace vsp::util
 
-};  /*--  namespace vsp  --*/
+};  //  namespace vsp
 
-#endif  /*--  _VSP_UTILS_TIMER_H_  --*/
+#endif  //  _VSP_UTILS_TIMER_H_

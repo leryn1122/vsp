@@ -35,6 +35,6 @@ void VirtualMachine::init_specific_system_properites()
 }
 
 
-};  /*--  namespace vsp::vm  --*/
+};  //  namespace vsp::vm
 
-};  /*--  namespace vsp  --*/
+};  //  namespace vsp

@@ -58,7 +58,7 @@ private:
 
   void do_precompile();
 
-};  /*--  class Compiler  --*/
+};  //  class Compiler
 
 class CompilationUnit
 {
@@ -67,10 +67,10 @@ public:
   CompilationUnit(){}
   virtual ~CompilationUnit(){}
 
-};  /*--  vsp::comp::CompilationUnit  --*/
+};  //  vsp::comp::CompilationUnit
 
-};  /*--  namespace vsp::comp  --*/
+};  //  namespace vsp::comp
 
-};  /*--  namespace vsp  --*/
+};  //  namespace vsp
 
-#endif  /*--  _VSP_COMP_COMPILER_H_  --*/
+#endif  //  _VSP_COMP_COMPILER_H_

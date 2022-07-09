@@ -21,12 +21,12 @@ struct VMProcessSketch
   {}
   uint         pid;
   string  pname;
-};  /*--  struct process  --*/
+};  //  struct process
 
 std::vector<VMProcessSketch> get_pids();
 
-};  /*--  namespace vsp::stat  --*/
+};  //  namespace vsp::stat
 
-};  /*--  namespace vsp  --*/
+};  //  namespace vsp
 
-#endif  /*--  _VSP_STAT_PROCESS_H_  --*/
+#endif  //  _VSP_STAT_PROCESS_H_

@@ -26,10 +26,10 @@ private:
 
   
 
-};  /*--  class vsp::comp::Context  --*/
+};  //  class vsp::comp::Context
 
-};  /*--  namespace vsp::comp  --*/
+};  //  namespace vsp::comp
 
-};  /*--  namespace vsp  --*/
+};  //  namespace vsp
 
-#endif  /*--  _VSP_COMP_CTX_H_  --*/
+#endif  //  _VSP_COMP_CTX_H_

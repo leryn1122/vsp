@@ -5,6 +5,7 @@
 #include "CompilationContext.hpp"
 #include "Compiler.hpp"
 #include "fwd.hpp"
+#include "Log.hpp"
 
 namespace vsp
 {
@@ -25,12 +26,11 @@ void compile(vsp::cli::ArgParser argparser)
   compiler.execute(argparser, context);
 }
 
-/*--  begin of class vps::comp::Compiler  --*/
+//  begin of class vps::comp::Compiler
 //class Compiler {
 
   void Compiler::execute(vsp::cli::ArgParser argparser, Context context)
   {
-
     do_prepare();
 
     do_precompile();
@@ -41,19 +41,19 @@ void compile(vsp::cli::ArgParser argparser)
 
   void Compiler::do_prepare()
   {
-    std::cout << "Do preparation for compilation." << std::endl;
+    log_info("Do preparation for compilation.");
   }
 
   void Compiler::do_precompile()
   {
-    std::cout << "Do precompile." << std::endl;
+    log_info("Do precompile.");
   }
 
   void Compiler::do_compile()
   {
     this->_timer.tik();
 
-    std::cout << "Do compilation." << std::endl;
+    log_info("Do compilation.");
 
     string source = this->_argparser.get_argument_str("source");
 
@@ -71,8 +71,9 @@ void compile(vsp::cli::ArgParser argparser)
       for (size_t i = 0, j = 0; i < buff.size(); i++)
       {
         char ch = buff.at(i);
-        if (IS_ALPHADIGIT(ch)) {
-
+        if (IS_ALPHADIGIT(ch))
+        {
+          
         }
       }
     }
@@ -82,8 +83,8 @@ void compile(vsp::cli::ArgParser argparser)
   }
 
 
-/*--  class vps::comp::Compiler  --*/
+//  class vps::comp::Compiler
 
-};  /*--  namespace vsp::comp  --*/
+};  //  namespace vsp::comp
 
-};  /*--  namespace vsp  --*/
+};  //  namespace vsp

@@ -26,10 +26,10 @@ public:
   LogConfiguration(){}
   virtual ~LogConfiguration(){}
 
-};  /*--  class vsp::log::LogConfiguration  --*/
+};  //  class vsp::log::LogConfiguration
 
-};  /*--  namespace vsp::log  --*/
+};  //  namespace vsp::log
 
-};  /*--  namespace vsp  --*/
+};  //  namespace vsp
 
-#endif  /*--  _VSP_LOG_CONF_H_  --*/
+#endif  //  _VSP_LOG_CONF_H_

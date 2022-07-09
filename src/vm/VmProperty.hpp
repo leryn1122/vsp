@@ -30,10 +30,10 @@ public:
     _read_only = read_only;
   }
 
-};  /*--  class vsp::vm::SystemProperty  --*/
+};  //  class vsp::vm::SystemProperty
 
-};  /*--  namespace vsp::vm  --*/
+};  //  namespace vsp::vm
 
-};  /*--  namespace vsp  --*/
+};  //  namespace vsp
 
-#endif  /*--  _VSP_VM_PROPERTY_H_  --*/
+#endif  //  _VSP_VM_PROPERTY_H_

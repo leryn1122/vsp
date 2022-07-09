@@ -10,6 +10,6 @@ namespace cli
 
 // TODO Format cli print out in table
 
-};  /*--  namespace vsp  --*/
+};  //  namespace vsp
 
-#endif  /*--  _VSP_CLI_TABLE_H_  --*/
+#endif  //  _VSP_CLI_TABLE_H_

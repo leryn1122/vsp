@@ -34,7 +34,7 @@ public:
   bool operator> (const FileID &rhs) const { return this->ID >  rhs.ID; }
   bool operator>=(const FileID &rhs) const { return this->ID >= rhs.ID; }
 
-};  /*--  class vsp::basic::FileID  --*/
+};  //  class vsp::basic::FileID
 
 class SourceLocation
 {
@@ -53,10 +53,10 @@ public:
 
   virtual ~SourceLocation(){}
 
-};  /*--  class vsp::comp::SourceLocation  --*/
+};  //  class vsp::comp::SourceLocation
 
-};  /*--  namespace vsp::comp  --*/
+};  //  namespace vsp::comp
 
-};  /*--  namespace vsp  --*/
+};  //  namespace vsp
 
-#endif  /*--  _VSP_COMP_SOURCE_LOCATION_H_  --*/
+#endif  //  _VSP_COMP_SOURCE_LOCATION_H_

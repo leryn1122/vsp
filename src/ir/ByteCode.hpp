@@ -150,10 +150,10 @@ public:
 
 
 
-};  /*--  class vsp::ir::Bytecode  --*/
+};  //  class vsp::ir::Bytecode
 
-};  /*--  namespace vsp::ir  --*/
+};  //  namespace vsp::ir
 
-};  /*--  namespace vsp  --*/
+};  //  namespace vsp
 
-#endif  /*--  _VSP_IR_BYTECODE_H_  --*/
+#endif  //  _VSP_IR_BYTECODE_H_

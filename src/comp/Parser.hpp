@@ -13,10 +13,10 @@ namespace comp
 class Parser
 {
 
-};  /*--  class vsp::comp::Parser  --*/
+};  //  class vsp::comp::Parser
 
-};  /*--  namespace vsp::comp  --*/
+};  //  namespace vsp::comp
 
-};  /*--  namespace vsp  --*/
+};  //  namespace vsp
 
-#endif  /*--  _VSP_COMP_PARSER_H_  --*/
+#endif  //  _VSP_COMP_PARSER_H_

@@ -14,7 +14,7 @@ namespace vm
 struct VirtualMachineStruct
 {
 
-};  /*--  VirtualMachineStruct  --*/
+};  //  VirtualMachineStruct
 
 class VirtualMachine
 {
@@ -41,10 +41,10 @@ private:
   void init_specific_system_properites();
 
 
-};  /*--  class vsp::vm::VirtualMachine  --*/
+};  //  class vsp::vm::VirtualMachine
 
-};  /*--  namespace vsp::vm  --*/
+};  //  namespace vsp::vm
 
-};  /*--  namespace vsp  --*/
+};  //  namespace vsp
 
-#endif  /*--  _VSP_VM_VM_H_  --*/
+#endif  //  _VSP_VM_VM_H_

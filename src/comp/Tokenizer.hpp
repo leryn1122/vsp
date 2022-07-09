@@ -97,7 +97,7 @@ enum TokenType
 #define _TOKEN_M_(name, literal) (name,)
   _PUNCTUATION_LIST_M_
 #undef _TOKEN_M_
-};  /*--  enum Token::token  --*/
+};  //  enum Token::token
 
 
 struct Token
@@ -113,10 +113,10 @@ public:
 
   void parse_token(string lexeme);
 
-};  /*--  class vsp::comp::Tokenizer  --*/
+};  //  class vsp::comp::Tokenizer
 
-};  /*--  namespace vsp::comp  --*/
+};  //  namespace vsp::comp
 
-};  /*--  namespace vsp  --*/
+};  //  namespace vsp
 
-#endif  /*--  _VSP_COMP_TOKENIZER_H_  --*/
+#endif  //  _VSP_COMP_TOKENIZER_H_

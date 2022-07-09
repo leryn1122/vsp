@@ -38,9 +38,9 @@ void execute(cli::ArgParser* argparser)
   }
 }
 
-};  /*--  namespace vsp::cli  --*/
+};  //  namespace vsp::cli
 
-};  /*--  namespace vsp  --*/
+};  //  namespace vsp
 
 
 int main(int argc, char *argv[])

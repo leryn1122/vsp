@@ -20,7 +20,7 @@ struct Positiion
 
   size_t line;
   size_t offset;
-};  /*--  struct Position  --*/
+};  //  struct Position
 
 const auto NONE  = new Positiion(0,0);
 const auto START = new Positiion(1,0);
@@ -41,25 +41,27 @@ class Lexer
 
 private:
 
-  const char *_buffer_start;
-  const char *_buffer_end;
-  const char *_buffer_ptr;
+  const char *buffer_start;
+  const char *buffer_end;
+  const char *buffer_ptr;
 
-  SourceLocation _source_location;
-  ScanMode       _scan_mode;
+  SourceLocation source_location;
+  ScanMode       scan_mode;
 
 public:
 
   void init_internal(const char *buffer_start, const char *buffer_end, const char *buffer_ptr);
 
-  void next_token();
+  char get_and_advance_char(const char *&ptr);
 
-  void prev_token();
+  const char consume_char(char *ptr, unsigned size);
 
-};  /*--  class vsp::comp::Lexer  --*/
+  char get_char_and_size(const char *ptr, unsigned size);
 
-};  /*--  namespace vsp::comp  --*/
+};  //  class vsp::comp::Lexer
 
-};  /*--  namespace vsp  --*/
+};  //  namespace vsp::comp
 
-#endif  /*--  _VSP_COMP_LEXER_H_  --*/
+};  //  namespace vsp
+
+#endif  //  _VSP_COMP_LEXER_H_

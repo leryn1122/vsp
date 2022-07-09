@@ -105,7 +105,7 @@ T parse_value(const string &value)
   return result;
 }
 
-};  /*--  namespace  --*/
+};  //  namespace
 
 struct Option
 {
@@ -122,7 +122,7 @@ struct Option
   string description;
   string type;
   string value;
-};  /*--  struct option  --*/
+};  //  struct Option
 
 struct ShortCircuitOption
 {
@@ -137,7 +137,7 @@ struct ShortCircuitOption
   string long_name;
   string description;
   std::function<void(void)> callback;
-};  /*--  struct short_circuit_option  --*/
+};  //  struct ShortCircuitOption
 
 struct Argument
 {
@@ -150,7 +150,7 @@ struct Argument
   string description;
   string type;
   string value;
-};  /*--  struct argument  --*/
+};  //  struct Argument
 
 class ArgParser
 {
@@ -163,7 +163,6 @@ private:
   string _example;
 
 public:
-
   ArgParser() {}
   ArgParser(string executable) : _executable(std::move(executable)) {}
   virtual ~ArgParser() {}
@@ -316,7 +315,9 @@ Where options may any of:
    */
   ArgParser parse(int argc, char *argv[])
   {
-    // Fast return if no arguments accepted. 
+    std::ios::sync_with_stdio(false);
+
+    // Fast return if no arguments accepted.
     if (argc == 1 && this->_arguments.size() > 0)
     {
       print_help();
@@ -551,10 +552,10 @@ private:
     }
   }
 
-};  /*--  class argparser  --*/
+};  //  class argparser
 
-};  /*--  namespace vsp::cli  --*/
+};  //  namespace vsp::cli
 
-};  /*--  namespace vsp  --*/
+};  //  namespace vsp
 
-#endif  /*--  _VSP_CLI_ARGPARSE_H_  --*/
+#endif  //  _VSP_CLI_ARGPARSE_H_

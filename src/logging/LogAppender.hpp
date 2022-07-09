@@ -27,10 +27,10 @@ public:
   LogAppender() : _reconfigureable(false){}
   virtual ~LogAppender(){}
 
-};  /*--  class vsp::log::LogAppender  --*/
+};  //  class vsp::log::LogAppender
 
-};  /*--  namespace vsp::log  --*/
+};  //  namespace vsp::log
 
-};  /*--  namespace vsp  --*/
+};  //  namespace vsp
 
-#endif  /*--  _VSP_LOG_APPENDER_H_  --*/
+#endif  //  _VSP_LOG_APPENDER_H_

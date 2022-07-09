@@ -8,6 +8,6 @@ namespace log
 {
 
 
-};  /*--  namespace vsp::log  --*/
+};  //  namespace vsp::log
 
-};  /*--  namespace vsp  --*/
+};  //  namespace vsp

@@ -20,10 +20,10 @@ public:
   SymTable(){}
   virtual ~SymTable(){}
 
-}  /*--  class vsp::ast::SymTable  --*/
+}  //  class vsp::ast::SymTable
 
-};  /*--  namespace vsp::ast  --*/
+};  //  namespace vsp::ast
 
-};  /*--  namespace vsp  --*/
+};  //  namespace vsp
 
-#endif  /*--  _VSP_AST_SYMTABLE_H_  --*/
+#endif  //  _VSP_AST_SYMTABLE_H_

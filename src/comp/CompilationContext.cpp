@@ -6,13 +6,13 @@ namespace vsp
 namespace comp
 {
 
-/*--  begin of class vsp::comp::Context  --*/
+//  begin of class vsp::comp::Context
 //class Context
 
 
 
-/*--  class vsp::comp::Sample  --*/
+//  class vsp::comp::Sample
 
-};  /*--  namespace vsp::comp  --*/
+};  //  namespace vsp::comp
 
-};  /*--  namespace vsp  --*/
+};  //  namespace vsp

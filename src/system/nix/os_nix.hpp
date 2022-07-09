@@ -26,11 +26,11 @@ private:
   static uint32_t _os_version;
 
 
-};  /*--  class Nix  --*/
+};  //  class Nix
 
-};  /*--  namespace vsp::sys  --*/
+};  //  namespace vsp::sys
 
-};  /*--  namespace vsp  --*/
+};  //  namespace vsp
 
-#endif  /*--  _VSP_SYS_OS_NIX_H_  --*/
-#endif  /*--  __linux__  --*/
+#endif  //  _VSP_SYS_OS_NIX_H_
+#endif  //  __linux__
