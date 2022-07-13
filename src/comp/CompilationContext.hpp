@@ -13,12 +13,10 @@ namespace comp
 
 class Context
 {
-
 private:
-  vsp::log::LogConfiguration  _log_conf;
+  vsp::log::LogConfiguration logConfiguration;
 
 public:
-
   Context(){}
   virtual ~Context(){}
 

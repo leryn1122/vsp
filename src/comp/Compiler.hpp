@@ -30,21 +30,21 @@ class Compiler
 {
 
 private:
-  vsp::cli::ArgParser _argparser;
-  string        _name;
-  bool          _verbose;
+  vsp::cli::ArgParser argparser;
+  string        name;
+  bool          verbose;
   std::set<string>  _input_files;
   
   /// Compiler Timer
-  vsp::util::Timer   _timer;
+  vsp::util::Timer   timer;
 
 public:
 
   Compiler(vsp::cli::ArgParser argparser)
-    : _argparser(std::move(argparser))
+    : argparser(std::move(argparser))
   {
-    this->_name = this->_argparser.has_argument("source");
-    this->_verbose = this->_argparser.has_option("--verbose");
+    this->name = this->argparser.has_argument("source");
+    this->verbose = this->argparser.has_option("--verbose");
   }
   virtual ~Compiler(){}
 

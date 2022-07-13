@@ -7,11 +7,10 @@ namespace comp
 {
 
 //  begin of class vsp::comp::Context
-//class Context
 
 
 
-//  class vsp::comp::Sample
+//  end of class vsp::comp::Sample
 
 };  //  namespace vsp::comp
 

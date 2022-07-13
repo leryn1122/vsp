@@ -27,60 +27,68 @@ void compile(vsp::cli::ArgParser argparser)
 }
 
 //  begin of class vps::comp::Compiler
-//class Compiler {
 
-  void Compiler::execute(vsp::cli::ArgParser argparser, Context context)
+void Compiler::execute(vsp::cli::ArgParser argparser, Context context)
+{
+  do_prepare();
+
+  do_precompile();
+
+  do_compile();
+}
+
+void Compiler::do_prepare()
+{
+  log_info("Do preparation for compilation.");
+}
+
+void Compiler::do_precompile()
+{
+  log_info("Do precompile.");
+}
+
+void Compiler::do_compile()
+{
+  this->timer.tik();
+
+  log_info("Do compilation.");
+
+  string source = this->argparser.get_argument_str("source");
+
+  std::ifstream ifs(source, std::ios::in);
+  if (!ifs.is_open())
   {
-    do_prepare();
-
-    do_precompile();
-
-    do_compile();
-
+    std::cerr << "Error: Cannot open source file `" << source << "`" << std::endl;
+    std::exit(EXIT_FAILURE);
   }
 
-  void Compiler::do_prepare()
+  // string buff;
+  // while (getline(ifs, buff))
+  char buff[20];
+  while (!ifs.read(buff, sizeof(buff)).eof())
   {
-    log_info("Do preparation for compilation.");
-  }
-
-  void Compiler::do_precompile()
-  {
-    log_info("Do precompile.");
-  }
-
-  void Compiler::do_compile()
-  {
-    this->_timer.tik();
-
-    log_info("Do compilation.");
-
-    string source = this->_argparser.get_argument_str("source");
-
-    std::ifstream ifs(source, std::ios::in);
-    if (!ifs.is_open())
+    std::cout << buff << std::endl;
+    for (size_t i = 0, j = 0; i < 20; i++)
+    // for (size_t i = 0, j = 0; i < buff.size(); i++)
     {
-      std::cerr << "Error: Cannot open source file `" << source << "`" << std::endl;
-      std::exit(EXIT_FAILURE);
-    }
-
-    string buff;
-    while (getline(ifs, buff))
-    {
-      // for (char c : buff)
-      for (size_t i = 0, j = 0; i < buff.size(); i++)
+      // char ch = buff.at(i);
+      char ch = buff[i];
+      if (IS_ALPHADIGIT(ch))
       {
-        char ch = buff.at(i);
-        if (IS_ALPHADIGIT(ch))
-        {
-          
-        }
+        
+      }
+      else
+      {
+        
       }
     }
-    ifs.close();
-
-    this->_timer.tok();
   }
+  if(!ifs.is_open()) {
+    ifs.close();
+  }
+
+  this->timer.tok();
+}
 
 
 //  class vps::comp::Compiler
