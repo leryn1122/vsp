@@ -5,11 +5,9 @@
 
 #include "fwd.hpp"
 
-namespace vsp
-{
+namespace vsp {
 
-namespace sys
-{
+namespace sys {
 
 string get_passwd_name();
 
@@ -17,20 +15,16 @@ string get_homedir();
 
 string get_tempdir();
 
-class Nix
-{
-
-public:
-
-private:
+class Nix {
+ public:
+ private:
   static uint32_t _os_version;
 
+};  // class Nix
 
-};  //  class Nix
+};  // namespace sys
 
-};  //  namespace vsp::sys
+};  // namespace vsp
 
-};  //  namespace vsp
-
-#endif  //  _VSP_SYS_OS_NIX_H_
-#endif  //  __linux__
+#endif  // _VSP_SYS_OS_NIX_H_
+#endif  // __linux__

@@ -4,39 +4,35 @@
 
 #include "fwd.hpp"
 
-#define DEFAULT_CHAR_BUFFER_SIZE 1<<12
+#define DEFAULT_CHAR_BUFFER_SIZE 1 << 12
 
-namespace vsp
-{
+namespace vsp {
 
-namespace comp
-{
+namespace comp {
 
 /// class CharBuffer
-/// 
+///
 /// A flipping char buffer to accept the char stream read from the soource file.
-/// 
+///
 /// ```c++
 /// auto buffer = CharBuffer::allocate(1<<10);
 /// ```
-class CharBuffer
-{
-public:
+class CharBuffer {
+ public:
   static CharBuffer allocate(unsigned int capacity);
 
   static void wrap(char* array, unsigned int offset, unsigned int length);
 
-private:
+ private:
   char* buff;
   unsigned int offset = 0;
   bool read_only = false;
 
-public:
-  CharBuffer(){}
+ public:
+  CharBuffer() {}
   virtual ~CharBuffer();
 
-public:
-  
+ public:
   CharBuffer slice(unsigned int index, unsigned int length);
 
   CharBuffer duplicate();
@@ -45,7 +41,7 @@ public:
 
   unsigned int capacity();
 
-  char get(unsigned int index);
+  char get(unsigned int index) const;
 
   char get_unchecked(unsigned int index);
 
@@ -53,8 +49,7 @@ public:
 
   CharBuffer put(char ch);
 
-  inline
-  bool has_array() const;
+  inline bool has_array() const;
 
   CharBuffer limit(unsigned int new_limit);
 
@@ -72,16 +67,14 @@ public:
 
   unsigned int size();
 
+  bool read_buff(std::istream&) { return true; }
 
-};  //  class CharBuffer 
+};  // class CharBuffer
 
-class Parser
-{
+class Parser {};  // class vsp::comp::Parser
 
-};  //  class vsp::comp::Parser
+};  // namespace comp
 
-};  //  namespace vsp::comp
+};  // namespace vsp
 
-};  //  namespace vsp
-
-#endif  //  _VSP_COMP_PARSER_H_
+#endif  // _VSP_COMP_PARSER_H_

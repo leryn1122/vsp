@@ -4,27 +4,22 @@
 
 #include <chrono>
 
-namespace vsp
-{
+namespace vsp {
 
-namespace util
-{
+namespace util {
 
-class Timer
-{
+class Timer {
+ public:
+  Timer() {}
+  virtual ~Timer() {}
 
-public:
+  void tik() {}
+  void tok() {}
 
-  Timer(){}
-  virtual ~Timer(){}
+};  // class vsp::util::Timer
 
-  void tik(){}
-  void tok(){}
+};  // namespace util
 
-};  //  class vsp::util::Timer
+};  // namespace vsp
 
-};  //  namespace vsp::util
-
-};  //  namespace vsp
-
-#endif  //  _VSP_UTILS_TIMER_H_
+#endif  // _VSP_UTILS_TIMER_H_

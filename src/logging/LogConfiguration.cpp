@@ -1,13 +1,9 @@
-#include "fwd.hpp"
 #include "LogConfiguration.hpp"
 
-namespace vsp
-{
+#include "fwd.hpp"
 
-namespace log
-{
+namespace vsp {
 
+namespace log {};  // namespace log
 
-};  //  namespace vsp::log
-
-};  //  namespace vsp
+};  // namespace vsp

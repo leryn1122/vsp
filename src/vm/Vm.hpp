@@ -2,49 +2,36 @@
 #ifndef _VSP_VM_VM_H_
 #define _VSP_VM_VM_H_
 
-#include "fwd.hpp"
 #include "VmProperty.hpp"
+#include "fwd.hpp"
 
-namespace vsp
-{
+namespace vsp {
 
-namespace vm
-{
+namespace vm {
 
-struct VirtualMachineStruct
-{
+struct VirtualMachineStruct {};  // VirtualMachineStruct
 
-};  //  VirtualMachineStruct
-
-class VirtualMachine
-{
-
-public:
-
+class VirtualMachine {
+ public:
   static VirtualMachine create_vm();
   static void destory_vm();
 
   static bool is_supported_vsp_version(int version);
 
-
-private:
-
-
+ private:
   std::vector<SystemProperty> _system_properites;
 
-public:
+ public:
+  VirtualMachine() {}
+  virtual ~VirtualMachine() {}
 
-  VirtualMachine(){}
-  virtual ~VirtualMachine(){}
-
-private:
+ private:
   void init_specific_system_properites();
 
+};  // class vsp::vm::VirtualMachine
 
-};  //  class vsp::vm::VirtualMachine
+};  // namespace vm
 
-};  //  namespace vsp::vm
+};  // namespace vsp
 
-};  //  namespace vsp
-
-#endif  //  _VSP_VM_VM_H_
+#endif  // _VSP_VM_VM_H_

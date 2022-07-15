@@ -4,21 +4,18 @@
 
 #include "fwd.hpp"
 
-namespace vsp
-{
+namespace vsp {
 
-namespace fs
-{
+namespace fs {
 
-class FileSystemOptions
-{
-public:
+class FileSystemOptions {
+ public:
   std::string working_dir;
 
-};  //  class vsp::fs::FileSystemOptions
+};  // class vsp::fs::FileSystemOptions
 
-};  //  namespace vsp::fs
+};  // namespace fs
 
-};  //  namespace vsp
+};  // namespace vsp
 
-#endif  //  _VSP_FS_FILE_SYSTEM_OPTIONS_H_
+#endif  // _VSP_FS_FILE_SYSTEM_OPTIONS_H_

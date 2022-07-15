@@ -1,18 +1,16 @@
-#include "fwd.hpp"
 #include "Parser.hpp"
 
-namespace vsp
-{
+#include "fwd.hpp"
 
-namespace comp
-{
+namespace vsp {
 
-//  begin of class vsp::comp::CharBuffer
+namespace comp {
 
-CharBuffer CharBuffer::allocate(unsigned int capacity)
-{
+// begin of class vsp::comp::CharBuffer
+
+CharBuffer CharBuffer::allocate(unsigned int capacity) {
 #ifdef __linux__
-  char* array = (char*) malloc(capacity * sizeof(char));
+  char* array = (char*)malloc(capacity * sizeof(char));
 #elif _WIN32
   char* array = ;
 #endif
@@ -27,40 +25,22 @@ CharBuffer::~CharBuffer() {
 #endif
 }
 
-void CharBuffer::wrap(char* array, unsigned int offset, unsigned int length)
-{
+void CharBuffer::wrap(char* array, unsigned int offset, unsigned int length) {}
 
-}
+unsigned int CharBuffer::capacity() {}
 
-unsigned int CharBuffer::capacity()
-{
-  
-}
+inline bool CharBuffer::has_array() const { return buff != nullptr; }
 
-inline
-bool CharBuffer::has_array() const
-{
-  return buff != nullptr;
-}
+CharBuffer CharBuffer::clear() { return *this; }
 
-CharBuffer CharBuffer::clear()
-{
-  return *this;
-}
+CharBuffer CharBuffer::compact() { return *this; }
 
-CharBuffer CharBuffer::compact()
-{
-  return *this;
-}
+// class vsp::comp::CharBuffer
 
-//  class vsp::comp::CharBuffer
+// begin of class vsp::comp::Parser
 
-//  begin of class vsp::comp::Parser
+// class vsp::comp::Parser
 
+};  // namespace comp
 
-
-//  class vsp::comp::Parser
-
-};  //  namespace vsp::comp
-
-};  //  namespace vsp
+};  // namespace vsp

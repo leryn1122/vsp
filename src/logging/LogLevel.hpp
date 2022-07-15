@@ -3,46 +3,38 @@
 #define _VSP_LOG_LEVEL_H_
 
 #define _LOG_LEVEL_LIST_M_        \
-  _LOG_LEVEL_M_(TRACE  , trace  ) \
-  _LOG_LEVEL_M_(DEBUG  , debug  ) \
-  _LOG_LEVEL_M_(INFO   , info   ) \
+  _LOG_LEVEL_M_(TRACE, trace)     \
+  _LOG_LEVEL_M_(DEBUG, debug)     \
+  _LOG_LEVEL_M_(INFO, info)       \
   _LOG_LEVEL_M_(WARNING, warning) \
-  _LOG_LEVEL_M_(ERROR  , error  )
+  _LOG_LEVEL_M_(ERROR, error)
 
-namespace vsp
-{
+namespace vsp {
 
-namespace log
-{
+namespace log {
 
-class LogLevel
-{
-
-public:
-
+class LogLevelType {
+ public:
   enum type {
     OFF,
 #define _LOG_LEVEL_M_(name, text) name,
     _LOG_LEVEL_LIST_M_
 #undef _LOG_LEVEL_M_
-  };  //  enum LogLevel::type
+  };  // enum LogLevelType::type
 
-  static const char *name(LogLevel::type level)
-  {
-    return _name[level];
-  }
+  static const char* name(LogLevelType::type level) { return _name[level]; }
 
-  static LogLevel::type from_string(const char* str);
+  static LogLevelType::type from_string(const char* str);
 
-private:
+ private:
   static const char* _name[];
 
-};  //  class vsp::log::LogLevel
+};  // class vsp::log::LogLevelType
 
-typedef LogLevel::type LogLevelType;
+typedef LogLevelType::type LogLevel;
 
-};  //  namespace vsp::log
+};  // namespace log
 
-};  //  namespace vsp
+};  // namespace vsp
 
-#endif  //  _VSP_LOG_LEVEL_H_
+#endif  // _VSP_LOG_LEVEL_H_

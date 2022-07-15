@@ -4,11 +4,9 @@
 
 #include "fwd.hpp"
 
-namespace vsp
-{
+namespace vsp {
 
-namespace log
-{
+namespace log {
 
 /**
  *  Interface for miscellaneous log appenders.
@@ -18,19 +16,17 @@ class LogAppender /* interface */
 {
   friend class LogConfiguration;
 
-private:
-  bool _reconfigureable = false;
+ private:
+  bool reconfigureable = false;
 
+ public:
+  LogAppender() : reconfigureable(false) {}
+  virtual ~LogAppender() {}
 
-public:
+};  // class vsp::log::LogAppender
 
-  LogAppender() : _reconfigureable(false){}
-  virtual ~LogAppender(){}
+};  // namespace log
 
-};  //  class vsp::log::LogAppender
+};  // namespace vsp
 
-};  //  namespace vsp::log
-
-};  //  namespace vsp
-
-#endif  //  _VSP_LOG_APPENDER_H_
+#endif  // _VSP_LOG_APPENDER_H_

@@ -1,20 +1,16 @@
-#include "fwd.hpp"
 #include "SourceLocation.hpp"
 
-namespace vsp
-{
+#include "fwd.hpp"
 
-namespace comp
-{
+namespace vsp {
 
-//  begin of class vsp::comp::SourceLocation
-//class SourceLocation
+namespace comp {
 
+// begin of class vsp::comp::SourceLocation
+// class SourceLocation
 
+// class vsp::comp::SourceLocation
 
+};  // namespace comp
 
-//  class vsp::comp::SourceLocation
-
-};  //  namespace vsp::comp
-
-};  //  namespace vsp
+};  // namespace vsp

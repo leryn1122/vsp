@@ -4,32 +4,25 @@
 
 #include "fwd.hpp"
 
-namespace vsp
-{
+namespace vsp {
 
-namespace comp
-{
+namespace comp {
 
-class Preprocessor
-{
+class Preprocessor {
+  Preprocessor() {}
+  virtual ~Preprocessor() {}
 
-  Preprocessor(){}
-  virtual ~Preprocessor(){}
+};  // class vsp::comp::Preprocessor
 
-};  //  class vsp::comp::Preprocessor
+class PreprocessorCallback {
+ public:
+  PreprocessorCallback() {}
+  virtual ~PreprocessorCallback() {}
 
-class PreprocessorCallback
-{
+};  // class vsp::comp::PreprocessorCallback
 
-public:
+};  // namespace comp
 
-  PreprocessorCallback(){}
-  virtual ~PreprocessorCallback(){}
+};  // namespace vsp
 
-};  //  class vsp::comp::PreprocessorCallback
-
-};  //  namespace vsp::comp
-
-};  //  namespace vsp
-
-#endif  //  _VSP_COMP_PREPROCESSOR_H_
+#endif  // _VSP_COMP_PREPROCESSOR_H_

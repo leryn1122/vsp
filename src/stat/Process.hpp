@@ -3,30 +3,25 @@
 #define _VSP_STAT_PROCESS_H_
 
 #ifdef __linux__
-#include "os_nix.hpp"
 #include "VmConstant.hpp"
+#include "os_nix.hpp"
 #endif
 
-namespace vsp
-{
+namespace vsp {
 
-namespace stat
-{
+namespace stat {
 
-struct VMProcessSketch
-{
+struct VMProcessSketch {
   VMProcessSketch(uint pid, string pname)
-    : pid(std::move(pid))
-    , pname(std::move(pname))
-  {}
-  uint         pid;
-  string  pname;
-};  //  struct process
+      : pid(std::move(pid)), pname(std::move(pname)) {}
+  uint pid;
+  string pname;
+};  // struct process
 
 std::vector<VMProcessSketch> get_pids();
 
-};  //  namespace vsp::stat
+};  // namespace stat
 
-};  //  namespace vsp
+};  // namespace vsp
 
-#endif  //  _VSP_STAT_PROCESS_H_
+#endif  // _VSP_STAT_PROCESS_H_

@@ -5,28 +5,22 @@
 
 #include "fwd.hpp"
 
-namespace vsp
-{
+namespace vsp {
 
-namespace sys
-{
+namespace sys {
 
 string get_passwd_name();
 
-class Nix
-{
+class Nix {
+ public:
+ private:
+  static uint32_t _os_version;
 
-public:
+};  // class Nix
 
-private:
-	static uint32_t _os_version;
+};  // namespace sys
 
+};  // namespace vsp
 
-};  //  class Nix
-
-};  //  namespace vsp::sys
-
-};  //  namespace vsp
-
-#endif  //  _VSP_SYS_OS_NIX_H_
-#endif  //  _WIN32
+#endif  // _VSP_SYS_OS_NIX_H_
+#endif  // _WIN32

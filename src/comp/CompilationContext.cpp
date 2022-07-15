@@ -1,17 +1,13 @@
 #include "fwd.hpp"
 
-namespace vsp
-{
+namespace vsp {
 
-namespace comp
-{
+namespace comp {
 
-//  begin of class vsp::comp::Context
+// begin of class vsp::comp::Context
 
+// end of class vsp::comp::Sample
 
+};  // namespace comp
 
-//  end of class vsp::comp::Sample
-
-};  //  namespace vsp::comp
-
-};  //  namespace vsp
+};  // namespace vsp

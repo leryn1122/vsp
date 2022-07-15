@@ -1,8 +1,9 @@
+#include "Repl.hpp"
+
 #include <fstream>
 
 #include "Argparser.hpp"
 #include "fwd.hpp"
-#include "Repl.hpp"
 
 #define VSP_HISTORY_FILE ".vsp_history"
 
@@ -10,93 +11,73 @@
 #include "os_nix.hpp"
 #endif
 
-namespace vsp
-{
+namespace vsp {
 
-namespace cli
-{
+namespace cli {
 
-void repl(vsp::cli::ArgParser argparser)
-{
+void repl(vsp::cli::ArgParser argparser) {
   Shell shell;
   shell.register_builtin_shutdown_hook();
   shell.run();
 }
 
-//  begin of class vsp::cli::Shell
-//class Shell
+// begin of class vsp::cli::Shell
+// class Shell
 
-  void Shell::run()
-  {
-    std::cout << "\n  Hello, it's Vesperace ~\n" << std::endl;
+void Shell::run() {
+  std::cout << "\n  Hello, it's Vesperace ~\n" << std::endl;
+  std::cout << this->get_prompt(this->_rownum);
+  string line;
+  while (getline(std::cin, line)) {
+    string result = this->eval(line);
+    std::cout << "   > " << result;
+    std::cout << std::endl;
     std::cout << this->get_prompt(this->_rownum);
-    string line;
-    while(getline(std::cin, line))
-    {
-      string result = this->eval(line);
-      std::cout << "   > " << result;
-      std::cout << std::endl;
-      std::cout << this->get_prompt(this->_rownum);
-      this->_rownum++;
-    }
+    this->_rownum++;
+  }
+  terminate();
+}
+
+string Shell::get_prompt(int rownum) { return this->_prompt; }
+
+string Shell::eval(string line) {
+  if (line == "exit" || line == "quit") {
     terminate();
   }
+  // TODO:
+  return line;
+}
 
-  string Shell::get_prompt(int rownum) {
-    return this->_prompt;
+[[noreturn]] int Shell::terminate() {
+  for (auto shutdown_hook : this->_shutdown_hooks) {
+    shutdown_hook();
   }
+  std::exit(EXIT_SUCCESS);
+}
 
-  string Shell::eval(string line)
-  {
-    if (line == "exit" || line == "quit")
-    {
-      terminate();
-    }
-    // TODO: 
-    return line;
-  }
+void Shell::register_shutdown_hook(std::function<void(void)> shutdown_hook) {
+  this->_shutdown_hooks.insert(this->_shutdown_hooks.cend(), shutdown_hook);
+}
 
-  [[noreturn]]
-  int Shell::terminate()
-  {
-    for (auto shutdown_hook : this->_shutdown_hooks)
-    {
-      shutdown_hook();
-    }
-    std::exit(EXIT_SUCCESS);
-  }
+void Shell::register_builtin_shutdown_hook() {
+  register_shutdown_hook([this]() { store_history(); });
+  register_shutdown_hook([]() { std::cout << "\n  Bye ~\n" << std::endl; });
+}
 
-  void Shell::register_shutdown_hook(std::function<void(void)> shutdown_hook)
-  {
-    this->_shutdown_hooks.insert(this->_shutdown_hooks.cend(), shutdown_hook);
-  }
-
-  void Shell::register_builtin_shutdown_hook()
-  {
-    register_shutdown_hook([this](){
-      store_history();
-    });
-    register_shutdown_hook([](){
-      std::cout << "\n  Bye ~\n" << std::endl;
-    });
-  }
-
-  void Shell::store_history()
-  {
-    string history_file = "";
+void Shell::store_history() {
+  string history_file = "";
 #ifdef __linux__
-    history_file = history_file + vsp::sys::get_homedir()
-          + fs::path::preferred_separator
-          + VSP_HISTORY_FILE;
+  history_file = history_file + vsp::sys::get_homedir() +
+                 fs::path::preferred_separator + VSP_HISTORY_FILE;
 #elif _WIN32
 #endif
-    std::ofstream ofs(history_file, std::ios::app|std::ios::out);
-    // TODO:
-    ofs << "hello" << std::endl;
-  }
+  std::ofstream ofs(history_file, std::ios::app | std::ios::out);
+  // TODO:
+  ofs << "hello" << std::endl;
+}
 
-//  class vsp::cli::Shell
+// class vsp::cli::Shell
 
-};  //  namespace vsp::cli
+};  // namespace cli
 
-};  //  namespace vsp
+};  // namespace vsp

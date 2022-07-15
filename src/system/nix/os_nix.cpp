@@ -1,30 +1,24 @@
 #include <pwd.h>
 #include <unistd.h>
+
 #include "fwd.hpp"
 
-namespace vsp
-{
+namespace vsp {
 
-namespace sys
-{
+namespace sys {
 
-string get_passwd_name()
-{
+string get_passwd_name() {
   struct passwd *pwd = getpwuid(getuid());
   return pwd->pw_name;
 }
 
-string get_homedir()
-{
+string get_homedir() {
   struct passwd *pwd = getpwuid(getuid());
   return string(pwd->pw_dir);
 }
 
-string get_tempdir()
-{
-  return "/tmp";
-}
+string get_tempdir() { return "/tmp"; }
 
-};  //  namespace vsp::sys
+};  // namespace sys
 
-};  //  namespace vsp
+};  // namespace vsp

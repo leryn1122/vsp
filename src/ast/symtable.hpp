@@ -4,26 +4,20 @@
 
 #include "fwd.hpp"
 
-namespace vsp
-{
+namespace vsp {
 
-namespace ast
-{
+namespace ast {
 
-class SymTable
-{
+class SymTable {
+ private:
+ public:
+  SymTable() {}
+  virtual ~SymTable() {}
 
-private:
+}  // class vsp::ast::SymTable
 
-public:
+};  // namespace ast
 
-  SymTable(){}
-  virtual ~SymTable(){}
+};  // namespace vsp
 
-}  //  class vsp::ast::SymTable
-
-};  //  namespace vsp::ast
-
-};  //  namespace vsp
-
-#endif  //  _VSP_AST_SYMTABLE_H_
+#endif  // _VSP_AST_SYMTABLE_H_

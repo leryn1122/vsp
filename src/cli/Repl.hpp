@@ -9,32 +9,27 @@
 
 /**
  *  Create a interactive shell to Vesperace runtime interpreter.
- *  
- *  
- *  
- *  
- *  
+ *
+ *
+ *
+ *
+ *
  */
-namespace vsp
-{
+namespace vsp {
 
-namespace cli
-{
+namespace cli {
 
 void repl(vsp::cli::ArgParser argparser);
 
-class Shell
-{
-
-private:
+class Shell {
+ private:
   string _prompt = "vsp> ";
-  int    _rownum = 0;
+  int _rownum = 0;
   std::list<std::function<void(void)>> _shutdown_hooks;
 
-public:
-  
-  Shell(){}
-  virtual ~Shell(){}
+ public:
+  Shell() {}
+  virtual ~Shell() {}
 
   void run();
 
@@ -42,8 +37,7 @@ public:
 
   string eval(string line);
 
-  [[noreturn]]
-  int terminate();
+  [[noreturn]] int terminate();
 
   void register_shutdown_hook(std::function<void(void)> shutdown_hook);
 
@@ -51,12 +45,11 @@ public:
 
   void store_history();
 
-private:
+ private:
+};  // class vsp::cli::Shell
 
-};  //  class vsp::cli::Shell
+};  // namespace cli
 
-};  //  namespace vsp::cli
+};  // namespace vsp
 
-};  //  namespace vsp
-
-#endif  //  _VSP_CLI_REPL_H_
+#endif  // _VSP_CLI_REPL_H_

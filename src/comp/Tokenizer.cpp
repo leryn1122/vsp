@@ -1,17 +1,14 @@
 #include "fwd.hpp"
 
-namespace vsp
-{
+namespace vsp {
 
-namespace comp
-{
+namespace comp {
 
-//  begin of class vps::comp::Tokenizer
-//class Tokenizer {
+// begin of class vps::comp::Tokenizer
+// class Tokenizer {
 
+// class vps::comp::Tokenizer
 
-//  class vps::comp::Tokenizer
+};  // namespace comp
 
-};  //  namespace vsp::comp
-
-};  //  namespace vsp
+};  // namespace vsp

@@ -4,32 +4,26 @@
 
 #include "LogAppender.hpp"
 
-namespace vsp
-{
+namespace vsp {
 
-namespace log
-{
+namespace log {
 
 /**
  *  Log configuration: Singleton class.
- *  
+ *
  */
-class LogConfiguration
-{
-
-private:
-
+class LogConfiguration {
+ private:
   static LogAppender** _appenders;
 
-public:
+ public:
+  LogConfiguration() {}
+  virtual ~LogConfiguration() {}
 
-  LogConfiguration(){}
-  virtual ~LogConfiguration(){}
+};  // class vsp::log::LogConfiguration
 
-};  //  class vsp::log::LogConfiguration
+};  // namespace log
 
-};  //  namespace vsp::log
+};  // namespace vsp
 
-};  //  namespace vsp
-
-#endif  //  _VSP_LOG_CONF_H_
+#endif  // _VSP_LOG_CONF_H_

@@ -5,29 +5,23 @@
 #include "LogConfiguration.hpp"
 #include "fwd.hpp"
 
-namespace vsp
-{
+namespace vsp {
 
-namespace comp
-{
+namespace comp {
 
-class Context
-{
-private:
+class Context {
+ private:
   vsp::log::LogConfiguration logConfiguration;
 
-public:
-  Context(){}
-  virtual ~Context(){}
+ public:
+  Context() {}
+  virtual ~Context() {}
 
-private:
+ private:
+};  // class vsp::comp::Context
 
-  
+};  // namespace comp
 
-};  //  class vsp::comp::Context
+};  // namespace vsp
 
-};  //  namespace vsp::comp
-
-};  //  namespace vsp
-
-#endif  //  _VSP_COMP_CTX_H_
+#endif  // _VSP_COMP_CTX_H_
