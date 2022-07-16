@@ -20,14 +20,14 @@ CharBuffer CharBuffer::allocate(unsigned int capacity) {
 
 CharBuffer::~CharBuffer() {
 #ifdef __linux__
-  free(buff);
+  // free(this->buff);
 #elif _WIN32
 #endif
 }
 
 void CharBuffer::wrap(char* array, unsigned int offset, unsigned int length) {}
 
-unsigned int CharBuffer::capacity() {}
+unsigned int CharBuffer::capacity() const { return 0; }
 
 inline bool CharBuffer::has_array() const { return buff != nullptr; }
 

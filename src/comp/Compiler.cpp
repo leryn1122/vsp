@@ -7,6 +7,7 @@
 #include "CompilationContext.hpp"
 #include "Log.hpp"
 #include "Parser.hpp"
+#include "Tokenizer.hpp"
 #include "fwd.hpp"
 
 namespace vsp {
@@ -24,7 +25,7 @@ namespace comp {
 
 void compile(vsp::cli::ArgParser argparser) {
   Compiler compiler(argparser);
-  Context context;
+  Context  context;
   compiler.execute(argparser, context);
 }
 
@@ -59,7 +60,6 @@ void Compiler::do_compile() {
   auto buff = CharBuffer::allocate(1 << 14);
   while (!buff.read_buff(ifs)) {
   }
-
   ifs.close();
 
   this->timer.tok();

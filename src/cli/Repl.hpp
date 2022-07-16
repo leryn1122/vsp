@@ -7,14 +7,14 @@
 #include "Argparser.hpp"
 #include "fwd.hpp"
 
-/**
- *  Create a interactive shell to Vesperace runtime interpreter.
- *
- *
- *
- *
- *
- */
+///
+/// Create a interactive shell to Vesperace runtime interpreter.
+///
+///
+///
+///
+///
+///
 namespace vsp {
 
 namespace cli {

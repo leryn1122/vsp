@@ -2,12 +2,14 @@
 #ifndef _VSP_LOG_LEVEL_H_
 #define _VSP_LOG_LEVEL_H_
 
+// clang-format off
 #define _LOG_LEVEL_LIST_M_        \
-  _LOG_LEVEL_M_(TRACE, trace)     \
-  _LOG_LEVEL_M_(DEBUG, debug)     \
-  _LOG_LEVEL_M_(INFO, info)       \
+  _LOG_LEVEL_M_(TRACE  , trace  ) \
+  _LOG_LEVEL_M_(DEBUG  , debug  ) \
+  _LOG_LEVEL_M_(INFO   , info   ) \
   _LOG_LEVEL_M_(WARNING, warning) \
-  _LOG_LEVEL_M_(ERROR, error)
+  _LOG_LEVEL_M_(ERROR  , error  )
+// clang-format on
 
 namespace vsp {
 
@@ -33,7 +35,7 @@ class LogLevelType {
 
 typedef LogLevelType::type LogLevel;
 
-};  // namespace log
+};  // namespace vsp::log
 
 };  // namespace vsp
 

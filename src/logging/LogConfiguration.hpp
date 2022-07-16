@@ -8,10 +8,10 @@ namespace vsp {
 
 namespace log {
 
-/**
- *  Log configuration: Singleton class.
- *
- */
+///
+/// Log configuration: Singleton class.
+///
+///
 class LogConfiguration {
  private:
   static LogAppender** _appenders;

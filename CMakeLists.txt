@@ -56,8 +56,8 @@ SET(vsp_VERSION_MINOR 0)
 SET(vsp_VERSION_PATCH 1)
 SET(vsp_VERSION       ${vsp_VERSION_MAJOR}.${vsp_VERSION_MINOR}.${vsp_VERSION_PATCH})
 CONFIGURE_FILE(
-  "${vsp_SRC_DIR}/Version.hpp.in"
-  "${vsp_SRC_DIR}/Version.hpp"
+  "${vsp_SRC_DIR}/version.hpp.in"
+  "${vsp_SRC_DIR}/version.hpp"
 )
 MESSAGE("    Current version: ${vsp_VERSION}")
 
@@ -107,7 +107,7 @@ MESSAGE_LIST(${vsp_HEAD_DIR})
 #-----------------------------------------------------------
 
 MESSAGE(">>> Executables (src/bin/*.cpp):")
-LIST(TRANSFORM vsp_BIN_FILES REPLACE "${vsp_SRC_DIR}/bin/(.*).cpp" "\\1" OUTPUT_VARIABLE vsp_EXECUTABLES)
+LIST(TRANSFORM vsp_BIN_FILES REPLACE "${vsp_SRC_DIR}/bin/(vsp.*).cpp" "\\1" OUTPUT_VARIABLE vsp_EXECUTABLES)
 set(vsp_EXECUTABLES
   "vspc"
   # "vspr"

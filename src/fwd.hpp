@@ -16,8 +16,8 @@
 #include <typeinfo>
 #include <vector>
 
-#include "Version.hpp"
 #include "basic/Lang.hpp"
+#include "version.hpp"
 
 // Global aliases
 typedef std::string string;

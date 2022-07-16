@@ -24,12 +24,13 @@ class CharBuffer {
   static void wrap(char* array, unsigned int offset, unsigned int length);
 
  private:
-  char* buff;
-  unsigned int offset = 0;
-  bool read_only = false;
+  char*        buff;
+  unsigned int offset    = 0;
+  bool         read_only = false;
 
  public:
   CharBuffer() {}
+  CharBuffer(char* buff) : buff(std::move(buff)) {}
   virtual ~CharBuffer();
 
  public:
@@ -37,15 +38,15 @@ class CharBuffer {
 
   CharBuffer duplicate();
 
-  CharBuffer as_readonly_buffer();
+  CharBuffer as_readonly_buffer() const;
 
-  unsigned int capacity();
+  unsigned int capacity() const;
 
   char get(unsigned int index) const;
 
-  char get_unchecked(unsigned int index);
+  char get_unchecked(unsigned int index) const;
 
-  CharBuffer get_array(unsigned int index, char* array);
+  CharBuffer get_array(unsigned int index, char* array) const;
 
   CharBuffer put(char ch);
 
@@ -61,11 +62,11 @@ class CharBuffer {
 
   CharBuffer compact();
 
-  char at(unsigned int index);
+  char at(unsigned int index) const;
 
   bool is_empty() const { return false; }
 
-  unsigned int size();
+  unsigned int size() const;
 
   bool read_buff(std::istream&) { return true; }
 

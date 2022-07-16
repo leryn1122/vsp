@@ -8,10 +8,10 @@ namespace vsp {
 
 namespace log {
 
-/**
- *  Interface for miscellaneous log appenders.
- *
- */
+/// 
+/// Interface for miscellaneous log appenders.
+/// 
+/// 
 class LogAppender /* interface */
 {
   friend class LogConfiguration;

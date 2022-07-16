@@ -10,40 +10,40 @@
 #include <typeinfo>
 #include <vector>
 
-#include "Version.hpp"
 #include "fwd.hpp"
+#include "version.hpp"
 
-/**
- *  Reference on: https://github.com/0382/util/cpp/argparse/argparse.hpp
- *
- *  Create an argument parser instance in chain invocation of option
- * registrations.
- *
- *  Options are registered with a long name and an alternaitive short name.
- *  Options are seperated into two types:
- *    - Normal option:
- *
- *    - Short circuit option
- *      Once met short circuit, the program would invoke callback, and be
- *      exited immediately.
- *
- *
- *
- *
- *  ```cpp
- *  ArgParser argparser = vsp::cli::ArgParser(CMD)
- *      .set_intro("Vsp Language Compiler")
- *      .add_help_option()
- *      .add_version_option()
- *      .add_option("-d", "--debug", "Enable debug mode.")
- *      .add_option("", "--feature", "Enable specified feature.")
- *      .add_option("", "--profile", "Activate the specified profile to enable
- * those APIs.") .add_option<int>("-t", "--thread", "Set the parallel thread to
- * compile source.", 4) .add_option("-v", "--verbose", "Enable verbose mode.")
- *      .set_example("");
- *      .parse(argc, argv);
- *  ```
- */
+///
+/// Reference on: https://github.com/0382/util/cpp/argparse/argparse.hpp
+///
+/// Create an argument parser instance in chain invocation of option
+/// registrations.
+///
+/// Options are registered with a long name and an alternaitive short name.
+/// Options are seperated into two types:
+///   - Normal option:
+///
+///   - Short circuit option
+///     Once met short circuit, the program would invoke callback, and be
+///     exited immediately.
+///
+///
+///
+///
+/// ```cpp
+/// ArgParser argparser = vsp::cli::ArgParser(CMD)
+///     .set_intro("Vsp Language Compiler")
+///     .add_help_option()
+///     .add_version_option()
+///     .add_option("-d", "--debug", "Enable debug mode.")
+///     .add_option("", "--feature", "Enable specified feature.")
+///     .add_option("", "--profile", "Activate the specified profile to enable
+///     those APIs") ///     .add_option<int>("-t", "--thread", "Set the
+///     parallel thread to compile source.", 4) ///     .add_option("-v",
+///     "--verbose", "Enable verbose mode.") .set_example(""); .parse(argc,
+///     argv);
+/// ```
+///
 namespace vsp {
 
 namespace cli {
@@ -90,7 +90,7 @@ string to_string(const T &value) {
 template <typename T>
 T parse_value(const string &value) {
   std::istringstream iss(value);
-  T result;
+  T                  result;
   iss >> result;
   return result;
 }
@@ -121,9 +121,9 @@ struct ShortCircuitOption {
         description(std::move(description)),
         callback(std::move(callback)) {}
 
-  string short_name;
-  string long_name;
-  string description;
+  string                    short_name;
+  string                    long_name;
+  string                    description;
   std::function<void(void)> callback;
 };  // struct ShortCircuitOption
 
@@ -139,12 +139,12 @@ struct Argument {
 
 class ArgParser {
  private:
-  string _executable;
-  string _intro;
-  std::vector<Argument> _arguments;
-  std::vector<Option> _options;
+  string                          _executable;
+  string                          _intro;
+  std::vector<Argument>           _arguments;
+  std::vector<Option>             _options;
   std::vector<ShortCircuitOption> _short_circuit_options;
-  string _example;
+  string                          _example;
 
  public:
   ArgParser() {}
@@ -196,7 +196,7 @@ class ArgParser {
   }
 
   ArgParser &add_short_circuit_option(string short_name, string long_name,
-                                      string help,
+                                      string                    help,
                                       std::function<void(void)> callback) {
     if (short_name != "") {
       validate_option_short_name(short_name);
@@ -350,9 +350,9 @@ Where options may any of:
     }
   }
 
-  /**
-   * Entry point to parse arguments after option registration.
-   */
+  /// 
+  /// Entry point to parse arguments after option registration.
+  /// 
   ArgParser parse(int argc, char *argv[]) {
     std::ios::sync_with_stdio(false);
 
@@ -409,7 +409,7 @@ Where options may any of:
         for (; pos != tokens.cend(); pos++) {
           if ((*pos).front() != '-') {
             option.value = *pos;
-            pos = tokens.erase(pos);
+            pos          = tokens.erase(pos);
           } else {
             break;
           }
@@ -428,7 +428,7 @@ Where options may any of:
       for (auto pos = tokens.begin(); pos != tokens.end();) {
         if (try_parse_argument(*pos, arg)) {
           arg.value = *pos;
-          pos = tokens.erase(pos);
+          pos       = tokens.erase(pos);
           break;
         }
         pos++;
@@ -485,7 +485,7 @@ Where options may any of:
 
   // alias exactly
 
-  bool has_option(const string name) const { return get_option<bool>(name); }
+  bool   has_option(const string name) const { return get_option<bool>(name); }
   string get_option_str(const string name) const {
     return get_option<string>(name);
   }
@@ -508,7 +508,7 @@ Where options may any of:
 
   using ShortCircuitOptionIterator =
       std::vector<ShortCircuitOption>::const_iterator;
-  using OptionIterator = std::vector<Option>::const_iterator;
+  using OptionIterator   = std::vector<Option>::const_iterator;
   using ArgumentIterator = std::vector<Argument>::const_iterator;
 
   // Find option.
