@@ -2,6 +2,9 @@
 #ifndef _VSP_FS_CHAR_BUFFER_H_
 #define _VSP_FS_CHAR_BUFFER_H_
 
+#include <cstring>
+#include <fstream>
+
 #include "fwd.hpp"
 
 namespace vsp {
@@ -10,11 +13,20 @@ namespace fs {
 
 /// class CharBuffer
 ///
-/// A flipping char buffer to accept the char stream read from the soource file.
+/// Inspired from `java.nio.CharBuffer`
 ///
+/// A flipping char buffer to accept the char stream read from the source file.
+/// The buffer manages set of pointers:
+///   - cap   : Capacity of char array;
+///   - pos   : Start posistion to read.
+///   - limit : Limit of read boundary.
+///   - mark  : Marked limit of read boundary.
 /// ```c++
 /// auto buffer = CharBuffer::allocate(1<<10);
 /// ```
+///
+///
+///
 class CharBuffer {
  public:
   static CharBuffer allocate(unsigned int capacity);
@@ -23,11 +35,10 @@ class CharBuffer {
 
  private:
   char*        buff;
-  unsigned int mark      = -1;
-  unsigned int _position = 0;
-  unsigned int _capacity = 0;
+  unsigned int _mark     = -1;
+  unsigned int pos       = 0;
+  unsigned int cap       = 0;
   unsigned int _limit    = 0;
-  unsigned int offset    = 0;
   bool         read_only = false;
 
  public:
@@ -38,11 +49,9 @@ class CharBuffer {
  public:
   CharBuffer slice(unsigned int index, unsigned int length);
 
-  CharBuffer duplicate();
-
   CharBuffer as_readonly_buffer() const;
 
-  unsigned int capacity() const { return this->_capacity; }
+  unsigned int capacity() const { return this->cap; }
 
   char get(unsigned int index) const;
 
@@ -54,19 +63,60 @@ class CharBuffer {
 
   inline bool has_array() const;
 
-  CharBuffer limit(unsigned int new_limit);
-
-  CharBuffer position(unsigned int new_position) {
-    if (this->mark > new_position) {
-      this->mark = -1;
+  CharBuffer limit(unsigned int new_limit) {
+    _limit = new_limit;
+    if (pos > new_limit) {
+      pos = new_limit;
     }
-    this->_position = new_position;
+    if (this->_mark > new_limit) {
+      this->_mark = -1;
+    }
     return *this;
   }
 
-  CharBuffer clear();
+  CharBuffer position(unsigned int new_position) {
+    if (this->_mark > new_position) {
+      this->_mark = -1;
+    }
+    this->pos = new_position;
+    return *this;
+  }
 
-  CharBuffer flip();
+  CharBuffer mark() {
+    this->_mark = this->pos;
+    return *this;
+  }
+
+  CharBuffer reset() {
+    this->pos = this->_mark;
+    return *this;
+  }
+
+  CharBuffer clear() {
+    this->pos    = 0;
+    this->_limit = this->cap;
+    this->_mark  = -1;
+    return *this;
+  }
+
+  CharBuffer flip() {
+    this->_limit = this->pos;
+    this->pos    = 0;
+    this->_mark  = -1;
+    return *this;
+  }
+
+  unsigned int remaining() {
+    auto remaining = this->_limit - this->pos;
+    return remaining > 0 ? remaining : 0;
+  }
+
+  const char* to_array() {
+    // const char* buff_s = {0};
+    // strncpy(buff, buff_s, _limit);
+    // return buff_s;
+    return this->buff;
+  }
 
   CharBuffer compact();
 
@@ -76,7 +126,7 @@ class CharBuffer {
 
   unsigned int size() const;
 
-  bool read_buff(std::istream&) { return true; }
+  bool read_buff(std::ifstream* ifs);
 
 };  // class vsp::fs::CharBuffer
 

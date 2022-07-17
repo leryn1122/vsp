@@ -10,11 +10,13 @@ namespace fs {
 
 CharBuffer CharBuffer::allocate(unsigned int capacity) {
 #ifdef __linux__
+  // char  array[capacity * sizeof(char)];
   char* array = (char*)malloc(capacity * sizeof(char));
+  // std::cout << capacity * sizeof(char) << std::endl;
 #elif _WIN32
-  char* array = ;
 #endif
   CharBuffer charBuffer(array);
+  // std::cout << sizeof(charBuffer.to_array()) / sizeof(char) << std::endl;
   return charBuffer;
 }
 
@@ -25,10 +27,10 @@ CharBuffer::~CharBuffer(){
 #endif
 }
 
-CharBuffer as_readonly_buffer() {
+CharBuffer CharBuffer::as_readonly_buffer() const {
 #ifdef __linux__
-  char* buff_s = (char*)malloc(capacity * sizeof(char));
-  strcpy_s(buff_s, buff);
+  char* buff_s = (char*)malloc(this->cap * sizeof(char));
+  strcpy(buff_s, this->buff);
   return buff_s;
 #elif _WIN32
   char* array = ;
@@ -40,9 +42,19 @@ void CharBuffer::wrap(char* array, unsigned int offset, unsigned int length) {}
 
 inline bool CharBuffer::has_array() const { return buff != nullptr; }
 
-CharBuffer CharBuffer::clear() { return *this; }
-
 CharBuffer CharBuffer::compact() { return *this; }
+
+bool CharBuffer::read_buff(std::ifstream* ifs) {
+  if (!ifs->is_open()) {
+    return 0;
+  }
+
+  // std::cout << sizeof(this->buff) / sizeof(char) << std::endl;
+  unsigned int status =
+      ifs->read(this->buff, sizeof(this->buff) / sizeof(char)).eof();
+  this->_limit = sizeof(this->buff) / sizeof(char);
+  return status;
+}
 
 // class vsp::fs::CharBuffer
 

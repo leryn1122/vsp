@@ -1,5 +1,7 @@
 #include "LogLevel.hpp"
 
+#include <cstring>
+
 #include "fwd.hpp"
 
 namespace vsp {

@@ -7,7 +7,6 @@
 #include "CharBuffer.hpp"
 #include "CompilationContext.hpp"
 #include "Log.hpp"
-#include "Parser.hpp"
 #include "Tokenizer.hpp"
 #include "fwd.hpp"
 
@@ -60,8 +59,11 @@ void Compiler::do_compile() {
     std::exit(EXIT_FAILURE);
   }
 
-  auto buff = CharBuffer::allocate(1 << 14);
-  while (!buff.read_buff(ifs)) {
+  auto buffer = CharBuffer::allocate(1 << 14);
+  while (!buffer.read_buff(&ifs)) {
+    buffer.flip();
+    // std::cout << "read0: " << buffer.to_array() << std::endl;
+    buffer.clear();
   }
   ifs.close();
 

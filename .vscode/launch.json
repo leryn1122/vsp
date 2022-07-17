@@ -11,6 +11,7 @@
       "target": "./release/bin/vspc",
       "cwd": "${workspaceRoot}",
       "valuesFormatting": "parseText",
+      "arguments": "LICENSE"
     },
     {
       "name": "Debug on vspr",
