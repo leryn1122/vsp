@@ -18,10 +18,21 @@ CharBuffer CharBuffer::allocate(unsigned int capacity) {
   return charBuffer;
 }
 
-CharBuffer::~CharBuffer() {
+CharBuffer::~CharBuffer(){
 #ifdef __linux__
-  // free(this->buff);
+// free(this->buff);
 #elif _WIN32
+#endif
+}
+
+CharBuffer as_readonly_buffer() {
+#ifdef __linux__
+  char* buff_s = (char*)malloc(capacity * sizeof(char));
+  strcpy_s(buff_s, buff);
+  return buff_s;
+#elif _WIN32
+  char* array = ;
+  return;
 #endif
 }
 
