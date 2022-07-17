@@ -10,8 +10,7 @@
       "request": "launch",
       "target": "./release/bin/vspc",
       "cwd": "${workspaceRoot}",
-      "valuesFormatting": "parseText",
-      "arguments": "LICENSE"
+      "valuesFormatting": "parseText"
     },
     {
       "name": "Debug on vspr",
