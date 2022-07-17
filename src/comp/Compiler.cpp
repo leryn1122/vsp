@@ -4,6 +4,7 @@
 #include <fstream>
 
 #include "Argparser.hpp"
+#include "CharBuffer.hpp"
 #include "CompilationContext.hpp"
 #include "Log.hpp"
 #include "Parser.hpp"
@@ -22,6 +23,8 @@ namespace comp {
    ((c) >= '0' && (c) <= '9'))
 #define IS_HEX_DIGIT(c) \
   (((c) >= 'A' && (c) <= 'F') || ((c) >= 'a' && (c) <= 'f'))
+
+typedef vsp::fs::CharBuffer CharBuffer;
 
 void compile(vsp::cli::ArgParser argparser) {
   Compiler compiler(argparser);

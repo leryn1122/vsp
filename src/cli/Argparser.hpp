@@ -106,11 +106,11 @@ struct Option {
         type(std::move(type)),
         value(std::move(value)) {}
 
-  string short_name;
-  string long_name;
-  string description;
-  string type;
-  string value;
+  std::string short_name;
+  std::string long_name;
+  std::string description;
+  std::string type;
+  std::string value;
 };  // struct Option
 
 struct ShortCircuitOption {
@@ -121,9 +121,9 @@ struct ShortCircuitOption {
         description(std::move(description)),
         callback(std::move(callback)) {}
 
-  string                    short_name;
-  string                    long_name;
-  string                    description;
+  std::string               short_name;
+  std::string               long_name;
+  std::string               description;
   std::function<void(void)> callback;
 };  // struct ShortCircuitOption
 
@@ -131,20 +131,20 @@ struct Argument {
   Argument(string name, string description)
       : name(std::move(name)), description(std::move(description)) {}
 
-  string name;
-  string description;
-  string type;
-  string value;
+  std::string name;
+  std::string description;
+  std::string type;
+  std::string value;
 };  // struct Argument
 
 class ArgParser {
  private:
-  string                          _executable;
-  string                          _intro;
+  std::string                     _executable;
+  std::string                     _intro;
   std::vector<Argument>           _arguments;
   std::vector<Option>             _options;
   std::vector<ShortCircuitOption> _short_circuit_options;
-  string                          _example;
+  std::string                     _example;
 
  public:
   ArgParser() {}
@@ -220,7 +220,7 @@ class ArgParser {
         });
   }
 
-  void print_help() {
+  void print_help() const {
     // Print usage:
     std::cout << this->_intro << "\n";
     std::cout << "\nUsage: " << this->_executable << "\n\n";
@@ -228,94 +228,15 @@ class ArgParser {
       std::cout << "    <" << arg.name << ">    " << arg.description;
     }
 
-    std::cout <<
-        //==============================================================================
-        ""
-        ""
-        ""
-        ""
-        ""
-        ""
-        ""
-        ""
-        ""
-        ""
-        ""
-        ""
-        ""
-        ""
-        ""
-        ""
-        ""
-        ""
-        ""
-        ""
-        ""
-        ""
-        ""
-        ""
-        ""
-        ""
-        ""
-        ""
-        ""
-        ""
-        ""
-        ""
-        ""
-        ""
-        ""
-        ""
-        ""
-        ""
-        R"(
+    std::cout << R"(
+
 Options may be in form of:
 
     --options [ params {...} ]
 
 Where options may any of:
 
-)"
-        ""
-        ""
-        ""
-        ""
-        ""
-        ""
-        ""
-        ""
-        ""
-        ""
-        ""
-        ""
-        ""
-        ""
-        ""
-        ""
-        ""
-        ""
-        ""
-        ""
-        ""
-        ""
-        ""
-        ""
-        ""
-        ""
-        ""
-        ""
-        ""
-        ""
-        ""
-        ""
-        ""
-        ""
-        ""
-        ""
-        ""
-        ""
-        //==============================================================================
-        ;
+)";
 
     // Max options name used for format.
     std::size_t max_name_length = 0;
@@ -350,9 +271,9 @@ Where options may any of:
     }
   }
 
-  /// 
+  ///
   /// Entry point to parse arguments after option registration.
-  /// 
+  ///
   ArgParser parse(int argc, char *argv[]) {
     std::ios::sync_with_stdio(false);
 
@@ -485,7 +406,8 @@ Where options may any of:
 
   // alias exactly
 
-  bool   has_option(const string name) const { return get_option<bool>(name); }
+  bool has_option(const string name) const { return get_option<bool>(name); }
+
   string get_option_str(const string name) const {
     return get_option<string>(name);
   }
@@ -545,7 +467,7 @@ Where options may any of:
 
   // Check option.
 
-  void validate_option_short_name(const string &short_name) {
+  void validate_option_short_name(const string &short_name) const {
     if (short_name.size() != 2 || short_name.front() != '-') {
       std::cerr << "Error: Short option must start with `-` followed by one "
                    "character:"
@@ -559,7 +481,7 @@ Where options may any of:
     }
   }
 
-  void validate_option_long_name(const string &long_name) {
+  void validate_option_long_name(const string &long_name) const {
     if (long_name.size() < 3) {
       std::cerr
           << "Error: Long options must be at least 3 characters in length."
@@ -579,7 +501,7 @@ Where options may any of:
     }
   }
 
-};  // class argparser
+};  // class vsp::cli::argparser
 
 };  // namespace cli
 

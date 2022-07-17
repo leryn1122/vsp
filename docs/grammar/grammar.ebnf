@@ -1,0 +1,39 @@
+<complication_unit> ::= <import_declarations> ? <type_declarations>
+
+<import_declarations> :: = <import_declaration> | <import_declarations> <import_declaration>
+<import_declaration> ::= import <type_name> ;
+
+<enum_identifier_declaration> ::= enum <class_identifier>
+<enum_type_declaration> ::= <enum_identifier_declaration> { }
+
+
+
+<primitive_type> ::= bool | byte | char | float | int | long
+
+
+<sign> ::= + | -
+<digit> ::= 0 | <non_zero_digit>
+<non_zero_digit> ::= 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9
+<hex_digit> ::= <non_zero_digit> | a | b | c | d | e | f | A | B | C | D | E | F
+<hex_digits> ::= <hex_digit> | <hex_digits> <hex_digit> 
+
+<octal_digit> ::= 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7
+<octal_digits> ::= <octal_digit> | <octal_digits> <octal_digit>
+
+<exponent_indicator> ::= e | E
+<signed_integer> ::= <sign> <digits>
+<exponent_part> ::= <exponent_indicator> <signed_integer>
+
+<boolean_literal> ::= true | false
+
+<character_literal> ::= ' <single_character> ' | ' <escape_sequence> '
+<single_character> ::= <input_character> except ' and \
+
+<string_character> ::= <input_character> except " and \ | <escape_character>
+<string_characters> ::= <string_character> | <string_characters> <string_character>
+<string_literal> ::= " <string_characters>?"
+
+<keyword> ::= as | async | await | break | const | continue | else | enum | false | func | for
+            | if | impl | import | in | int | let | loop | module
+            | public | ref | return | static | struct | super | true | type
+            | union | unsafe | use | var | where | while
