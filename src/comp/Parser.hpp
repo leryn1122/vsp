@@ -12,6 +12,16 @@ namespace vsp {
 
 namespace comp {
 
+#define IS_BLANK(c) ((c) == '\n' || (c) == '\r' || (c) == '\t' || (c) == ' ')
+#define IS_DIGIT(c) ((c) >= '0' && (c) <= '9')
+#define IS_ALPHA(c) (((c) >= 'a' && (c) <= 'z') || ((c) >= 'A' && (c) <= 'Z'))
+#define IS_ALPHA_OR_DIGIT(c) (((IS_DIGIT(c)) || (IS_ALPHA(c)))
+#define IS_VALID_IDENTIFIER_CHAR(c) \
+  (((IS_DIGIT(c)) || (IS_ALPHA(c)) || ((c) == '_')))
+
+#define IS_HEX_DIGIT(c) \
+  (((c) >= 'A' && (c) <= 'F') || ((c) >= 'a' && (c) <= 'f'))
+
 // clang-format off
 #define _RESERVE_WORD_LIST_M_     \
   _TOKEN_M_(AS       , as       ) \
@@ -82,7 +92,6 @@ namespace comp {
   _TOKEN_M_(ARROW         , "->"     ) \
   _TOKEN_M_(D_ARROW       , "=>"     ) \
   _TOKEN_M_(D_COLON       , "::"     )
-// clang-format on
 
 enum TokenType {
   EOF_,
@@ -93,10 +102,11 @@ enum TokenType {
   _RESERVE_WORD_LIST_M_
 #undef _TOKEN_M_
 #define _TOKEN_M_(name, literal) name,
-      _PUNCTUATION_LIST_M_
+  _PUNCTUATION_LIST_M_
 #undef _TOKEN_M_
-          ERROR
+  ERROR
 };  // enum Token::token
+// clang-format on
 
 struct Token {
   TokenType   type;
@@ -131,11 +141,13 @@ constexpr unsigned long long operator"" _hash(char const* p, size_t) {
 
 };  // namespace
 
-class Tokenizer {
+class Parser {
  public:
   void parse_token(const char* lexeme) const;
 
-};  // class vsp::comp::Tokenizer
+  void tokenize(char* array);
+
+};  // class vsp::comp::Parser
 
 };  // namespace comp
 

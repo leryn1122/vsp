@@ -7,21 +7,12 @@
 #include "CharBuffer.hpp"
 #include "CompilationContext.hpp"
 #include "Log.hpp"
-#include "Tokenizer.hpp"
+#include "Parser.hpp"
 #include "fwd.hpp"
 
 namespace vsp {
 
 namespace comp {
-
-#define IS_BLANK(c) ((c) == ' ' || (c) == '\t')
-#define IS_DIGIT(c) ((c) >= '0' && (c) <= '9')
-#define IS_ALPHA(c) (((c) >= 'a' && (c) <= 'z') || ((c) >= 'A' && (c) <= 'Z'))
-#define IS_ALPHADIGIT(c)                                       \
-  (((c) >= 'a' && (c) <= 'z') || ((c) >= 'A' && (c) <= 'Z') || \
-   ((c) >= '0' && (c) <= '9'))
-#define IS_HEX_DIGIT(c) \
-  (((c) >= 'A' && (c) <= 'F') || ((c) >= 'a' && (c) <= 'f'))
 
 typedef vsp::fs::CharBuffer CharBuffer;
 
@@ -41,14 +32,12 @@ void Compiler::execute(vsp::cli::ArgParser argparser, Context context) {
   do_compile();
 }
 
-void Compiler::do_prepare() { log_info("Do preparation for compilation."); }
+void Compiler::do_prepare() {}
 
-void Compiler::do_precompile() { log_info("Do precompile."); }
+void Compiler::do_precompile() {}
 
 void Compiler::do_compile() {
   this->timer.tik();
-
-  log_info("Do compilation.");
 
   string source = this->argparser.get_argument_str("source");
 
@@ -59,18 +48,19 @@ void Compiler::do_compile() {
     std::exit(EXIT_FAILURE);
   }
 
-  auto buffer = CharBuffer::allocate(1 << 14);
+  auto buffer = CharBuffer::allocate(1 << 13);
   while (!buffer.read_buff(&ifs)) {
     buffer.flip();
-    // std::cout << "read0: " << buffer.to_array() << std::endl;
     buffer.clear();
   }
   ifs.close();
+  // std::cout << "read: " << buffer.to_array() << std::endl;
+
+  Parser parser;
+  parser.tokenize(buffer.to_array());
 
   this->timer.tok();
 }
-
-// class vps::comp::Compiler
 
 };  // namespace comp
 

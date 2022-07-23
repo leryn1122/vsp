@@ -1,11 +1,10 @@
+# 
+# 
 public class String
 {
 
-private:
-  unint  size;
-  char[] values;
-
-public:
+  private uint  size;
+  private char[] values;
 
 
 }

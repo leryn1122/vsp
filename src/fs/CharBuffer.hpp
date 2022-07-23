@@ -21,6 +21,7 @@ namespace fs {
 ///   - pos   : Start posistion to read.
 ///   - limit : Limit of read boundary.
 ///   - mark  : Marked limit of read boundary.
+///
 /// ```c++
 /// auto buffer = CharBuffer::allocate(1<<10);
 /// ```
@@ -47,10 +48,6 @@ class CharBuffer {
   virtual ~CharBuffer();
 
  public:
-  CharBuffer slice(unsigned int index, unsigned int length);
-
-  CharBuffer as_readonly_buffer() const;
-
   unsigned int capacity() const { return this->cap; }
 
   char get(unsigned int index) const;
@@ -111,7 +108,8 @@ class CharBuffer {
     return remaining > 0 ? remaining : 0;
   }
 
-  const char* to_array() {
+  // TODO const
+  /*const*/ char* to_array() {
     // const char* buff_s = {0};
     // strncpy(buff, buff_s, _limit);
     // return buff_s;
@@ -132,6 +130,6 @@ class CharBuffer {
 
 };  // namespace fs
 
-};  //  namespace vsp
+};  // namespace vsp
 
-#endif  //  _VSP_FS_CHAR_BUFFER_H_
+#endif  // _VSP_FS_CHAR_BUFFER_H_
