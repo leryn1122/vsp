@@ -2,14 +2,10 @@
 #ifndef _VSP_FWD_H_
 #define _VSP_FWD_H_
 
-#include <cstddef>
-#include <cstdint>
-#include <cstring>
 #include <filesystem>
 #include <iostream>
 #include <list>
 #include <map>
-#include <set>
 #include <stdexcept>
 #include <string>
 #include <typeinfo>
@@ -28,7 +24,6 @@ using namespace fs;
 
 using ::std::list;
 using ::std::map;
-using ::std::set;
 using ::std::vector;
 
 using ::std::exception;
@@ -38,7 +33,6 @@ using ::std::int64_t;
 using ::std::int8_t;
 using ::std::intmax_t;
 using ::std::intptr_t;
-using ::std::max_align_t;
 using ::std::nullptr_t;
 using ::std::ptrdiff_t;
 using ::std::size_t;

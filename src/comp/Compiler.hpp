@@ -2,6 +2,8 @@
 #ifndef _VSP_COMP_COMPILER_H_
 #define _VSP_COMP_COMPILER_H_
 
+#include <set>
+
 #include "Argparser.hpp"
 #include "CompilationContext.hpp"
 #include "Timer.hpp"

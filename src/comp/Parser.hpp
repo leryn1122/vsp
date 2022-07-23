@@ -12,7 +12,7 @@ namespace vsp {
 
 namespace comp {
 
-#define IS_BLANK(c) ((c) == '\n' || (c) == '\r' || (c) == '\t' || (c) == ' ')
+#define IS_BLANK(c) ((c) == '\n' || (c) == '\t' || (c) == ' ')
 #define IS_DIGIT(c) ((c) >= '0' && (c) <= '9')
 #define IS_ALPHA(c) (((c) >= 'a' && (c) <= 'z') || ((c) >= 'A' && (c) <= 'Z'))
 #define IS_ALPHA_OR_DIGIT(c) (((IS_DIGIT(c)) || (IS_ALPHA(c)))
@@ -28,6 +28,8 @@ namespace comp {
   _TOKEN_M_(ASYNC    , async    ) \
   _TOKEN_M_(AWAIT    , await    ) \
   _TOKEN_M_(BREAK    , break    ) \
+  _TOKEN_M_(CHAR     , char     ) \
+  _TOKEN_M_(CLASS    , class    ) \
   _TOKEN_M_(CONST    , const    ) \
   _TOKEN_M_(CONTINUE , continue ) \
   _TOKEN_M_(ELSE     , else     ) \
@@ -44,6 +46,7 @@ namespace comp {
   _TOKEN_M_(LOOP     , loop     ) \
   _TOKEN_M_(MODULE   , module   ) \
   _TOKEN_M_(PUBLIC   , public   ) \
+  _TOKEN_M_(PRIVATE  , private  ) \
   _TOKEN_M_(REF      , ref      ) \
   _TOKEN_M_(RETURN   , return   ) \
   _TOKEN_M_(STATIC   , static   ) \
@@ -51,6 +54,7 @@ namespace comp {
   _TOKEN_M_(SUPER    , super    ) \
   _TOKEN_M_(TRUE     , true     ) \
   _TOKEN_M_(TYPE     , type     ) \
+  _TOKEN_M_(UINT     , uint     ) \
   _TOKEN_M_(UNION    , union    ) \
   _TOKEN_M_(UNSAFE   , unsafe   ) \
   _TOKEN_M_(USE      , use      ) \
