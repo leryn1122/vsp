@@ -2,7 +2,7 @@
 #ifndef _VSP_VM_VM_H_
 #define _VSP_VM_VM_H_
 
-#include "VmProperty.hpp"
+#include "VMProperty.hpp"
 #include "fwd.hpp"
 
 namespace vsp {
@@ -14,7 +14,7 @@ struct VirtualMachineStruct {};  // VirtualMachineStruct
 class VirtualMachine {
  public:
   static VirtualMachine create_vm();
-  static void destory_vm();
+  static void           destory_vm();
 
   static bool is_supported_vsp_version(int version);
 

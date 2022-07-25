@@ -1,7 +1,7 @@
 #include "Process.hpp"
 
 #ifdef __linux__
-#include "VmConstant.hpp"
+#include "VMConstant.hpp"
 #include "os_nix.hpp"
 #endif
 

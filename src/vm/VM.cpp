@@ -1,6 +1,6 @@
-#include "Vm.hpp"
+#include "VM.hpp"
 
-#include "VmProperty.hpp"
+#include "VMProperty.hpp"
 #include "fwd.hpp"
 
 namespace vsp {

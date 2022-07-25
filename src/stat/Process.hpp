@@ -3,7 +3,7 @@
 #define _VSP_STAT_PROCESS_H_
 
 #ifdef __linux__
-#include "VmConstant.hpp"
+#include "VMConstant.hpp"
 #include "os_nix.hpp"
 #endif
 
@@ -14,7 +14,7 @@ namespace stat {
 struct VMProcessSketch {
   VMProcessSketch(uint pid, string pname)
       : pid(std::move(pid)), pname(std::move(pname)) {}
-  uint pid;
+  uint   pid;
   string pname;
 };  // struct process
 

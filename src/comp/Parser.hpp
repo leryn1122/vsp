@@ -113,9 +113,14 @@ enum TokenType {
 // clang-format on
 
 struct Token {
+  Token(TokenType tokenType, std::string attribute)
+      : type(std::move(tokenType)), attribute(std::move(attribute)) {}
+
   TokenType   type;
   std::string attribute;
 };
+
+const Token ERROR_TOKEN = Token(ERROR, "");
 
 namespace {
 
@@ -146,10 +151,15 @@ constexpr unsigned long long operator"" _hash(char const* p, size_t) {
 };  // namespace
 
 class Parser {
+ private:
+  std::list<Token> tokens;
+
  public:
-  void parse_token(const char* lexeme) const;
+  Token parse_token(const char* lexeme) const;
 
   void tokenize(char* array);
+
+  std::list<Token> get_tokens() const { return this->tokens; }
 
 };  // class vsp::comp::Parser
 
