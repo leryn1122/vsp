@@ -1,0 +1,4 @@
+@Primitive
+public class BigDecimal {
+
+}

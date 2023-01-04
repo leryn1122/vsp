@@ -1,0 +1,25 @@
+[workspace]
+members = [
+    "vsp-ast",
+    "vsp-bin",
+    "vsp-cli",
+#    "vsp-codegen",
+#    "vsp-fmt",
+    "vsp-fs",
+    "vsp-error",
+    "vsp-mx",
+    "vsp-lexer",
+    "vsp-llvm",
+#    "vsp-log",
+#    "vsp-macros",
+    "vsp-packager",
+#    "vsp-parser",
+    "vsp-platform",
+    "vsp-support",
+]
+
+[env]
+#LLVM_SYS_140_PREFIX = {value = './llvm-14', relative = true}
+RUST_MIN_STACK = 8388608
+RUST_BACKTRACE = 1
+RUSTFLAGS = '-Awarnings'

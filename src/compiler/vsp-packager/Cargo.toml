@@ -1,0 +1,15 @@
+[package]
+name = "vsp-packager"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[lib]
+
+[dependencies]
+anyhow = "^1.0.66"
+serde = { version = "^1.0.147", features = ["derive"] }
+serde_yaml = " ^0.9.14"
+
+vsp-support = { path = "../vsp-support" }

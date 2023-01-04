@@ -1,0 +1,11 @@
+public interface Iterator {
+
+  type Entry;
+
+  func has_next(): bool;
+
+  func next(): Self::Entry;
+
+  func try_next(): Self::Entry;
+
+}

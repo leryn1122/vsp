@@ -1,0 +1,17 @@
+[package]
+name = "vsp-platform"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[lib]
+
+[dependencies]
+anyhow = "^1.0.66"
+
+[target.'cfg(unix)'.dependencies]
+libc = "^0.2.137"
+
+[target.'cfg(windows)'.dependencies]
+winapi = "^0.3.9"
