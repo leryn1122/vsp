@@ -8,8 +8,8 @@ edition = "2021"
 [lib]
 
 [dependencies]
-anyhow = "^1.0.66"
-serde = { version = "^1.0.147", features = ["derive"] }
-serde_yaml = " ^0.9.14"
+anyhow.workspace = true
+serde.workspace = true
+serde_yaml.workspace = true
 
 vsp-support = { path = "../vsp-support" }

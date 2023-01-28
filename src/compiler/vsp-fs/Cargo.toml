@@ -6,7 +6,7 @@ edition = "2021"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-anyhow = "^1.0.66"
+anyhow.workspace = true
 md5 = { package = "md-5", version = "^0.10.0" }
 
 vsp-error = { path = "../vsp-error" }

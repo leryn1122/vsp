@@ -8,7 +8,7 @@ edition = "2021"
 [lib]
 
 [dependencies]
-anyhow = "^1.0.66"
+anyhow.workspace = true
 
 vsp-cli = { path = "../vsp-cli" }
 vsp-platform = { path = "../vsp-platform" }

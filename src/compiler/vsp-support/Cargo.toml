@@ -8,5 +8,5 @@ edition = "2021"
 [lib]
 
 [dependencies]
-anyhow = "^1.0.66"
-nanoid = "^0.4.0"
+anyhow.workspace = true
+nanoid.workspace = true

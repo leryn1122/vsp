@@ -18,6 +18,14 @@ members = [
     "vsp-support",
 ]
 
+[workspace.dependencies]
+anyhow = "^1.0.66"
+clap = "^4.0.25"
+inkwell = { version = "0.1.0-beta.5", features = [ "llvm14-0" ] }
+nanoid = "^0.4.0"
+serde = { version = "^1.0.147", features = ["derive"] }
+serde_yaml = " ^0.9.14"
+
 [env]
 #LLVM_SYS_140_PREFIX = {value = './llvm-14', relative = true}
 RUST_MIN_STACK = 8388608

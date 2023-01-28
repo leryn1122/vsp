@@ -10,8 +10,8 @@ name = "vsp"
 path = "src/main.rs"
 
 [dependencies]
-anyhow = "^1.0.66"
-clap = "^4.0.25"
+anyhow.workspace = true
+clap.workspace = true
 
 vsp-cli = { path = "../vsp-cli" }
 vsp-mx = { path = "../vsp-mx" }
