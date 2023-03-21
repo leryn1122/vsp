@@ -1,7 +1,3 @@
 * text eol=lf
 
-*.jpeg  binary
-*.jpg   binary
-*.png   binary
-
 *.vsp linguist-language=TypeScript

@@ -1,33 +1,34 @@
 [workspace]
 members = [
-    "vsp-ast",
-    "vsp-bin",
-    "vsp-cli",
-#    "vsp-codegen",
-#    "vsp-fmt",
-    "vsp-fs",
-    "vsp-error",
-    "vsp-mx",
-    "vsp-lexer",
-    "vsp-llvm",
-#    "vsp-log",
-#    "vsp-macros",
-    "vsp-packager",
-#    "vsp-parser",
-    "vsp-platform",
-    "vsp-support",
+  "ast",
+  "bin",
+  "cli",
+#  "codegen",
+#  "fmt",
+  "fs",
+#  "error",
+  "mx",
+  "lexer",
+  "llvm",
+#  "log",
+#  "macros",
+  "pm",
+#    "parser",
+  "platform",
+  "support",
 ]
 
 [workspace.dependencies]
 anyhow = "^1.0.66"
 clap = "^4.0.25"
+git2 = "^0.16.1"
 inkwell = { version = "0.1.0-beta.5", features = [ "llvm14-0" ] }
 nanoid = "^0.4.0"
 serde = { version = "^1.0.147", features = ["derive"] }
 serde_yaml = " ^0.9.14"
 
-[env]
+#[env]
 #LLVM_SYS_140_PREFIX = {value = './llvm-14', relative = true}
-RUST_MIN_STACK = 8388608
-RUST_BACKTRACE = 1
-RUSTFLAGS = '-Awarnings'
+#RUST_MIN_STACK = 8388608
+#RUST_BACKTRACE = 1
+#RUSTFLAGS = '-Awarnings'
