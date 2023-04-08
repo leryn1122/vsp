@@ -5,7 +5,7 @@ set -eu
 declare extra_arg;
 declare build_py;
 
-build_py="$(cd "$(dirname "${0-${BASH_SOURCE[0]}}")" && pwd || exit 1)/start.py"
+build_py="$(cd "$(dirname "${0-${BASH_SOURCE[0]}}")" && pwd || exit 1)/distro.py"
 
 SEARCH_PYTHON=("python3" "py" "python" "python2")
 for search_python in "${SEARCH_PYTHON[@]}" ; do
@@ -21,5 +21,5 @@ for search_python in "${SEARCH_PYTHON[@]}" ; do
   fi
 done
 
-echo "Failed: \`python' not installed not installed when calling ${0-${BASH_SOURCE[0]}}" >&2
+echo "Failed: \`python' not installed when calling ${0-${BASH_SOURCE[0]}}" >&2
 exit 1

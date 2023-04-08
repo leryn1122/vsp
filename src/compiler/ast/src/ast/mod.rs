@@ -1,9 +1,84 @@
 pub mod annotation;
+pub mod function;
 pub mod module;
+pub mod types;
 
+use std::collections::HashMap;
+
+use vsp_span::span::Span;
 use vsp_support::ptr::SharedPtr;
 
+use crate::ast::function::Function;
 use crate::node::NodeId;
+
+/// A single file is considered as a compilation unit.
+///
+/// It is also the root of AST (abstract syntax tree) which all the items in a
+/// single source file are mounted at.
+pub struct CompilationUnit {
+  pub(crate) meta:      FsMeta,
+  pub(crate) span:      Span,
+  pub(crate) shebang:   Option<String>,
+  // pub(crate) modules:   Vec<Module>,
+  pub(crate) functions: HashMap<String, Function>,
+}
+
+impl CompilationUnit {
+  pub fn new(filename: String, span: Span) -> Self {
+    Self {
+      meta:      FsMeta { filename: filename },
+      span:      Span::default(),
+      shebang:   None,
+      // modules: Vec::new(),
+      functions: HashMap::new(),
+    }
+  }
+
+  pub fn add_function(&mut self, function: Function) {
+    self.functions.insert(function.name.clone(), function);
+  }
+
+  // pub fn add_hello_world_function(&mut self) {
+  //   let signature = FunctionSignature {
+  //     access:       Accessibility::Public,
+  //     constancy:    Constancy::Constant,
+  //     parameters:   vec![],
+  //     return_value: Type::void(),
+  //   };
+  //   let function = Function::new("hello_world".to_string(), signature);
+  //   self.functions.push(function)
+  // }
+}
+
+/// FsMeta means filesystem metadata, the essential information about the source
+/// files, including filename, etc.
+pub struct FsMeta {
+  filename: String,
+}
+
+/// Definite of constancy referring to the preserved word `const`.
+#[derive(Debug)]
+pub enum Constancy {
+  Constant,
+  None,
+}
+
+impl Constancy {
+  pub fn is_constant(&self) -> bool {
+    match self {
+      Constancy::Constant => true,
+      Constancy::None => false,
+    }
+  }
+}
+
+/// Accessibility.
+/// - `Public`
+/// - `Private`
+pub enum Accessibility {
+  Public,
+  Private,
+}
 
 /// <h1>Expression</h1>
 pub struct Expression {
@@ -55,47 +130,6 @@ enum StatementKind {
   /// Statement block consisting of statements.
   StatementBlock(SharedPtr<StatementBlock>),
 }
-
-/// <h1>Function</h1>
-pub struct Function {
-  signature: FunctionSignature,
-  body:      Option<SharedPtr<StatementBlock>>,
-}
-
-/// Function signature or function declarator.
-pub struct FunctionSignature {
-  header:       FunctionHeader,
-  parameters:   Vec<Parameter>,
-  return_value: Type,
-}
-
-pub struct FunctionHeader {
-  /// `public` or `private`
-  access:    FunctionAccessibility,
-  /// True if `const`, false by default.
-  constness: bool,
-}
-
-impl Default for FunctionHeader {
-  fn default() -> Self {
-    Self {
-      access:    FunctionAccessibility::Private,
-      constness: false,
-    }
-  }
-}
-
-pub enum FunctionAccessibility {
-  Public,
-  Private,
-}
-
-pub struct Parameter;
-
-pub struct Type;
-
-///
-pub struct Path;
 
 #[derive(Clone)]
 struct Identifier {}
@@ -152,27 +186,4 @@ impl BinaryOpKind {
 pub struct StatementBlock {
   id:         NodeId,
   statements: Vec<Statement>,
-}
-
-#[cfg(test)]
-mod tests {
-  use vsp_support::ptr::make_shared_ptr;
-
-  use super::*;
-
-  #[test]
-  pub fn test_construct_helloworld() {
-    let function_ptr = StatementKind::FunctionDeclaration(make_shared_ptr(Function {
-      signature: FunctionSignature {
-        header:       Default::default(),
-        parameters:   vec![],
-        return_value: Type {},
-      },
-      body:      None,
-    }));
-    Statement {
-      id:   NodeId::from_u32(0),
-      kind: StatementKind::Declaration(),
-    };
-  }
 }

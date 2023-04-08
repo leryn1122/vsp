@@ -22,6 +22,7 @@ pub struct ProcessBuilder {
 }
 
 impl Display for ProcessBuilder {
+  #[allow(unused_variables)]
   fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
     todo!()
   }
@@ -100,6 +101,7 @@ pub struct ProcessError {
 }
 
 impl Display for ProcessError {
+  #[allow(unused_variables)]
   fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
     todo!()
   }
@@ -108,6 +110,7 @@ impl Display for ProcessError {
 impl std::error::Error for ProcessError {}
 
 impl ProcessError {
+  #[allow(unused_variables)]
   pub fn new(status: Option<ExitStatus>, message: &str, output: Option<&Output>) -> ProcessError {
     Self {
       message: message.to_string(),

@@ -7,7 +7,7 @@ GIT_VERSION := $(shell git describe --long --all)
 SHA := $(shell git rev-parse --short=8 HEAD)
 
 # Toolchain
-CARGO := cargo
+
 
 # Main
 
@@ -29,38 +29,37 @@ help: ## Print help info.
 
 .PHONY: install
 install: ## Install dependencies.
-	# Use the `cargo check` as a trick to install the dependencies.
-	$(CARGO) check
+
 
 .PHONY: check
 check: ## Check
-	$(CARGO) check
 
-.PHONY: fmt
-fmt: ## Format against code.
-	$(CARGO) fmt --all
+
+.PHONY: format
+format: ## Format against code.
+
 
 .PHONY: clean
 clean: ## Clean target artifact.
-	$(CARGO) clean
+
 
 .PHONY: unittest
 unittest: ## Run all unit tests.
-	$(CARGO) test
+
 
 .PHONY: test
 test: ## Run all integrity tests.
-	$(CARGO) test
+
 
 ##@ Build
 
-.PHONY: build
+.PHONY: bootstrap
 bootstrap: ## Bootstrap.
+	$(SHELL) src/distro/main.sh
 
-
+.PHONY: build
 build: ## Build target artifact.
-	$(CARGO) build --release
+
 
 .PHONY: docker-build
 docker-build: ## Build docker image.
-	./ci/docker/docker-build.sh

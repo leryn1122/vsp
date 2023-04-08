@@ -1,0 +1,12 @@
+///
+public enum Ordering {
+  Greater,
+  Equal,
+  Less,
+}
+
+public interface Comparable {
+}
+
+public interface Comparator {
+}

@@ -8,8 +8,15 @@ use crate::Keyword;
 use crate::Punctuator;
 use crate::Token;
 
-type CharIter<'a> = Peekable<Chars<'a>>;
+pub type TokenStream = Vec<Token>;
+pub type CharIter<'a> = Peekable<Chars<'a>>;
 
+/// Accept a character iterator. Iterate and resolve character one by one.
+/// - Literal string
+/// - Numeric values
+///
+/// Luckily, for most punctuators, it was immediately resolved as the mapped
+/// token without the context.
 pub fn tokenize(iter: &mut CharIter) -> VspResult<Vec<Token>> {
   let mut tokens: Vec<Token> = Vec::new();
   while let Some(c) = iter.next() {
@@ -53,6 +60,7 @@ pub fn tokenize(iter: &mut CharIter) -> VspResult<Vec<Token>> {
       '}' => {
         tokens.push(Token::Punctuator(Punctuator::RBrace));
       }
+      '@' => tokens.push(Token::Punctuator(Punctuator::At)),
       '"' => {
         tokens.push(read_literal_text(c, iter)?);
       }
@@ -78,7 +86,6 @@ fn read_literal_text(c: char, iter: &mut CharIter) -> VspResult<Token> {
     } else {
       let text = buff.iter().collect::<String>();
       iter.next();
-      iter.next();
       return Ok(Token::LiteralText(text));
     }
   }
@@ -86,7 +93,8 @@ fn read_literal_text(c: char, iter: &mut CharIter) -> VspResult<Token> {
 }
 
 /// Read numeric from given chars.
-fn read_numeric(c: char, iter: &mut CharIter) -> VspResult<Token> {
+fn read_numeric(c: char, _iter: &mut CharIter) -> VspResult<Token> {
+  // FIXME only integer could be handled normally.
   Ok(Token::LiteralNumeric(c.to_string()))
 }
 
@@ -101,17 +109,17 @@ fn read_symbol(c: char, iter: &mut CharIter) -> VspResult<Token> {
     } else {
       let token = buff.iter().collect::<String>();
       let token = token.as_str();
-      iter.next();
       return Ok(read_keyword_or_identifier(token));
     }
   }
   Ok(Token::EOF)
 }
 
-fn readout_whitespace(iter: &mut CharIter) -> VspResult {
+fn readout_whitespace(_iter: &mut CharIter) -> VspResult {
   Ok(())
 }
 
+#[allow(dead_code)]
 fn is_whitespace(c: char) -> bool {
   matches!(c, ' ' | '\t' | '\n' | '\r')
 }
@@ -123,14 +131,8 @@ pub(crate) fn is_identifier_start(c: char) -> bool {
 }
 
 /// True if the char is valid as the <b>successor</b> of the identifier.
-#[allow(unused)]
 pub(crate) fn is_identifier_successor(c: char) -> bool {
   c.is_alphanumeric() || c == '_'
-}
-
-#[allow(unused)]
-pub fn strip_shebang(_text: &str) -> Option<usize> {
-  None
 }
 
 fn read_keyword_or_identifier(s: &str) -> Token {
@@ -160,10 +162,13 @@ public func int main() {
       Token::Keyword(Keyword::Func),
       Token::Keyword(Keyword::Int),
       Token::Identifier("main".to_string()),
+      Token::Punctuator(Punctuator::LParenthesis),
       Token::Punctuator(Punctuator::RParenthesis),
       Token::Punctuator(Punctuator::LBrace),
       Token::Identifier("print".to_string()),
+      Token::Punctuator(Punctuator::LParenthesis),
       Token::LiteralText("Hello world!!".to_string()),
+      Token::Punctuator(Punctuator::RParenthesis),
       Token::Punctuator(Punctuator::Colon),
       Token::Keyword(Keyword::Return),
       Token::LiteralNumeric("0".to_string()),
@@ -172,6 +177,11 @@ public func int main() {
     ];
     assert_eq!(result.len(), expected.len());
     for i in 1..expected.len() {
+      // println!(
+      //   "left = {:?}, right = {:?}",
+      //   *result.get(i).unwrap(),
+      //   *expected.get(i).unwrap()
+      // );
       assert_eq!(*result.get(i).unwrap(), *expected.get(i).unwrap())
     }
   }

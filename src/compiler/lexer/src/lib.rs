@@ -1,9 +1,6 @@
 use std::str::FromStr;
 
 pub mod lexer;
-pub mod scanner;
-#[cfg(test)]
-mod tests;
 
 #[derive(Clone, Debug, Eq, PartialEq)]
 pub enum Token {

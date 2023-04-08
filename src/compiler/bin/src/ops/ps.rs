@@ -6,6 +6,7 @@ use vsp_mx::process::list_all_vm_processes;
 
 use crate::Config;
 
+#[allow(dead_code)]
 pub(crate) fn cli() -> Command {
   Command::new("ps")
     .about("Process status tool")
@@ -13,7 +14,7 @@ pub(crate) fn cli() -> Command {
     .arg(arg!(-v --verbose "Enable verbose mode: Print arguments passed to the executables."))
 }
 
-#[allow(unused_variables)]
+#[allow(dead_code, unused_variables)]
 pub(crate) fn execute(config: &mut Config, args: &ArgMatches) -> anyhow::Result<()> {
   let res = list_all_vm_processes();
   if let Err(e) = res {

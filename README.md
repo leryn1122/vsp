@@ -18,8 +18,8 @@ A toy language compiler during learning custom compiler and Rust lang.
 
 ## Etymology
 
-`vsp` originated from Latin [vespera](https://en.wiktionary.org/wiki/vespera), meaning **of or related to evening**.
- It was formally called `vesperace`, but it was too long.
+`vespera` originated from Latin [vespera](https://en.wiktionary.org/wiki/vespera), meaning **of or related to evening**.
+It was mentioned in a long-word gossip, and it morphs into `vsp` after loss of vowels.
 
 ## Background
 
@@ -34,10 +34,7 @@ Long term:
 | `vsp compile`         | `vspc`        | Language compiler                     |
 | `vsp debug`           | `vspd`        | Runtime debugger                      |
 | `vsp help`            |               | Print help info                       |
-| `vsp ps`              | `vsps`        | Process status tool                   |
 | `vsp repl`            | `vsprepl`     | REPL (Read-Eval-Print Loop) or shell  |
-| `vsp run`             | `vspr`        | Runtime Launcher                      |
-| `vsp stack`           | `vspstk`      | Stack trace tool                      |
 | `vsp tar`             | `vspx`        | Tool of Compression and Decompression |
 | `vsp version`         |               | Print version info                    |
 
@@ -49,14 +46,11 @@ This project uses [rust](https://www.rust-lang.org/) and [cargo](https://npmjs.c
 git clone https://github.com/leryn1122/vsp.git
 cd vsp
 
-# If linux
-./start.sh
+# If not Windows
+make bootstrap
 
 # If Windows, use powershell
-.\start.ps1
-
-# If you install python
-python3 start.py
+.\distro.ps1
 ```
 
 ## Usage

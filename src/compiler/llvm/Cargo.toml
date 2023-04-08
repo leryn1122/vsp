@@ -7,3 +7,5 @@ edition = "2021"
 
 [dependencies]
 inkwell.workspace = true
+# Workspace dependencies
+vsp-ast.path = "../ast"

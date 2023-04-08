@@ -1,10 +1,9 @@
-use crate::node::NodeId;
-
 /// Module system
 ///
 ///
 /// ```plaintext
 /// ```
+use crate::node::NodeId;
 
 ///
 pub struct Path {

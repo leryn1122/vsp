@@ -1,3 +1,11 @@
+///
+///
+@Allocator(Global)
 public class String {
+  size: uint,
+  data: char[],
+}
+
+public class StringPool {
 
 }

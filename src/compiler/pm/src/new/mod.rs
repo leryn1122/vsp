@@ -41,12 +41,18 @@ impl NewProjectConfig {
       return Err(anyhow!("Directory has already existed."));
     }
 
-    match std::fs::create_dir(path.clone()) {
-      Ok(_) => {}
-      Err(e) => {
-        // Fast return if failed.
-        return Err(anyhow!("Fail to create project: {}", self.name));
-      }
+    // Use a hack to create the project directory by vcs.
+    let cwd = std::env::current_dir().unwrap();
+    let cwd = cwd.as_path();
+    let project = PathBuf::from(&self.name);
+    let project = project.as_path();
+
+    match self.vcs {
+      None => std::fs::create_dir(path.clone()).expect("Fail to create project: {}"),
+      Some(VersionControl::Git) => GitRepo::init(project, cwd).unwrap(),
+      Some(VersionControl::Fossil) => FossilRepo::init(project, cwd).unwrap(),
+      Some(VersionControl::Hg) => HgRepo::init(project, cwd).unwrap(),
+      Some(VersionControl::Svn) => SvnRepo::init(project, cwd).unwrap(),
     }
 
     // `cd` into project directory.
@@ -68,18 +74,6 @@ impl NewProjectConfig {
         }
         Err(e) => return Err(anyhow!(e)),
       }
-    }
-
-    let cwd = std::env::current_dir().unwrap();
-    let cwd = cwd.as_path();
-    let project = PathBuf::from(&self.name);
-    let project = project.as_path();
-    match self.vcs {
-      None => { /* Ignore */ }
-      Some(VersionControl::Git) => GitRepo::init(project, cwd).unwrap(),
-      Some(VersionControl::Fossil) => FossilRepo::init(project, cwd).unwrap(),
-      Some(VersionControl::Hg) => HgRepo::init(project, cwd).unwrap(),
-      Some(VersionControl::Svn) => SvnRepo::init(project, cwd).unwrap(),
     }
 
     Ok(())

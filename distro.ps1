@@ -1,1 +1,1 @@
-scripts/distro.ps1
+src/distro/main.ps1

@@ -13,8 +13,8 @@ if sys.version_info.major < 3:
             pass
 
 project_dir = os.path.dirname(os.path.abspath(__file__))
-sys.path.append(os.path.join(project_dir, "src", "bootstrap"))
+sys.path.append(os.path.join(project_dir, "src", "distro"))
 
-import bootstrap
+import distro
 
-bootstrap.main()
+distro.main()

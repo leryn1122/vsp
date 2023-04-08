@@ -1,19 +1,17 @@
+//! # LLVM vs. Inkwell
+//! This module is using `inkwell`, a type-safe wrapper of expose LLVM APIs.
 use std::error::Error;
 use std::ffi::c_void;
 
-/// # LLVM vs. Inkwell
-/// This module is using `inkwell`, a safe wrapper of expose LLVM APIs.
-///
-/// TODO: Unwrap the `inkwell`, use `llvm-sys` instead.
 use inkwell::builder::Builder;
 use inkwell::context::Context;
 use inkwell::execution_engine::ExecutionEngine;
 use inkwell::execution_engine::JitFunction;
 use inkwell::module::Module;
+use inkwell::values::AnyValue;
 use inkwell::OptimizationLevel;
 
 type SumFunc = unsafe extern "C" fn(u64, u64, u64) -> u64;
-
 type VoidFunc = unsafe extern "C" fn() -> c_void;
 
 pub struct CodeGenerator<'ctx> {
@@ -43,28 +41,29 @@ impl<'ctx> CodeGenerator<'ctx> {
 
     unsafe { self.execution_engine.get_function("sum").ok() }
   }
-  //
-  // fn jit_compile_hello_world(&self) -> Option<JitFunction<VoidFunc>> {
-  //     let void_type = self.context.void_type();
-  //     let fn_type = void_type.fn_type(&[void_type.into()], false);
-  //     let function =
-  //     self.module.add_function("hello world", fn_type, None);
-  //     let basic_block = self.context.append_basic_block(function, "entry2");
-  //     self.builder.position_at_end(basic_block);
-  //
-  // }
 }
 
 fn main() -> Result<(), Box<dyn Error>> {
   let context = Context::create();
   let module = context.create_module("sum");
   let execution_engine = module.create_jit_execution_engine(OptimizationLevel::None)?;
+
+  let module1 = module.clone();
+  println!("{}", module1.clone().print_to_string().to_string());
+
+  let iter = module1.get_functions();
+  iter.for_each(|f| {
+    println!("{}", f.print_to_string().to_string());
+  });
+
   let codegen = CodeGenerator {
     context: &context,
     module,
     builder: context.create_builder(),
     execution_engine,
   };
+
+  // println!("{}", module.print_to_string().to_string());
 
   let sum = codegen
     .jit_compile_sum()

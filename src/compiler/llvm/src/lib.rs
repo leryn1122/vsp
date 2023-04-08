@@ -1,4 +1,5 @@
 pub mod llvm;
+pub(crate) mod types;
 
 /// ```rust
 /// use std::collections::HashMap;

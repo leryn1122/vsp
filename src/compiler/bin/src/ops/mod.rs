@@ -9,7 +9,6 @@ pub(crate) mod lint;
 pub(crate) mod new;
 pub(crate) mod ps;
 pub(crate) mod repl;
-pub(crate) mod run;
 pub(crate) mod stack;
 pub(crate) mod tar;
 pub(crate) mod test;

@@ -3,17 +3,11 @@ members = [
   "ast",
   "bin",
   "cli",
-#  "codegen",
-#  "fmt",
-  "fs",
-#  "error",
   "mx",
   "lexer",
   "llvm",
-#  "log",
-#  "macros",
+  "span",
   "pm",
-#    "parser",
   "platform",
   "support",
 ]
@@ -24,8 +18,7 @@ clap = "^4.0.25"
 git2 = "^0.16.1"
 inkwell = { version = "0.1.0-beta.5", features = [ "llvm14-0" ] }
 nanoid = "^0.4.0"
-serde = { version = "^1.0.147", features = ["derive"] }
-serde_yaml = " ^0.9.14"
+serde = { version = "^1.0.147", features = [ "derive" ] }
 
 #[env]
 #LLVM_SYS_140_PREFIX = {value = './llvm-14', relative = true}

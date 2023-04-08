@@ -18,15 +18,19 @@ help: ## Print help info.
 
 .PHONY: install
 install: ## Install dependencies.
-	# Use the `cargo check` as a trick to install the dependencies.
-	$(CARGO) check
+	@echo "Use the `cargo check` as a trick to install the dependencies."
+	$(CARGO) check 2>/dev/null
 
 .PHONY: check
 check: ## Check
 	$(CARGO) check
 
-.PHONY: fmt
-fmt: ## Format against code.
+.PHONY: lint
+lint: check ## Lint
+	@echo "Alias of `make check`"
+
+.PHONY: format
+format: ## Format against code.
 	$(CARGO) fmt --all
 
 .PHONY: clean

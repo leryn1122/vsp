@@ -7,7 +7,7 @@ pub struct NanoId {
 }
 
 impl NanoId {
-  pub fn new() -> Self {
+  pub fn create() -> Self {
     Self { id: nanoid!() }
   }
 }

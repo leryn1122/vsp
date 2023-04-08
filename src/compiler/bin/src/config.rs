@@ -8,9 +8,7 @@ use crate::ops::compile;
 use crate::ops::debug;
 use crate::ops::lint;
 use crate::ops::new;
-use crate::ops::ps;
 use crate::ops::repl;
-use crate::ops::run;
 use crate::ops::stack;
 use crate::ops::tar;
 use crate::ops::test;
@@ -74,16 +72,18 @@ impl Config {
     handlers.insert("new".to_string(), new::execute as CliHandler);
 
     // vsp ps
-    command = command.subcommand(ps::cli());
-    handlers.insert("ps".to_string(), ps::execute as CliHandler);
+    // FIXME Remove if not impl VM.
+    // command = command.subcommand(ps::cli());
+    // handlers.insert("ps".to_string(), ps::execute as CliHandler);
 
     // vsp repl
     command = command.subcommand(repl::cli());
     handlers.insert("repl".to_string(), repl::execute as CliHandler);
 
     // vsp run
-    command = command.subcommand(run::cli());
-    handlers.insert("run".to_string(), run::execute as CliHandler);
+    // FIXME Remove if not impl VM.
+    // command = command.subcommand(run::cli());
+    // handlers.insert("run".to_string(), run::execute as CliHandler);
 
     // vsp stack
     command = command.subcommand(stack::cli());
@@ -129,15 +129,15 @@ impl Default for Config {
     let shell = Shell::default();
 
     Self {
-      args: std::env::args().collect(),
-      pid: std::process::id(),
-      cwd: PathBuf::new(),
-      command,
-      env,
-      handlers,
-      locked: false,
-      shell,
-      verbose: false,
+      args:     std::env::args().collect(),
+      pid:      std::process::id(),
+      cwd:      PathBuf::new(),
+      command:  command,
+      env:      env,
+      handlers: handlers,
+      locked:   false,
+      shell:    shell,
+      verbose:  false,
     }
   }
 }

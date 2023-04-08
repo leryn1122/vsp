@@ -1,11 +1,15 @@
-pub struct AstPrintContext {
-  indent: usize,
+use crate::ast::CompilationUnit;
+
+pub struct ASTPrinter {
+  root: Box<CompilationUnit>,
 }
 
-pub struct AstPrinter;
-
-impl AstPrinter {
-  pub fn new() -> Self {
-    Self {}
+impl ASTPrinter {
+  pub fn new(root: CompilationUnit) -> Self {
+    Self {
+      root: Box::new(root),
+    }
   }
+
+  fn visit_function(&self, name: &str) {}
 }

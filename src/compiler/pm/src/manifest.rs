@@ -1,5 +1,6 @@
 use vsp_support::semver::Version;
 
+#[allow(dead_code)]
 pub struct Manifest {
   project: Project,
   // dependencies: Dependencies,

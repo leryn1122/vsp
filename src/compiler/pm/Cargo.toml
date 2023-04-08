@@ -11,8 +11,6 @@ edition = "2021"
 anyhow.workspace = true
 git2.workspace = true
 serde.workspace = true
-serde_yaml.workspace = true
-#toml.workspace = true
-
+# Workspace dependencies
 vsp-error.path = "../error"
 vsp-support.path = "../support"

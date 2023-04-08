@@ -9,11 +9,15 @@ edition = "2021"
 name = "vsp"
 path = "src/main.rs"
 
+#[features]
+#default = []
+#compact = []
+
 [dependencies]
 anyhow.workspace = true
 clap.workspace = true
-
-vsp-cli = { path = "../cli" }
-vsp-mx = { path = "../mx" }
-vsp-pm = { path = "../pm" }
-vsp-support = { path = "../support" }
+# Workspace dependencies
+vsp-cli.path = "../cli"
+vsp-mx.path = "../mx"
+vsp-pm.path = "../pm"
+vsp-support.path = "../support"

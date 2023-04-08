@@ -1,10 +1,12 @@
 group_imports = "StdExternalCrate"
 imports_granularity = "Item"
 newline_style = "Unix"
+normalize_doc_attributes = true
 reorder_impl_items = true
 reorder_imports = true
 struct_field_align_threshold = 20
 tab_spaces = 2
 unstable_features = true
+use_field_init_shorthand = false
 use_try_shorthand = true
 wrap_comments = true
