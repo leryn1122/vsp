@@ -3,6 +3,7 @@
 import argparse
 import os
 import shutil
+import subprocess
 import tarfile
 import zipfile
 
@@ -57,11 +58,11 @@ def build_compiler():
     Run `make build` to build the language compiler.
     :return:
     """
-    # subprocess.call(
-    #     args=['make build'],
-    #     cwd=os.path.join('src', 'compiler'),
-    #     shell=True,
-    # )
+    subprocess.call(
+        args=['make build'],
+        cwd=os.path.join('src', 'compiler'),
+        shell=True,
+    )
     shutil.copy(
         os.path.join('src', 'compiler', 'target', 'debug', 'vsp'),
         os.path.join('target', PACKAGE_NAME, 'bin')
