@@ -613,7 +613,6 @@ dependencies = [
  "anyhow",
  "git2",
  "serde",
- "vsp-error",
  "vsp-support",
 ]
 

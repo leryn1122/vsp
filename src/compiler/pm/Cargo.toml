@@ -12,5 +12,4 @@ anyhow.workspace = true
 git2.workspace = true
 serde.workspace = true
 # Workspace dependencies
-vsp-error.path = "../error"
 vsp-support.path = "../support"

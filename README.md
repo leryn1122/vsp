@@ -42,6 +42,14 @@ Long term:
 
 This project uses [rust](https://www.rust-lang.org/) and [cargo](https://npmjs.com). Go check them out if you don't have them locally installed.
 
+### Prerequisites
+- Rust runtime environment, version >=1.60.
+- LLVM 14
+- Python 3 or 2.7
+- make
+- static library
+  - OpenSSL (libssl-dev or openssl-devel on most Unix distros)
+
 ```bash
 git clone https://github.com/leryn1122/vsp.git
 cd vsp
@@ -50,7 +58,7 @@ cd vsp
 make bootstrap
 
 # If Windows, use powershell
-.\distro.ps1
+.\make.ps1
 ```
 
 ## Usage
