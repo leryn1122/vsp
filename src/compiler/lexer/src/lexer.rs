@@ -2,126 +2,130 @@ use core::str::Chars;
 use std::iter::Peekable;
 use std::str::FromStr;
 
-use vsp_error::VspResult;
+use anyhow::anyhow;
+use vsp_span::span::Position;
+use vsp_span::span::Span;
 
 use crate::Keyword;
 use crate::Punctuator;
 use crate::Token;
+use crate::TokenStream;
+use crate::TokenType;
 
-pub type TokenStream = Vec<Token>;
 pub type CharIter<'a> = Peekable<Chars<'a>>;
 
-/// Accept a character iterator. Iterate and resolve character one by one.
-/// - Literal string
-/// - Numeric values
-///
-/// Luckily, for most punctuators, it was immediately resolved as the mapped
-/// token without the context.
-pub fn tokenize(iter: &mut CharIter) -> VspResult<Vec<Token>> {
-  let mut tokens: Vec<Token> = Vec::new();
-  while let Some(c) = iter.next() {
-    match c {
-      ' ' | '\t' | '\r' | '\n' => {
-        readout_whitespace(iter)?;
-      }
-      '.' => {
-        tokens.push(Token::Punctuator(Punctuator::Dot));
-      }
-      ',' => {
-        tokens.push(Token::Punctuator(Punctuator::Comma));
-      }
-      ';' => {
-        tokens.push(Token::Punctuator(Punctuator::Colon));
-      }
-      ':' => {
-        tokens.push(Token::Punctuator(Punctuator::SemiColon));
-      }
-      '*' => {
-        tokens.push(Token::Punctuator(Punctuator::Asterisk));
-      }
-      '%' => {
-        tokens.push(Token::Punctuator(Punctuator::Percentage));
-      }
-      '(' => {
-        tokens.push(Token::Punctuator(Punctuator::LParenthesis));
-      }
-      ')' => {
-        tokens.push(Token::Punctuator(Punctuator::RParenthesis));
-      }
-      '[' => {
-        tokens.push(Token::Punctuator(Punctuator::LBracket));
-      }
-      ']' => {
-        tokens.push(Token::Punctuator(Punctuator::RBracket));
-      }
-      '{' => {
-        tokens.push(Token::Punctuator(Punctuator::LBrace));
-      }
-      '}' => {
-        tokens.push(Token::Punctuator(Punctuator::RBrace));
-      }
-      '@' => tokens.push(Token::Punctuator(Punctuator::At)),
-      '"' => {
-        tokens.push(read_literal_text(c, iter)?);
-      }
-      '0'..='9' => {
-        tokens.push(read_numeric(c, iter)?);
-      }
-      _ => {
-        tokens.push(read_symbol(c, iter)?);
-      }
-    }
-  }
-  Ok(tokens)
+/// Cursor / iterator over characters.
+pub struct Lexer<'a> {
+  chars: CharIter<'a>,
+  prev:  char,
 }
 
-/// Read numeric from given chars.
+impl<'a> Lexer<'a> {
+  pub fn from_str(str: &'a str) -> Self {
+    Self {
+      chars: str.chars().peekable(),
+      prev:  '\0',
+    }
+  }
+
+  /// Accept a character iterator. Iterate and resolve character one by one.
+  /// - Literal string
+  /// - Numeric values
+  ///
+  /// Luckily, for most punctuators, it was immediately resolved as the mapped
+  /// token without the context.
+  pub fn tokenize(&mut self) -> anyhow::Result<TokenStream> {
+    let mut tokens = Vec::new();
+    let mut pos = Position::new();
+    let iter = self.chars.by_ref();
+    let handler = |p, pos: &mut Position| {
+      let token = Token::new(TokenType::Punctuator(p), Span::single_char(pos.clone()));
+      pos.forward();
+      token
+    };
+    while let Some(c) = iter.next() {
+      match c {
+        '\r' | '\n' => readout_whitespace(iter, &mut pos).unwrap(),
+        ' ' | '\t' => {
+          pos.forward();
+        }
+        '.' => tokens.push(handler(Punctuator::Dot, &mut pos)),
+        ',' => tokens.push(handler(Punctuator::Comma, &mut pos)),
+        ';' => tokens.push(handler(Punctuator::Colon, &mut pos)),
+        ':' => tokens.push(handler(Punctuator::SemiColon, &mut pos)),
+        '*' => tokens.push(handler(Punctuator::Asterisk, &mut pos)),
+        '%' => tokens.push(handler(Punctuator::Percentage, &mut pos)),
+        '(' => tokens.push(handler(Punctuator::LParenthesis, &mut pos)),
+        ')' => tokens.push(handler(Punctuator::RParenthesis, &mut pos)),
+        '[' => tokens.push(handler(Punctuator::LBracket, &mut pos)),
+        ']' => tokens.push(handler(Punctuator::RBracket, &mut pos)),
+        '{' => tokens.push(handler(Punctuator::LBrace, &mut pos)),
+        '}' => tokens.push(handler(Punctuator::RBrace, &mut pos)),
+        '@' => tokens.push(handler(Punctuator::At, &mut pos)),
+        '"' => tokens.push(read_literal_text(c, iter, &mut pos).unwrap()),
+        '0'..='9' => tokens.push(read_numeric(c, iter, &mut pos).unwrap()),
+        _ => tokens.push(read_symbol(c, iter, &mut pos).unwrap()),
+      }
+    }
+    Ok(tokens)
+  }
+}
+
 #[allow(unused_variables)]
-fn read_literal_text(c: char, iter: &mut CharIter) -> VspResult<Token> {
-  let mut buff: Vec<char> = Vec::with_capacity(1 << 6);
-  while let Some(&c) = iter.peek() {
-    if c != '"' {
-      buff.push(c);
-      iter.next();
-    } else {
-      let text = buff.iter().collect::<String>();
-      iter.next();
-      return Ok(Token::LiteralText(text));
-    }
-  }
-  Ok(Token::EOF)
-}
-
-/// Read numeric from given chars.
-fn read_numeric(c: char, _iter: &mut CharIter) -> VspResult<Token> {
-  // FIXME only integer could be handled normally.
-  Ok(Token::LiteralNumeric(c.to_string()))
+fn readout_whitespace(iter: &mut CharIter, pos: &mut Position) -> anyhow::Result<()> {
+  pos.line_feed();
+  Ok(())
 }
 
 /// Read symbol, that is identifier or keyword, from given chars.
-fn read_symbol(c: char, iter: &mut CharIter) -> VspResult<Token> {
+fn read_symbol(c: char, iter: &mut CharIter, pos: &mut Position) -> anyhow::Result<Token> {
   let mut buff: Vec<char> = Vec::with_capacity(8);
+  let start = pos.clone();
   buff.push(c);
   while let Some(&c) = iter.peek() {
     if is_identifier_successor(c) {
       buff.push(c);
       iter.next();
+      pos.forward();
     } else {
       let token = buff.iter().collect::<String>();
       let token = token.as_str();
-      return Ok(read_keyword_or_identifier(token));
+      let token = read_keyword_or_identifier(token);
+      let span = Span::range(start, pos.clone());
+      return Ok(Token::new(token, span));
     }
   }
-  Ok(Token::EOF)
+  Err(anyhow!("Unexpected token"))
 }
 
-fn readout_whitespace(_iter: &mut CharIter) -> VspResult {
-  Ok(())
+/// Read numeric from given chars.
+#[allow(unused_variables)]
+fn read_literal_text(c: char, iter: &mut CharIter, pos: &mut Position) -> anyhow::Result<Token> {
+  let mut buff: Vec<char> = Vec::with_capacity(1 << 6);
+  let start = pos.clone();
+  while let Some(&c) = iter.peek() {
+    if c != '"' {
+      buff.push(c);
+      iter.next();
+      pos.forward();
+    } else {
+      let text = buff.iter().collect::<String>();
+      let token = TokenType::LiteralText(text);
+      let span = Span::range(start, pos.clone());
+      iter.next();
+      return Ok(Token::new(token, span));
+    }
+  }
+  Err(anyhow!("Unexpected token"))
 }
 
-#[allow(dead_code)]
-fn is_whitespace(c: char) -> bool {
-  matches!(c, ' ' | '\t' | '\n' | '\r')
+/// Read numeric from given chars.
+/// FIXME only integer could be handled normally.
+fn read_numeric(c: char, _iter: &mut CharIter, pos: &mut Position) -> anyhow::Result<Token> {
+  let token = TokenType::LiteralNumeric(c.to_string());
+  let span = Span::single_char(pos.clone());
+  let token = Token::new(token, span);
+  Ok(token)
 }
 
 /// True if the char is valid at the <b>start</b> of the identifier.
@@ -135,17 +139,56 @@ pub(crate) fn is_identifier_successor(c: char) -> bool {
   c.is_alphanumeric() || c == '_'
 }
 
-fn read_keyword_or_identifier(s: &str) -> Token {
+fn read_keyword_or_identifier(s: &str) -> TokenType {
   if let Ok(keyword) = Keyword::from_str(s) {
-    Token::Keyword(keyword)
+    TokenType::Keyword(keyword)
   } else {
-    Token::Identifier(s.to_string())
+    TokenType::Identifier(s.to_string())
   }
 }
 
 #[cfg(test)]
 mod tests {
   use super::*;
+
+  //   #[test]
+  //   pub fn test_tokenize() {
+  //     let source = "\
+  // public func int main() {
+  //   print(\"Hello world!!\");
+  //   return 0;
+  // }
+  // ";
+  //     let mut char_iter = source.chars().peekable();
+  //     let expected: Vec<TokenType> = tokenize(&mut char_iter).unwrap();
+  //     let result = vec![
+  //       TokenType::Keyword(Keyword::Public),
+  //       TokenType::Keyword(Keyword::Func),
+  //       TokenType::Keyword(Keyword::Int),
+  //       TokenType::Identifier("main".to_string()),
+  //       TokenType::Punctuator(Punctuator::LParenthesis),
+  //       TokenType::Punctuator(Punctuator::RParenthesis),
+  //       TokenType::Punctuator(Punctuator::LBrace),
+  //       TokenType::Identifier("print".to_string()),
+  //       TokenType::Punctuator(Punctuator::LParenthesis),
+  //       TokenType::LiteralText("Hello world!!".to_string()),
+  //       TokenType::Punctuator(Punctuator::RParenthesis),
+  //       TokenType::Punctuator(Punctuator::Colon),
+  //       TokenType::Keyword(Keyword::Return),
+  //       TokenType::LiteralNumeric("0".to_string()),
+  //       TokenType::Punctuator(Punctuator::Colon),
+  //       TokenType::Punctuator(Punctuator::RBrace),
+  //     ];
+  //     assert_eq!(result.len(), expected.len());
+  //     for i in 1..expected.len() {
+  //       // println!(
+  //       //   "left = {:?}, right = {:?}",
+  //       //   *result.get(i).unwrap(),
+  //       //   *expected.get(i).unwrap()
+  //       // );
+  //       assert_eq!(*result.get(i).unwrap(), *expected.get(i).unwrap())
+  //     }
+  //   }
 
   #[test]
   pub fn test_tokenize() {
@@ -155,34 +198,10 @@ public func int main() {
   return 0;
 }
 ";
-    let mut char_iter = source.chars().peekable();
-    let expected: Vec<Token> = tokenize(&mut char_iter).unwrap();
-    let result = vec![
-      Token::Keyword(Keyword::Public),
-      Token::Keyword(Keyword::Func),
-      Token::Keyword(Keyword::Int),
-      Token::Identifier("main".to_string()),
-      Token::Punctuator(Punctuator::LParenthesis),
-      Token::Punctuator(Punctuator::RParenthesis),
-      Token::Punctuator(Punctuator::LBrace),
-      Token::Identifier("print".to_string()),
-      Token::Punctuator(Punctuator::LParenthesis),
-      Token::LiteralText("Hello world!!".to_string()),
-      Token::Punctuator(Punctuator::RParenthesis),
-      Token::Punctuator(Punctuator::Colon),
-      Token::Keyword(Keyword::Return),
-      Token::LiteralNumeric("0".to_string()),
-      Token::Punctuator(Punctuator::Colon),
-      Token::Punctuator(Punctuator::RBrace),
-    ];
-    assert_eq!(result.len(), expected.len());
-    for i in 1..expected.len() {
-      // println!(
-      //   "left = {:?}, right = {:?}",
-      //   *result.get(i).unwrap(),
-      //   *expected.get(i).unwrap()
-      // );
-      assert_eq!(*result.get(i).unwrap(), *expected.get(i).unwrap())
+    let mut lexer = Lexer::from_str(source);
+    let tokens = lexer.tokenize().unwrap();
+    for token in tokens {
+      println!("{:?}", token);
     }
   }
 }

@@ -1,36 +1,36 @@
 use core::cmp::Ordering;
 
 /// Position where the character lies in the file.
-#[derive(Clone, Debug, Eq, PartialEq)]
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub struct Position {
   pub line:   usize,
   pub column: usize,
 }
 
 impl Position {
-  pub fn create() -> Self {
+  pub fn new() -> Self {
     Self {
       line:   1,
       column: 1,
     }
   }
 
-  pub fn create_at(line: usize, column: usize) -> Self {
+  pub fn at(line: usize, column: usize) -> Self {
     Self { line, column }
   }
 
   /// A start position.
   pub fn start() -> Self {
-    Self::create_at(1, 1)
+    Self::at(1, 1)
   }
 
   pub fn none() -> Self {
-    Self::create_at(0, 0)
+    Self::at(0, 0)
   }
 
   /// Carriage returns. Returns to the beginning of the line.
   pub fn carriage_return(&mut self) {
-    self.column = 0;
+    self.column = 1;
   }
 
   /// Line feed. Returns to the beginning of the next line.
@@ -39,8 +39,9 @@ impl Position {
     self.column = 1;
   }
 
-  pub fn forward(&mut self) {
+  pub fn forward(&mut self) -> Self {
     self.column += 1;
+    *self
   }
 }
 
@@ -61,6 +62,7 @@ impl Ord for Position {
 }
 
 /// Code span, from the start to the end position within the file.
+#[derive(Clone, Debug)]
 pub struct Span {
   pub start: Position,
   pub end:   Position,
@@ -76,10 +78,17 @@ impl Default for Span {
 }
 
 impl Span {
-  pub fn create(start: Position, end: Position) -> Self {
+  pub fn range(start: Position, end: Position) -> Self {
     Self {
       start: start,
       end:   end,
+    }
+  }
+
+  pub fn single_char(pos: Position) -> Self {
+    Self {
+      start: pos,
+      end:   pos.clone(),
     }
   }
 

@@ -1,9 +1,44 @@
+use std::fmt::Debug;
+use std::fmt::Formatter;
 use std::str::FromStr;
+
+use vsp_span::span::Span;
 
 pub mod lexer;
 
+/// The final result of the lexical analysis, which are transferred to the AST
+/// parser.
+pub type TokenStream = Vec<Token>;
+
+/// The locatable token.
+pub struct Token {
+  pub token: TokenType,
+  pub span:  Span,
+}
+
+impl Token {
+  pub fn new(token: TokenType, span: Span) -> Self {
+    Self { token, span }
+  }
+}
+
+impl Debug for Token {
+  fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
+    write!(
+      f,
+      "Token = [{:?}]:{},{}:{},{}",
+      self.token,
+      self.span.start.line,
+      self.span.start.column,
+      self.span.end.line,
+      self.span.end.column
+    )
+  }
+}
+
+///
 #[derive(Clone, Debug, Eq, PartialEq)]
-pub enum Token {
+pub enum TokenType {
   Keyword(Keyword),
   Identifier(String),
   LiteralText(String),
@@ -12,7 +47,7 @@ pub enum Token {
   EOF,
 }
 
-impl FromStr for Token {
+impl FromStr for TokenType {
   type Err = anyhow::Error;
 
   fn from_str(_s: &str) -> Result<Self, Self::Err> {

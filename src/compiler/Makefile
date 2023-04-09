@@ -48,4 +48,4 @@ test: ## Run all integrity tests.
 ##@ Build
 
 build: ## Build target artifact.
-	$(CARGO) build
+	RUSTFLAGS=-Awarnings $(CARGO) build

@@ -71,19 +71,9 @@ impl Config {
     command = command.subcommand(new::cli());
     handlers.insert("new".to_string(), new::execute as CliHandler);
 
-    // vsp ps
-    // FIXME Remove if not impl VM.
-    // command = command.subcommand(ps::cli());
-    // handlers.insert("ps".to_string(), ps::execute as CliHandler);
-
     // vsp repl
     command = command.subcommand(repl::cli());
     handlers.insert("repl".to_string(), repl::execute as CliHandler);
-
-    // vsp run
-    // FIXME Remove if not impl VM.
-    // command = command.subcommand(run::cli());
-    // handlers.insert("run".to_string(), run::execute as CliHandler);
 
     // vsp stack
     command = command.subcommand(stack::cli());

@@ -11,4 +11,4 @@ crate-type = ["rlib", "dylib"]
 [dependencies]
 anyhow.workspace = true
 # Workspace dependencies
-vsp-error.path = "../error"
+vsp-span.path = "../span"

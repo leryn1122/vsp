@@ -569,15 +569,11 @@ dependencies = [
 ]
 
 [[package]]
-name = "vsp-error"
-version = "0.1.0"
-
-[[package]]
 name = "vsp-lexer"
 version = "0.1.0"
 dependencies = [
  "anyhow",
- "vsp-error",
+ "vsp-span",
 ]
 
 [[package]]

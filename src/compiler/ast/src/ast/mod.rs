@@ -9,7 +9,10 @@ use vsp_span::span::Span;
 use vsp_support::ptr::SharedPtr;
 
 use crate::ast::function::Function;
+use crate::ast::module::Module;
 use crate::node::NodeId;
+
+type AST = CompilationUnit;
 
 /// A single file is considered as a compilation unit.
 ///
@@ -19,7 +22,7 @@ pub struct CompilationUnit {
   pub(crate) meta:      FsMeta,
   pub(crate) span:      Span,
   pub(crate) shebang:   Option<String>,
-  // pub(crate) modules:   Vec<Module>,
+  pub(crate) modules:   HashMap<String, Module>,
   pub(crate) functions: HashMap<String, Function>,
 }
 
@@ -29,7 +32,7 @@ impl CompilationUnit {
       meta:      FsMeta { filename: filename },
       span:      Span::default(),
       shebang:   None,
-      // modules: Vec::new(),
+      modules:   HashMap::new(),
       functions: HashMap::new(),
     }
   }
@@ -37,17 +40,6 @@ impl CompilationUnit {
   pub fn add_function(&mut self, function: Function) {
     self.functions.insert(function.name.clone(), function);
   }
-
-  // pub fn add_hello_world_function(&mut self) {
-  //   let signature = FunctionSignature {
-  //     access:       Accessibility::Public,
-  //     constancy:    Constancy::Constant,
-  //     parameters:   vec![],
-  //     return_value: Type::void(),
-  //   };
-  //   let function = Function::new("hello_world".to_string(), signature);
-  //   self.functions.push(function)
-  // }
 }
 
 /// FsMeta means filesystem metadata, the essential information about the source

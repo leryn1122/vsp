@@ -44,27 +44,27 @@ impl Function {
 /// Function signature or function declarator.
 pub struct FunctionSignature {
   /** Function accessibility */
-  pub access:       FunctionAccessibility,
+  pub accessibility: FunctionAccessibility,
   /** Function constancy */
-  pub constancy:    FunctionConstancy,
+  pub constancy:     FunctionConstancy,
   /** Parameter list */
-  pub parameters:   Vec<Parameter>,
+  pub parameters:    Vec<Parameter>,
   /** Return type */
-  pub return_value: Type,
+  pub return_type:   Type,
 }
 
 impl FunctionSignature {
   pub fn new(
-    access: FunctionAccessibility,
+    accessibility: FunctionAccessibility,
     constancy: FunctionConstancy,
     parameters: Vec<Parameter>,
     return_value: Type,
   ) -> Self {
     Self {
-      access:       access,
-      constancy:    constancy,
-      parameters:   parameters,
-      return_value: return_value,
+      accessibility: accessibility,
+      constancy:     constancy,
+      parameters:    parameters,
+      return_type:   return_value,
     }
   }
 }
