@@ -158,4 +158,5 @@ pub(crate) mod types;
 ///     }
 /// }
 /// ```
+#[allow(dead_code)]
 fn nothing() {}

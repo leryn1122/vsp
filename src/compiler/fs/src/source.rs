@@ -1,6 +1,6 @@
+use core::str::FromStr;
 use std::fs;
 use std::path::Path;
-use std::str::FromStr;
 
 use anyhow::anyhow;
 

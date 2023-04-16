@@ -1,8 +1,3 @@
-pub mod annotation;
-pub mod function;
-pub mod module;
-pub mod types;
-
 use std::collections::HashMap;
 
 use vsp_span::span::Span;
@@ -12,7 +7,12 @@ use crate::ast::function::Function;
 use crate::ast::module::Module;
 use crate::node::NodeId;
 
-type AST = CompilationUnit;
+pub mod annotation;
+pub mod function;
+pub mod module;
+pub mod types;
+
+pub type AST = CompilationUnit;
 
 /// A single file is considered as a compilation unit.
 ///
@@ -27,9 +27,11 @@ pub struct CompilationUnit {
 }
 
 impl CompilationUnit {
-  pub fn new(filename: String, span: Span) -> Self {
+  pub fn new(filename: &str) -> Self {
     Self {
-      meta:      FsMeta { filename: filename },
+      meta:      FsMeta {
+        filename: filename.to_string(),
+      },
       span:      Span::default(),
       shebang:   None,
       modules:   HashMap::new(),
@@ -45,7 +47,7 @@ impl CompilationUnit {
 /// FsMeta means filesystem metadata, the essential information about the source
 /// files, including filename, etc.
 pub struct FsMeta {
-  filename: String,
+  pub(crate) filename: String,
 }
 
 /// Definite of constancy referring to the preserved word `const`.

@@ -1,8 +1,5 @@
-use inkwell::basic_block;
 use inkwell::builder::Builder;
 use inkwell::context::Context;
-use inkwell::execution_engine::ExecutionEngine;
-use inkwell::execution_engine::JitFunction;
 use inkwell::module::Module;
 use inkwell::passes::PassManager;
 use inkwell::passes::PassManagerBuilder;
@@ -10,7 +7,6 @@ use inkwell::targets::InitializationConfig;
 use inkwell::targets::Target;
 use inkwell::OptimizationLevel;
 use vsp_ast::ast::function::Function;
-use vsp_ast::ast::CompilationUnit;
 
 pub mod ir;
 

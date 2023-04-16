@@ -29,14 +29,16 @@ impl Position {
   }
 
   /// Carriage returns. Returns to the beginning of the line.
-  pub fn carriage_return(&mut self) {
+  pub fn carriage_return(&mut self) -> Self {
     self.column = 1;
+    *self
   }
 
   /// Line feed. Returns to the beginning of the next line.
-  pub fn line_feed(&mut self) {
+  pub fn line_feed(&mut self) -> Self {
     self.line += 1;
     self.column = 1;
+    *self
   }
 
   pub fn forward(&mut self) -> Self {
@@ -95,5 +97,23 @@ impl Span {
   /// Returns if the given position is within the given span.
   pub fn contain(&self, position: Position) -> bool {
     self.start.cmp(&position).is_gt() && self.end.cmp(&position).is_gt()
+  }
+
+  pub fn expand(&self) -> (usize, usize, usize, usize) {
+    (
+      self.start.line,
+      self.start.column,
+      self.end.line,
+      self.end.column,
+    )
+  }
+
+  pub fn expand_as_array(&self) -> [usize; 4] {
+    [
+      self.start.line,
+      self.start.column,
+      self.end.line,
+      self.end.column,
+    ]
   }
 }

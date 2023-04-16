@@ -1,0 +1,8 @@
+//!
+//!
+//! ```vsp
+//!
+//! ```
+public trait PartialOrdered {
+
+}

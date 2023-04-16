@@ -401,9 +401,9 @@ dependencies = [
 
 [[package]]
 name = "regex"
-version = "1.7.0"
+version = "1.7.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "e076559ef8e241f2ae3479e36f97bd5741c0330689e217ad51ce2c76808b868a"
+checksum = "8b1f693b24f6ac912f4893ef08244d70b6067480d2f1a46e950c9691e6749d1d"
 dependencies = [
  "aho-corasick",
  "memchr",
@@ -412,9 +412,9 @@ dependencies = [
 
 [[package]]
 name = "regex-syntax"
-version = "0.6.28"
+version = "0.6.29"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "456c603be3e8d448b072f410900c09faf164fbce2d480456f50eea6e25f9c848"
+checksum = "f162c6dd7b008981e4d40210aca20b4bd0f9b60ca9271061b07f78537722f2e1"
 
 [[package]]
 name = "scopeguard"
@@ -543,8 +543,18 @@ checksum = "accd4ea62f7bb7a82fe23066fb0957d48ef677f6eeb8215f372f52e48bb32426"
 name = "vsp-ast"
 version = "0.1.0"
 dependencies = [
+ "vsp-lexer",
  "vsp-span",
  "vsp-support",
+ "vsp-token",
+]
+
+[[package]]
+name = "vsp-ast-parser"
+version = "0.1.0"
+dependencies = [
+ "vsp-ast",
+ "vsp-parserc",
 ]
 
 [[package]]
@@ -574,6 +584,7 @@ version = "0.1.0"
 dependencies = [
  "anyhow",
  "vsp-span",
+ "vsp-token",
 ]
 
 [[package]]
@@ -591,6 +602,18 @@ dependencies = [
  "anyhow",
  "vsp-cli",
  "vsp-platform",
+]
+
+[[package]]
+name = "vsp-parserc"
+version = "0.1.0"
+dependencies = [
+ "anyhow",
+ "regex",
+ "vsp-ast",
+ "vsp-span",
+ "vsp-support",
+ "vsp-token",
 ]
 
 [[package]]
@@ -622,6 +645,14 @@ version = "0.1.0"
 dependencies = [
  "anyhow",
  "nanoid",
+]
+
+[[package]]
+name = "vsp-token"
+version = "0.1.0"
+dependencies = [
+ "anyhow",
+ "vsp-span",
 ]
 
 [[package]]

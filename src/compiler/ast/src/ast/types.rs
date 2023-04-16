@@ -1,6 +1,6 @@
 /// Type system implementation for AST.
-use std::hash::Hash;
-use std::hash::Hasher;
+use core::hash::Hash;
+use core::hash::Hasher;
 
 /// # Type System of LLVM Wrapper
 /// There are types that are implemented in the type system of LLVM wrapper.

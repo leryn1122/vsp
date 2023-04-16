@@ -1,5 +1,5 @@
 [package]
-name = "vsp-lexer"
+name = "vsp-token"
 version = "0.1.0"
 edition = "2021"
 
@@ -8,6 +8,5 @@ crate-type = ["rlib", "dylib"]
 
 [dependencies]
 anyhow.workspace = true
-# Workspace dependencies
+# Workespace dependencies
 vsp-span.path = "../span"
-vsp-token.path = "../token"

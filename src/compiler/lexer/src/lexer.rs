@@ -1,26 +1,25 @@
+use core::iter::Peekable;
 use core::str::Chars;
-use std::iter::Peekable;
-use std::str::FromStr;
+use core::str::FromStr;
 
 use anyhow::anyhow;
 use vsp_span::span::Position;
 use vsp_span::span::Span;
-
-use crate::Keyword;
-use crate::Punctuator;
-use crate::Token;
-use crate::TokenStream;
-use crate::TokenType;
+use vsp_token::Keyword;
+use vsp_token::Punctuator;
+use vsp_token::Token;
+use vsp_token::TokenStream;
+use vsp_token::TokenType;
 
 pub type CharIter<'a> = Peekable<Chars<'a>>;
 
 /// Cursor / iterator over characters.
-pub struct Lexer<'a> {
+pub struct DefaultLexer<'a> {
   chars: CharIter<'a>,
   prev:  char,
 }
 
-impl<'a> Lexer<'a> {
+impl<'a> DefaultLexer<'a> {
   pub fn from_str(str: &'a str) -> Self {
     Self {
       chars: str.chars().peekable(),
@@ -150,45 +149,6 @@ fn read_keyword_or_identifier(s: &str) -> TokenType {
 #[cfg(test)]
 mod tests {
   use super::*;
-
-  //   #[test]
-  //   pub fn test_tokenize() {
-  //     let source = "\
-  // public func int main() {
-  //   print(\"Hello world!!\");
-  //   return 0;
-  // }
-  // ";
-  //     let mut char_iter = source.chars().peekable();
-  //     let expected: Vec<TokenType> = tokenize(&mut char_iter).unwrap();
-  //     let result = vec![
-  //       TokenType::Keyword(Keyword::Public),
-  //       TokenType::Keyword(Keyword::Func),
-  //       TokenType::Keyword(Keyword::Int),
-  //       TokenType::Identifier("main".to_string()),
-  //       TokenType::Punctuator(Punctuator::LParenthesis),
-  //       TokenType::Punctuator(Punctuator::RParenthesis),
-  //       TokenType::Punctuator(Punctuator::LBrace),
-  //       TokenType::Identifier("print".to_string()),
-  //       TokenType::Punctuator(Punctuator::LParenthesis),
-  //       TokenType::LiteralText("Hello world!!".to_string()),
-  //       TokenType::Punctuator(Punctuator::RParenthesis),
-  //       TokenType::Punctuator(Punctuator::Colon),
-  //       TokenType::Keyword(Keyword::Return),
-  //       TokenType::LiteralNumeric("0".to_string()),
-  //       TokenType::Punctuator(Punctuator::Colon),
-  //       TokenType::Punctuator(Punctuator::RBrace),
-  //     ];
-  //     assert_eq!(result.len(), expected.len());
-  //     for i in 1..expected.len() {
-  //       // println!(
-  //       //   "left = {:?}, right = {:?}",
-  //       //   *result.get(i).unwrap(),
-  //       //   *expected.get(i).unwrap()
-  //       // );
-  //       assert_eq!(*result.get(i).unwrap(), *expected.get(i).unwrap())
-  //     }
-  //   }
 
   #[test]
   pub fn test_tokenize() {

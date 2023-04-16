@@ -1,16 +1,16 @@
 [package]
-name = "vsp-ast"
+name = "vsp-parserc"
 version = "0.1.0"
 edition = "2021"
-
-# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [lib]
 crate-type = ["rlib", "dylib"]
 
 [dependencies]
+anyhow.workspace = true
+regex.workspace = true
 # Workspace dependencies
-vsp-lexer.path = "../lexer"
+vsp-ast.path = "../ast"
 vsp-span.path = "../span"
 vsp-support.path = "../support"
 vsp-token.path = "../token"

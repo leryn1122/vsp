@@ -1,5 +1,5 @@
+use core::str::FromStr;
 use std::path::PathBuf;
-use std::str::FromStr;
 
 use anyhow::anyhow;
 use clap::arg;

@@ -49,13 +49,13 @@ impl Passwd {
       pw_shell,
     } = *passwd;
     Self {
-      pw_name: CStr::from_ptr(pw_name).to_owned(),
+      pw_name:   CStr::from_ptr(pw_name).to_owned(),
       pw_passwd: CStr::from_ptr(pw_passwd).to_owned(),
-      pw_uid,
-      pw_gid,
-      pw_gecos: CStr::from_ptr(pw_gecos).to_owned(),
-      pw_dir: CStr::from_ptr(pw_dir).to_owned(),
-      pw_shell: CStr::from_ptr(pw_shell).to_owned(),
+      pw_uid:    pw_uid,
+      pw_gid:    pw_gid,
+      pw_gecos:  CStr::from_ptr(pw_gecos).to_owned(),
+      pw_dir:    CStr::from_ptr(pw_dir).to_owned(),
+      pw_shell:  CStr::from_ptr(pw_shell).to_owned(),
     }
   }
 

@@ -1,16 +1,18 @@
 [workspace]
 members = [
   "ast",
+  "ast-parser",
   "bin",
   "cli",
-#  "error",
   "mx",
   "lexer",
   "llvm",
+  "parserc",
   "platform",
   "pm",
   "span",
   "support",
+  "token",
 ]
 
 [workspace.dependencies]
@@ -19,4 +21,5 @@ clap = "^4.0.25"
 git2 = "^0.16.1"
 inkwell = { version = "0.1.0-beta.5", features = [ "llvm14-0" ] }
 nanoid = "^0.4.0"
+regex = "^1.7.3"
 serde = { version = "^1.0.147", features = [ "derive" ] }

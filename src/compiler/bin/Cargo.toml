@@ -9,9 +9,10 @@ edition = "2021"
 name = "vsp"
 path = "src/main.rs"
 
-#[features]
-#default = []
-#compact = []
+[features]
+default = []
+compact = []
+runtime = []
 
 [dependencies]
 anyhow.workspace = true
