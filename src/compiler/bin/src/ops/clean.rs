@@ -6,7 +6,7 @@ use clap::value_parser;
 use clap::ArgMatches;
 use clap::Command;
 
-use crate::Config;
+use crate::CommandLine;
 
 pub(crate) fn cli() -> Command {
   Command::new("clean").about("Clean target directory").arg(
@@ -19,7 +19,7 @@ pub(crate) fn cli() -> Command {
 /// Remove the current working directory target artifacts.
 ///   - target/*
 #[allow(unused_variables)]
-pub(crate) fn execute(config: &mut Config, args: &ArgMatches) -> anyhow::Result<()> {
+pub(crate) fn execute(config: &mut CommandLine, args: &ArgMatches) -> anyhow::Result<()> {
   let target_dir = config.cwd.join("target");
   match std::fs::remove_dir_all(target_dir) {
     Ok(_) => Ok(()),

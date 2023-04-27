@@ -7,9 +7,7 @@ Project structure
 │   ├── vspc -> vsp
 │   ├── vspdb -> vsp
 │   ├── vspm -> vsp
-│   ├── vspsh -> vsp
-│   ├── vspstk -> vsp
-│   └── vspx -> vsp
+│   └── vspsh -> vsp
 ├── conf
 │   └── env
 ├── etc -> conf

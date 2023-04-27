@@ -4,5 +4,4 @@ pub const EXIT_SUCCESS: i32 = 0;
 pub const EXIT_FAILURE: i32 = 1;
 
 /// Project issue report URL.
-#[allow(dead_code)]
 const REPORT_URL: &str = "https://github.com/leryn1122/vsp";

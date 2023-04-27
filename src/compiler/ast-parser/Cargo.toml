@@ -3,10 +3,8 @@ name = "vsp-ast-parser"
 version = "0.1.0"
 edition = "2021"
 
-[lib]
-crate-type = ["rlib", "dylib"]
-
 [dependencies]
-# Workspace dependency
+combine.workspace = true
+# Workspace dependencies
+vsp-token.path = "../token"
 vsp-ast.path = "../ast"
-vsp-parserc.path = "../parserc"

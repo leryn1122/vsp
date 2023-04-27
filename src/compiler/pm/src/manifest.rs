@@ -1,4 +1,4 @@
-use vsp_support::semver::Version;
+use semver::Version;
 
 #[allow(dead_code)]
 pub struct Manifest {
@@ -10,10 +10,10 @@ impl Manifest {
   fn new(name: impl Into<String>) -> Self {
     let project = Project {
       name:    name.into(),
-      version: Version::default(),
+      version: Version::parse("0.1.0").unwrap(),
     };
 
-    Self { project }
+    Self { project: project }
   }
 }
 

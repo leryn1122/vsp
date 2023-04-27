@@ -127,13 +127,13 @@ fn read_numeric(c: char, _iter: &mut CharIter, pos: &mut Position) -> anyhow::Re
   Ok(token)
 }
 
-/// True if the char is valid at the <b>start</b> of the identifier.
+/// True if the char is valid at the ***starter*** of the identifier.
 #[allow(unused)]
-pub(crate) fn is_identifier_start(c: char) -> bool {
+pub(crate) fn is_identifier_starter(c: char) -> bool {
   c.is_alphabetic() || c == '_'
 }
 
-/// True if the char is valid as the <b>successor</b> of the identifier.
+/// True if the char is valid as the ***successor*** of the identifier.
 pub(crate) fn is_identifier_successor(c: char) -> bool {
   c.is_alphanumeric() || c == '_'
 }
@@ -151,17 +151,18 @@ mod tests {
   use super::*;
 
   #[test]
-  pub fn test_tokenize() {
+  pub fn test_tokenize() -> Result<(), ()> {
     let source = "\
 public func int main() {
   print(\"Hello world!!\");
   return 0;
 }
 ";
-    let mut lexer = Lexer::from_str(source);
+    let mut lexer = DefaultLexer::from_str(source);
     let tokens = lexer.tokenize().unwrap();
     for token in tokens {
       println!("{:?}", token);
     }
+    Ok(())
   }
 }

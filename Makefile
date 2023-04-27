@@ -11,6 +11,7 @@ SHA := $(shell git rev-parse --short=8 HEAD)
 
 # Main
 
+
 # Docker
 DOCKER := docker
 DOCKER_CONTEXT := .

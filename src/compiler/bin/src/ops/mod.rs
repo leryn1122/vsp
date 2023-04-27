@@ -1,16 +1,14 @@
 use clap::ArgMatches;
 
-use crate::Config;
+use crate::CommandLine;
 
 pub(crate) mod clean;
 pub(crate) mod compile;
-pub(crate) mod debug;
-pub(crate) mod lint;
+pub(crate) mod completion;
 pub(crate) mod new;
+#[allow(dead_code)]
 pub(crate) mod ps;
 pub(crate) mod repl;
-pub(crate) mod stack;
-pub(crate) mod tar;
 pub(crate) mod test;
 
-pub type CliHandler = fn(&mut Config, &ArgMatches) -> anyhow::Result<()>;
+pub type CliHandler = fn(&mut CommandLine, &ArgMatches) -> anyhow::Result<()>;

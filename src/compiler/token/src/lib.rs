@@ -56,13 +56,13 @@ impl FromStr for TokenType {
   }
 }
 
+#[rustfmt::skip]
 #[derive(Clone, Debug, Eq, PartialEq)]
 pub enum Punctuator {
   //============================================================================//
 
   // Separator
-  /// `.`
-  Dot,
+  /* `.` */ Dot,
   /// `,`
   Comma,
   /// `;`
@@ -145,6 +145,27 @@ pub enum Punctuator {
   //============================================================================//
 }
 
+impl Punctuator {
+  pub fn from_string(s: &str) -> Option<Punctuator> {
+    match s {
+      "." => Some(Punctuator::Dot),
+      "," => Some(Punctuator::Comma),
+      ";" => Some(Punctuator::Colon),
+      ":" => Some(Punctuator::SemiColon),
+      "*" => Some(Punctuator::Asterisk),
+      "%" => Some(Punctuator::Percentage),
+      "(" => Some(Punctuator::LParenthesis),
+      ")" => Some(Punctuator::RParenthesis),
+      "[" => Some(Punctuator::LBracket),
+      "]" => Some(Punctuator::RBracket),
+      "{" => Some(Punctuator::LBrace),
+      "}" => Some(Punctuator::RBrace),
+      "@" => Some(Punctuator::At),
+      _ => None,
+    }
+  }
+}
+
 #[derive(Clone, Debug, PartialEq, Eq)]
 pub enum Keyword {
   //============================================================================//
@@ -194,7 +215,7 @@ pub enum Keyword {
 }
 
 impl FromStr for Keyword {
-  type Err = ();
+  type Err = String;
 
   fn from_str(s: &str) -> Result<Self, Self::Err> {
     match s {
@@ -232,7 +253,7 @@ impl FromStr for Keyword {
       "var" => Ok(Keyword::Var),
       "where" => Ok(Keyword::Where),
       "while" => Ok(Keyword::While),
-      &_ => Err(()),
+      &_ => Err(s.to_string()),
     }
   }
 }

@@ -1,5 +1,8 @@
+comment_width = 100
+format_code_in_doc_comments = true
 group_imports = "StdExternalCrate"
 imports_granularity = "Item"
+max_width = 100
 newline_style = "Unix"
 normalize_doc_attributes = true
 reorder_impl_items = true

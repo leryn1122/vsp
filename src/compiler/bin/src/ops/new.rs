@@ -8,7 +8,7 @@ use clap::Command;
 use vsp_pm::new::NewProjectConfig;
 use vsp_pm::vcs::VersionControl;
 
-use crate::Config;
+use crate::CommandLine;
 
 pub(crate) fn cli() -> Command {
   Command::new("new")
@@ -27,7 +27,7 @@ system. Possible value: `git', `fossil', `hg', `svn', none."),
 }
 
 #[allow(unused_variables)]
-pub(crate) fn execute(config: &mut Config, args: &clap::ArgMatches) -> anyhow::Result<()> {
+pub(crate) fn execute(cli: &mut CommandLine, args: &clap::ArgMatches) -> anyhow::Result<()> {
   let project = args.get_one::<String>("project").unwrap();
   let vcs = args
     .get_one::<String>("vcs")
@@ -38,6 +38,6 @@ pub(crate) fn execute(config: &mut Config, args: &clap::ArgMatches) -> anyhow::R
     .get_one::<PathBuf>("path")
     .unwrap_or(&std::env::current_dir().unwrap())
     .to_path_buf();
-  let config = NewProjectConfig::new(project, vcs, path);
-  config.create_new_project()
+  let cli = NewProjectConfig::new(project, vcs, path);
+  cli.create_new_project()
 }

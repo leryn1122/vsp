@@ -3,13 +3,10 @@ name = "vsp-pm"
 version = "0.1.0"
 edition = "2021"
 
-# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
-
-[lib]
-
 [dependencies]
 anyhow.workspace = true
 git2.workspace = true
+semver.workspace = true
 serde.workspace = true
 # Workspace dependencies
 vsp-support.path = "../support"

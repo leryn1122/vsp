@@ -1,4 +1,4 @@
-use vsp_support::semver::Version;
+use semver::Version;
 
 pub struct IndexFile {
   api_version: Version,
