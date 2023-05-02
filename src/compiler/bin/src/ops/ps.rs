@@ -4,8 +4,6 @@ use clap::ArgMatches;
 use clap::Command;
 use vsp_mx::process::list_all_vm_processes;
 
-use crate::CommandLine;
-
 #[allow(dead_code)]
 pub(crate) fn cli() -> Command {
   Command::new("ps")
@@ -15,7 +13,7 @@ pub(crate) fn cli() -> Command {
 }
 
 #[allow(dead_code, unused_variables)]
-pub(crate) fn execute(config: &mut CommandLine, args: &ArgMatches) -> anyhow::Result<()> {
+pub(crate) fn execute(args: &ArgMatches) -> anyhow::Result<()> {
   let res = list_all_vm_processes();
   if let Err(e) = res {
     return Err(anyhow!(e));

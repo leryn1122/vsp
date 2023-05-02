@@ -1,5 +1,4 @@
 use std::collections::HashMap;
-use std::fmt::format;
 
 use vsp_span::span::Span;
 
@@ -7,7 +6,6 @@ use crate::ast::annotation::Annotation;
 use crate::ast::function::Function;
 use crate::ast::function::FunctionSignature;
 use crate::ast::module::Module;
-use crate::ast::CompilationUnit;
 use crate::visitor::CompilationUnitASTVisitor;
 use crate::visitor::FunctionASTVisitor;
 
@@ -73,7 +71,7 @@ impl CompilationUnitASTVisitor for ASTPrinter {
     println!("CompilationUnit");
   }
 
-  fn visit_shebang(&mut self, shebang: &Option<String>) {
+  fn visit_shebang(&mut self, _shebang: &Option<String>) {
     println!(
       "{}",
       self.print_segment("ShebangDeclaration", &Span::default())
@@ -94,15 +92,15 @@ impl CompilationUnitASTVisitor for ASTPrinter {
 }
 
 impl FunctionASTVisitor for ASTPrinter {
-  fn visit_name(&mut self, name: &String) {
+  fn visit_name(&mut self, _name: &String) {
     todo!()
   }
 
-  fn visit_annotations(&mut self, annotation: &Option<Vec<Annotation>>) {
+  fn visit_annotations(&mut self, _annotation: &Option<Vec<Annotation>>) {
     todo!()
   }
 
-  fn visit_signature(&mut self, signature: &FunctionSignature) {
+  fn visit_signature(&mut self, _signature: &FunctionSignature) {
     todo!()
   }
 }
@@ -111,6 +109,7 @@ impl FunctionASTVisitor for ASTPrinter {
 mod test {
   use super::*;
   use crate::ast;
+  use crate::ast::CompilationUnit;
   use crate::ast::FsMeta;
   use crate::visitor::CompilationUnitASTVisitable;
 

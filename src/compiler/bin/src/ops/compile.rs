@@ -1,8 +1,6 @@
 use clap::ArgMatches;
 use clap::Command;
 
-use crate::CommandLine;
-
 pub(crate) fn cli() -> Command {
   Command::new("compile")
     .about("Language compiler")
@@ -10,6 +8,6 @@ pub(crate) fn cli() -> Command {
 }
 
 #[allow(unused_variables)]
-pub(crate) fn execute(config: &mut CommandLine, args: &ArgMatches) -> anyhow::Result<()> {
+pub(crate) fn execute(args: &ArgMatches) -> anyhow::Result<()> {
   Ok(())
 }

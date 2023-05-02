@@ -12,7 +12,8 @@ pub fn compile() {
   let mut target_options = TargetOptions::default();
   target_options.triplet = Triple::host();
   compiler.set_target_options(target_options);
-  compiler.create_file_manager();
+  // let file_manager: FileManager = compiler.create_file_manager();
+  // let source_manager = compiler.create_source_manager(&mut file_manager);
   compiler.create_preprocessor();
   compiler.create_ast_context();
 }
@@ -37,7 +38,18 @@ impl Compiler {
 
   pub fn create_diagnostics(&self) -> () {}
 
-  pub fn create_file_manager(&self) -> () {}
+  // pub fn create_file_manager<F>(&self) -> F
+  // where
+  //   F: FileManager + Sized,
+  // {
+  //   DefaultFileManager {}
+  // }
+  //
+  // pub fn create_source_manager<F>(&self, file_manager: &mut F) -> ()
+  // where
+  //   F: FileManager + Sized,
+  // {
+  // }
 
   pub fn create_preprocessor(&self) -> () {}
 

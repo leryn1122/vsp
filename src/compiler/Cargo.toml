@@ -5,6 +5,7 @@ members = [
   "bin",
   "cli",
   "compiler",
+  "fs",
   "mx",
   "lexer",
   "llvm",

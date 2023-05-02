@@ -14,10 +14,10 @@ pub mod types;
 
 pub type AST = CompilationUnit;
 
-/// A single file is considered as a compilation unit.
+/// A single file is considered as a compilation unit, known as a translation unit in `clang`.
 ///
-/// It is also the root of AST (abstract syntax tree) which all the items in a
-/// single source file are mounted at.
+/// It is also the root of AST (abstract syntax tree) which all the items in a single source file
+/// are mounted at.
 pub struct CompilationUnit {
   pub(crate) meta:      FsMeta,
   pub(crate) span:      Span,

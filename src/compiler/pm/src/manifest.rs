@@ -1,6 +1,7 @@
 use semver::Version;
 
 #[allow(dead_code)]
+// #[derive(Deserialize, Serialize, Debug)]
 pub struct Manifest {
   project: Project,
   // dependencies: Dependencies,
@@ -24,7 +25,18 @@ impl Default for Manifest {
   }
 }
 
+// #[derive(Deserialize, Serialize, Debug)]
 pub(crate) struct Project {
   name:    String,
   version: Version,
+}
+
+#[cfg(test)]
+mod tests {
+
+  /// Tests write the project config file to the temporary directory.
+  #[test]
+  pub fn test_manifest() {
+    let temp_dir = std::env::temp_dir();
+  }
 }

@@ -9,8 +9,6 @@ use CandidateShell::Fish;
 use CandidateShell::PowerShell;
 use CandidateShell::Zsh;
 
-use crate::CommandLine;
-
 pub(crate) fn cli() -> Command {
   Command::new("completion")
     .about("Generate autocompletion scripts for the specified shell")
@@ -70,7 +68,7 @@ pub(crate) fn cli() -> Command {
 /// ## Implementation
 /// It is a simple implementation, print the mapped completion script based on inline built-in
 /// script located at `completion/completion-<shell>.sh`.
-pub(crate) fn execute(_: &mut CommandLine, args: &ArgMatches) -> anyhow::Result<()> {
+pub(crate) fn execute(args: &ArgMatches) -> anyhow::Result<()> {
   let shell = args
     .get_one::<CandidateShell>("shell")
     .expect("Invalid shell");

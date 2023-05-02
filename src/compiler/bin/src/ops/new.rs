@@ -4,11 +4,10 @@ use std::path::PathBuf;
 use anyhow::anyhow;
 use clap::arg;
 use clap::value_parser;
+use clap::ArgMatches;
 use clap::Command;
 use vsp_pm::new::NewProjectConfig;
 use vsp_pm::vcs::VersionControl;
-
-use crate::CommandLine;
 
 pub(crate) fn cli() -> Command {
   Command::new("new")
@@ -27,7 +26,7 @@ system. Possible value: `git', `fossil', `hg', `svn', none."),
 }
 
 #[allow(unused_variables)]
-pub(crate) fn execute(cli: &mut CommandLine, args: &clap::ArgMatches) -> anyhow::Result<()> {
+pub(crate) fn execute(args: &ArgMatches) -> anyhow::Result<()> {
   let project = args.get_one::<String>("project").unwrap();
   let vcs = args
     .get_one::<String>("vcs")
@@ -38,6 +37,6 @@ pub(crate) fn execute(cli: &mut CommandLine, args: &clap::ArgMatches) -> anyhow:
     .get_one::<PathBuf>("path")
     .unwrap_or(&std::env::current_dir().unwrap())
     .to_path_buf();
-  let cli = NewProjectConfig::new(project, vcs, path);
-  cli.create_new_project()
+  let config = NewProjectConfig::new(project, vcs, path);
+  config.create_new_project()
 }

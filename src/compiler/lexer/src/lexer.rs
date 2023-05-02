@@ -16,6 +16,7 @@ pub type CharIter<'a> = Peekable<Chars<'a>>;
 /// Cursor / iterator over characters.
 pub struct DefaultLexer<'a> {
   chars: CharIter<'a>,
+  #[allow(dead_code)]
   prev:  char,
 }
 
@@ -121,7 +122,7 @@ fn read_literal_text(c: char, iter: &mut CharIter, pos: &mut Position) -> anyhow
 /// Read numeric from given chars.
 /// FIXME only integer could be handled normally.
 fn read_numeric(c: char, _iter: &mut CharIter, pos: &mut Position) -> anyhow::Result<Token> {
-  let token = TokenType::LiteralNumeric(c.to_string());
+  let token = TokenType::LiteralNumeric(c as i64);
   let span = Span::single_char(pos.clone());
   let token = Token::new(token, span);
   Ok(token)

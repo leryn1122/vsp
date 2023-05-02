@@ -4,22 +4,14 @@ use combine::between;
 use combine::many;
 use combine::many1;
 use combine::none_of;
-use combine::parser::char::alpha_num;
-use combine::parser::char::char;
 use combine::parser::char::letter;
 use combine::parser::char::spaces;
-use combine::parser::choice::or;
-use combine::parser::combinator::map;
-use combine::parser::error::expected;
-use combine::parser::sequence::skip;
-use combine::position;
 use combine::satisfy;
 use combine::token;
 use combine::ParseError;
 use combine::Parser;
 use combine::Stream;
 use vsp_token::Keyword;
-use vsp_token::Punctuator;
 use vsp_token::TokenType;
 
 /// A function, of great importance in lexical analysis, splits the character stream into sequences
@@ -30,9 +22,10 @@ where
   Input::Error: ParseError<Input::Token, Input::Range, Input::Position>,
 {
   let token = keyword()
+    // .or(punctuator())
     .or(identifier())
     .or(literal_text())
-    // .or(punctuator())
+    // .or(literal_numeric())
     .skip(spaces());
   token
 }
@@ -55,15 +48,38 @@ where
 //   Input: Stream<Token = char>,
 //   Input::Error: ParseError<Input::Token, Input::Range, Input::Position>,
 // {
-//   let punctuator = || {
-//     if let Some(p) = Punctuator::from_string("") {
-//       p
-//     } else {
-//       Punctuator::Question
-//     }
-//   };
+//   let punctuator = many::<String, _, _>(is_not_alpha_num()).map(|| {});
+//   token("!=")
+//     .or(token("{"))
+//     .or(token("}"))
+//     .map(|s| match Keyword::from_str(s) {
+//       Ok(_) => {}
+//       Err(_) => {}
+//     });
 //   punctuator
 // }
+
+pub fn is_not_alpha_num<Input>() -> impl Parser<Input, Output = char, PartialState = ()>
+where
+  Input: Stream<Token = char>,
+  Input::Error: ParseError<Input::Token, Input::Range, Input::Position>,
+{
+  satisfy(|ch: char| !ch.is_alphanumeric() && !ch.is_whitespace()).expected("letter")
+}
+
+/// Regular expression pattern as `[a-zA-Z][a-zA-Z0-9_]+`.
+pub fn identifier<Input>() -> impl Parser<Input, Output = TokenType>
+where
+  Input: Stream<Token = char>,
+  Input::Error: ParseError<Input::Token, Input::Range, Input::Position>,
+{
+  (
+    identifier_starter(),
+    many::<String, _, _>(identifier_successor()),
+  )
+    .map(|(starter, successor)| TokenType::Identifier(format!("{}{}", starter, successor)))
+    .expected("valid identifier successor")
+}
 
 pub(crate) fn literal_text<Input>() -> impl Parser<Input, Output = TokenType>
 where
@@ -95,26 +111,53 @@ where
   satisfy(|ch: char| ch.is_alphanumeric() || ch == '_').expected("valid identifier successor")
 }
 
-/// Regular expression pattern as `[a-zA-Z][a-zA-Z0-9_]+`.
-pub fn identifier<Input>() -> impl Parser<Input, Output = TokenType>
-where
-  Input: Stream<Token = char>,
-  Input::Error: ParseError<Input::Token, Input::Range, Input::Position>,
-{
-  (
-    identifier_starter(),
-    many::<String, _, _>(identifier_successor()),
-  )
-    .map(|(starter, successor)| TokenType::Identifier(format!("{}{}", starter, successor)))
-    .expected("valid identifier successor")
-}
+// pub fn integer<Input>() -> impl Parser<Input, Output = TokenType>
+// where
+//   Input: Stream<Token = char>,
+//   Input::Error: ParseError<Input::Token, Input::Range, Input::Position>,
+//   F: Extend<P::Output> + Default,
+// {
+//   (
+//     many1(digit()).expected("?"),
+//     optional(char('.')),
+//     optional(recognize(many1(digit()))),
+//   )
+//     .map(|(integer, dot, fraction)| {
+//       let s = format!("{}.{}", integer, fraction.unwrap_or("0".to_string()));
+//       if dot.is_some() || fraction.is_some() {
+//         TokenType::LiteralNumeric(s.parse::<i64>().unwrap())
+//       } else {
+//         TokenType::LiteralNumeric(s.parse::<i64>().unwrap())
+//       }
+//     })
+// }
 
-// /// Determine the ***successor*** of the identifier.
-// pub(crate) fn preserve_word<Input>() -> impl Parser<Input, Output = TokenType>
+//
+// /// Determine the literal number.
+// pub(crate) fn literal_numeric<Input>() -> impl Parser<Input, Output = TokenType>
 // where
 //   Input: Stream<Token = char>,
 //   Input::Error: ParseError<Input::Token, Input::Range, Input::Position>,
 // {
+//   let integer = (optional(string("-")), many1(digit())).map(|(sign, digits)| {
+//     let integer = digits.to_string();
+//     let integer = digits.parse::<i64>().unwrap();
+//     if sign.is_some() {
+//       TokenType::LiteralNumeric(-integer)
+//     } else {
+//       TokenType::LiteralNumeric(integer)
+//     }
+//   });
+//   // .map(|(sign, digits)| {
+//   //   let number = digits.to_string();
+//   //   let number = number.parse::<i64>().expect("valid integer");
+//   //   if sign.is_some() {
+//   //     TokenType::LiteralNumeric(-number)
+//   //   } else {
+//   //     TokenType::LiteralNumeric(number)
+//   //   }
+//   // });
+//   integer
 // }
 
 #[cfg(test)]
@@ -134,18 +177,17 @@ mod tests {
     let result = tokenize()
       .parse(
         "\
-      public func main() -> int {\
-        print(\"Hello world!!\");
-        return 0;
-      }",
+      public func main  int \
+        print \"Hello world\"
+        return
+      ",
       )
       .map(|(t, _)| println!("{:?}", t));
   }
 
   #[test]
   pub fn test_identifier() {
-    let identifier = identifier();
-    let mut parser = sep_by(identifier, space()).map(|tokens: Vec<TokenType>| {
+    let mut parser = sep_by(identifier(), space()).map(|tokens: Vec<TokenType>| {
       println!(
         "{:?}",
         <Vec<TokenType> as AsRef<Vec<TokenType>>>::as_ref(&tokens)
@@ -156,9 +198,20 @@ mod tests {
 
   #[test]
   pub fn test_literal_text() {
-    let mut literal_text = literal_text().skip(spaces());
-    let result = literal_text
+    let result = literal_text()
+      .skip(spaces())
       .parse("\"Lorem ipsum dolor sit amet, consectetur adipisicing elit\"   ")
       .map(|(t, _)| println!("{:?}", t));
   }
+
+  // #[test]
+  // pub fn test_literal_numeric() {
+  //   let mut parser = literal_numeric().map(|tokens: Vec<TokenType>| {
+  //     println!(
+  //       "{:?}",
+  //       <Vec<TokenType> as AsRef<Vec<TokenType>>>::as_ref(&tokens)
+  //     );
+  //   });
+  //   let result = parser.parse("123 0 -0 -12138");
+  // }
 }

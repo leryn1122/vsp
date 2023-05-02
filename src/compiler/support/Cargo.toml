@@ -6,3 +6,5 @@ edition = "2021"
 [dependencies]
 anyhow.workspace = true
 nanoid.workspace = true
+semver.workspace = true
+serde.workspace = true

@@ -43,7 +43,7 @@ pub enum TokenType {
   Keyword(Keyword),
   Identifier(String),
   LiteralText(String),
-  LiteralNumeric(String),
+  LiteralNumeric(i64),
   Punctuator(Punctuator),
   EOF,
 }
@@ -259,6 +259,7 @@ impl FromStr for Keyword {
 }
 
 /// Base of numeric literal value.
+#[allow(dead_code)]
 #[derive(Clone, Debug, Eq, PartialEq)]
 pub(crate) enum Base {
   Binary = 2,

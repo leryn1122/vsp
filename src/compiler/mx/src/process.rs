@@ -67,6 +67,6 @@ mod tests {
 
   #[test]
   fn test_list_all_vm_processes() {
-    let res = super::list_all_vm_processes();
+    let res = list_all_vm_processes();
   }
 }
