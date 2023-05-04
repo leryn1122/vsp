@@ -10,15 +10,19 @@ name = "vsp"
 path = "src/main.rs"
 
 [features]
-default = []
+default = ["runtime"]
 compact = []
 runtime = []
+gui = []
 
 [dependencies]
 anyhow.workspace = true
 clap.workspace = true
+target-lexicon.workspace = true
+
 # Workspace dependencies
 vsp-cli.path = "../cli"
+vsp-compiler.path = "../compiler"
 vsp-mx.path = "../mx"
 vsp-pm.path = "../pm"
 vsp-support.path = "../support"

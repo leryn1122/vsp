@@ -82,9 +82,7 @@ impl<'ctx> CodegenContext<'ctx> {
   pub fn add_function(&self, function: Function) {
     let i64_type = self.context.i64_type();
     let fn_type = i64_type.fn_type(&[], false);
-    let function = self
-      .module
-      .add_function(function.name.as_str(), fn_type, None);
+    let function = self.module.add_function(function.name.as_str(), fn_type, None);
     let basic_block = self.context.append_basic_block(function, "entry");
     ()
   }

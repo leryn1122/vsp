@@ -8,6 +8,7 @@ use std::str::FromStr;
 use anyhow::anyhow;
 
 /// Version control toolchains.
+#[derive(Clone)]
 pub enum VersionControl {
   Git,
   Fossil,

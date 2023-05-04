@@ -1,0 +1,46 @@
+It supports 4 shells currently. No more shells are about to be available in the
+future, since following shells cover most terminal users.
+
+  - `bash`
+  - `fish`
+  - `zsh`
+  - `powershell`
+
+To enable the auto completion requires to install the third party
+`bash-completion` manually.
+
+  ```bash
+  # Ubuntu
+  sudo apt-get install bash-completion
+  source /etc/bash_completion
+
+  # Mac OS (if using `brew` as package manager)
+  brew install bash-completion
+  source $(brew --prefix)/etc/bash_completion
+  ```
+
+Output the bash completion contents and source it as below. It is trivial.
+
+  ```bash
+  ## Using bash
+  $ source <(vsp completion bash)
+
+  ## Using zsh
+  $ source <(vsp completion zsh)
+
+  ## Using fish
+  $ vsp completion fish > ~/.config/fish/completions/vsp.fish
+  ```
+
+Additionally, you may want to add the completion source in your `.bashrc` for
+every session.
+
+On Windows platform, it is recommended to use powershell as below:
+
+  ```powershell
+  PS> vsp completion powershell > $HOME\.vsp-completion.ps1
+  PS> Add-Content $PROFILE '. $HOME\.vsp-completion.ps1'
+  PS> Add-Content $PROFILE 'if (Get-Command vsp -ErrorAction SilentlyContinue) {
+          vsp completion powershell | Out-String | Invoke-Expression
+      }'
+  ```

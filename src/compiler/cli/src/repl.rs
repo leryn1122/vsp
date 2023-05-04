@@ -58,9 +58,7 @@ impl REPL {
   #[allow(unused_must_use)]
   pub fn eval(&self, line: &str) -> Result<bool, String> {
     let args = shlex::split(line).ok_or("[ERROR]: Invalid quoting, please check your input.")?;
-    let matches = cli()
-      .try_get_matches_from(&args)
-      .map_err(|e| e.to_string())?;
+    let matches = cli().try_get_matches_from(&args).map_err(|e| e.to_string())?;
     match matches.subcommand() {
       Some(("ping", _matches)) => {
         write!(std::io::stdout(), "Pong").map_err(|e| e.to_string());
@@ -99,11 +97,7 @@ fn cli() -> clap::Command {
     .subcommand_value_name("APPLET")
     .subcommand_help_heading("APPLETS")
     .help_template(PARSER_TEMPLATE)
-    .subcommand(
-      Command::new("ping")
-        .about("Get a response")
-        .help_template(APPLET_TEMPLATE),
-    )
+    .subcommand(Command::new("ping").about("Get a response").help_template(APPLET_TEMPLATE))
     .subcommand(
       Command::new("quit")
         .alias("exit")
@@ -117,8 +111,6 @@ pub(crate) fn readline() -> Result<String, String> {
   write!(std::io::stdout(), "$ ").map_err(|e| e.to_string());
   std::io::stdout().flush().map_err(|e| e.to_string())?;
   let mut buffer = String::new();
-  std::io::stdin()
-    .read_line(&mut buffer)
-    .map_err(|e| e.to_string())?;
+  std::io::stdin().read_line(&mut buffer).map_err(|e| e.to_string())?;
   Ok(buffer)
 }

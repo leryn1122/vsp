@@ -65,9 +65,7 @@ fn main() -> Result<(), Box<dyn Error>> {
 
   // println!("{}", module.print_to_string().to_string());
 
-  let sum = codegen
-    .jit_compile_sum()
-    .ok_or("Unable to JIT compile `sum`")?;
+  let sum = codegen.jit_compile_sum().ok_or("Unable to JIT compile `sum`")?;
 
   let x = 1u64;
   let y = 2u64;

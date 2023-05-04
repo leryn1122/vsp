@@ -6,14 +6,14 @@ use vsp_mx::process::list_all_vm_processes;
 
 #[allow(dead_code)]
 pub(crate) fn cli() -> Command {
-  Command::new("ps")
-    .about("Process status tool")
-    .arg(arg!(-q --quiet "Enable quiet mode: Print PIDs only."))
-    .arg(arg!(-v --verbose "Enable verbose mode: Print arguments passed to the executables."))
+  Command::new("ps").about("Process status tool").args(&[
+    arg!(-q --quiet "Enable quiet mode: Print PIDs only."),
+    arg!(-v --verbose "Enable verbose mode: Print arguments passed to the executables."),
+  ])
 }
 
 #[allow(dead_code, unused_variables)]
-pub(crate) fn execute(args: &ArgMatches) -> anyhow::Result<()> {
+pub(crate) fn entrypoint(args: &ArgMatches) -> anyhow::Result<()> {
   let res = list_all_vm_processes();
   if let Err(e) = res {
     return Err(anyhow!(e));

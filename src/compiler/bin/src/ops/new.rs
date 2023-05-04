@@ -3,6 +3,7 @@ use std::path::PathBuf;
 
 use anyhow::anyhow;
 use clap::arg;
+use clap::builder::PossibleValuesParser;
 use clap::value_parser;
 use clap::ArgMatches;
 use clap::Command;
@@ -13,21 +14,24 @@ pub(crate) fn cli() -> Command {
   Command::new("new")
     .about("Create new project")
     .arg_required_else_help(true)
-    .arg(
-      arg!([project] "Project name")
-        .required(true)
-        .value_parser(value_parser!(String)),
-    )
-    .arg(
-      arg!(--vcs [vcs] "Version control service. Initialize the project with given version control \
-system. Possible value: `git', `fossil', `hg', `svn', none."),
-    )
-    .arg(arg!(--path [path] "Path to the project.").value_parser(value_parser!(PathBuf)))
+    .args(&[
+    arg!([project] "Project name")
+      .required(true)
+      .value_parser(value_parser!(String)),
+    arg!(--vcs [vcs] "Version control service. Initialize the project with given version control \
+system.")
+    .required(false)
+    .value_parser(PossibleValuesParser::new(vec![
+      "git", "fossil", "hg", "svn",
+    ])),
+    arg!(--path [path] "Path to the project.").value_parser(value_parser!(PathBuf)),
+  ])
 }
 
-#[allow(unused_variables)]
-pub(crate) fn execute(args: &ArgMatches) -> anyhow::Result<()> {
+pub(crate) fn entrypoint(args: &ArgMatches) -> anyhow::Result<()> {
   let project = args.get_one::<String>("project").unwrap();
+  // No need to use `PossibleValuesParser` here.
+  // Use `FromStr` tricky.
   let vcs = args
     .get_one::<String>("vcs")
     .ok_or(anyhow!("Unsupported version control service"))

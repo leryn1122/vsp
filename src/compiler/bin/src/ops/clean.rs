@@ -17,7 +17,7 @@ pub(crate) fn cli() -> Command {
 /// Remove the current working directory target artifacts.
 ///   - target/*
 #[allow(unused_variables)]
-pub(crate) fn execute(args: &ArgMatches) -> anyhow::Result<()> {
+pub(crate) fn entrypoint(args: &ArgMatches) -> anyhow::Result<()> {
   let target_dir = std::env::current_dir().unwrap().join("target");
   match std::fs::remove_dir_all(target_dir) {
     Ok(_) => Ok(()),

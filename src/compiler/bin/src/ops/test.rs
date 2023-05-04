@@ -3,6 +3,6 @@ pub(crate) fn cli() -> clap::Command {
 }
 
 #[allow(unused_variables)]
-pub(crate) fn execute(args: &clap::ArgMatches) -> anyhow::Result<()> {
+pub(crate) fn entrypoint(args: &clap::ArgMatches) -> anyhow::Result<()> {
   todo!()
 }

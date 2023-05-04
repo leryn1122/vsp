@@ -1,4 +1,12 @@
 /// All came from `sysexits.h`
+///
+/// ```
+/// extern crate vsp_support;
+/// use vsp_support::exitcode::ExitCode;
+/// use vsp_support::exitcode::EXIT_OK;
+///
+/// std::process::exit(EXIT_OK);
+/// ```
 pub type ExitCode = i32;
 
 pub const EXIT_OK: ExitCode = 0;

@@ -8,7 +8,7 @@ pub(crate) fn cli() -> Command {
 }
 
 #[allow(unused_variables)]
-pub(crate) fn execute(args: &ArgMatches) -> anyhow::Result<()> {
+pub(crate) fn entrypoint(args: &ArgMatches) -> anyhow::Result<()> {
   match do_run_repl() {
     Ok(res) => Ok(res),
     Err(e) => Err(anyhow!(e)),

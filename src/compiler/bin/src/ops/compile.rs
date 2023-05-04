@@ -1,13 +1,36 @@
+use std::path::PathBuf;
+
+use anyhow::anyhow;
+use clap::arg;
+use clap::value_parser;
 use clap::ArgMatches;
 use clap::Command;
+use clap::ValueHint;
+use vsp_compiler::compile;
 
 pub(crate) fn cli() -> Command {
   Command::new("compile")
     .about("Language compiler")
     .arg_required_else_help(true)
+    .args(&[
+      arg!(<source>  "Source codes to compile")
+        .required(true)
+        .value_parser(value_parser!(PathBuf))
+        .value_hint(ValueHint::AnyPath),
+      arg!(--lib "Build only the project's library"),
+      arg!(--bin <bin> "Build only the project's binaries"),
+      arg!(--target <triple> "Target triple"),
+      arg!(-q --quiet "Enable quiet mode"),
+    ])
 }
 
 #[allow(unused_variables)]
-pub(crate) fn execute(args: &ArgMatches) -> anyhow::Result<()> {
-  Ok(())
+pub(crate) fn entrypoint(args: &ArgMatches) -> anyhow::Result<()> {
+  let target_triple = args
+    .get_one::<String>("target")
+    .ok_or(anyhow!("Unsupported target triple"))
+    .ok();
+  let quiet = args.get_flag("quiet");
+  let result = compile();
+  Ok(result)
 }

@@ -21,9 +21,7 @@ impl Substring for str {
     unsafe {
       self.slice_unchecked(
         indices.nth(start_index).map_or(str_len, &obtain_index),
-        indices
-          .nth(end_index - start_index - 1)
-          .map_or(str_len, &obtain_index),
+        indices.nth(end_index - start_index - 1).map_or(str_len, &obtain_index),
       )
     }
   }
