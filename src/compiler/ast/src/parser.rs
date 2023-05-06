@@ -12,13 +12,10 @@ use crate::visitor::FunctionSignatureASTVisitor;
 
 /// Parser is a syntax analysis automaton that consumes the token stream from
 /// the lexer.
+#[derive(Default)]
 pub struct Parser {}
 
 impl Parser {
-  pub fn new() -> Self {
-    Self {}
-  }
-
   pub fn receive(&self, _tokens: &TokenStream) {}
 }
 

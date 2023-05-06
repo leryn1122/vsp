@@ -146,8 +146,8 @@ pub struct FunctionType {
 impl FunctionType {
   pub fn new(parameters: Vec<Type>, return_type: Box<Type>) -> Self {
     Self {
-      parameters:  parameters,
-      return_type: return_type,
+      parameters,
+      return_type,
     }
   }
 }

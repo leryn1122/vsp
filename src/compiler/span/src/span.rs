@@ -63,6 +63,12 @@ impl Ord for Position {
   }
 }
 
+impl Default for Position {
+  fn default() -> Self {
+    Self::new()
+  }
+}
+
 /// Code span, from the start to the end position within the file.
 #[derive(Clone, Debug)]
 pub struct Span {
@@ -81,10 +87,7 @@ impl Default for Span {
 
 impl Span {
   pub fn range(start: Position, end: Position) -> Self {
-    Self {
-      start: start,
-      end:   end,
-    }
+    Self { start, end }
   }
 
   pub fn single_char(pos: Position) -> Self {

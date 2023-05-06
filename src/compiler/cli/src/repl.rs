@@ -1,3 +1,4 @@
+use std::io::stdout;
 use std::io::Write;
 
 use clap::Command;
@@ -58,7 +59,7 @@ impl REPL {
   #[allow(unused_must_use)]
   pub fn eval(&self, line: &str) -> Result<bool, String> {
     let args = shlex::split(line).ok_or("[ERROR]: Invalid quoting, please check your input.")?;
-    let matches = cli().try_get_matches_from(&args).map_err(|e| e.to_string())?;
+    let matches = cli().try_get_matches_from(args).map_err(|e| e.to_string())?;
     match matches.subcommand() {
       Some(("ping", _matches)) => {
         write!(std::io::stdout(), "Pong").map_err(|e| e.to_string());
@@ -77,7 +78,13 @@ impl REPL {
   }
 }
 
-fn cli() -> clap::Command {
+impl Default for REPL {
+  fn default() -> Self {
+    Self::new()
+  }
+}
+
+fn cli() -> Command {
   // strip out usage
   const PARSER_TEMPLATE: &str = "\
         {all-args}
@@ -90,7 +97,7 @@ fn cli() -> clap::Command {
         {all-args}{after-help}\
     ";
 
-  clap::Command::new("repl")
+  Command::new("repl")
     .multicall(true)
     .arg_required_else_help(true)
     .subcommand_required(true)
@@ -108,8 +115,8 @@ fn cli() -> clap::Command {
 
 #[allow(unused_must_use)]
 pub(crate) fn readline() -> Result<String, String> {
-  write!(std::io::stdout(), "$ ").map_err(|e| e.to_string());
-  std::io::stdout().flush().map_err(|e| e.to_string())?;
+  write!(stdout(), "$ ").map_err(|e| e.to_string());
+  stdout().flush().map_err(|e| e.to_string())?;
   let mut buffer = String::new();
   std::io::stdin().read_line(&mut buffer).map_err(|e| e.to_string())?;
   Ok(buffer)

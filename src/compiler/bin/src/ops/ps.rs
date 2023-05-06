@@ -5,7 +5,7 @@ use clap::Command;
 use vsp_mx::process::list_all_vm_processes;
 
 #[allow(dead_code)]
-pub(crate) fn cli() -> Command {
+pub(crate) fn cli(_: bool) -> Command {
   Command::new("ps").about("Process status tool").args(&[
     arg!(-q --quiet "Enable quiet mode: Print PIDs only."),
     arg!(-v --verbose "Enable verbose mode: Print arguments passed to the executables."),

@@ -33,10 +33,10 @@ pub struct Function {
 impl Function {
   pub fn new(name: String, signature: FunctionSignature) -> Self {
     Self {
-      name:        name,
+      name,
       annotations: None,
-      signature:   signature,
-      body:        None,
+      signature,
+      body: None,
     }
   }
 }
@@ -58,13 +58,13 @@ impl FunctionSignature {
     accessibility: FunctionAccessibility,
     constancy: FunctionConstancy,
     parameters: Vec<Parameter>,
-    return_value: Type,
+    return_type: Type,
   ) -> Self {
     Self {
-      accessibility: accessibility,
-      constancy:     constancy,
-      parameters:    parameters,
-      return_type:   return_value,
+      accessibility,
+      constancy,
+      parameters,
+      return_type,
     }
   }
 }

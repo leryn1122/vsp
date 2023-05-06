@@ -6,8 +6,8 @@ use clap::value_parser;
 use clap::ArgMatches;
 use clap::Command;
 
-pub(crate) fn cli() -> Command {
-  Command::new("clean").about("Clean target directory").arg(
+pub(crate) fn cli(_: bool) -> Command {
+  Command::new("clean").about("Clean target directory.").arg(
     arg!(--path [path] "All things in given directory would be deleted immediately.")
       .default_value("target")
       .value_parser(value_parser!(PathBuf)),

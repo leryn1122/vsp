@@ -50,11 +50,9 @@ impl ProcessBuilder {
 
   pub fn status(&self) -> std::io::Result<ExitStatus> {
     let mut cmd = self.build_command();
-    let status = cmd.spawn()?.wait();
-    status
+    cmd.spawn()?.wait()
   }
 
-  #[must_use]
   pub fn exec(&self) -> anyhow::Result<()> {
     let exit = self.status()?;
     if exit.success() {

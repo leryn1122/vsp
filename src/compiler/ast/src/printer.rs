@@ -47,6 +47,12 @@ impl ASTPrinter {
   }
 }
 
+impl Default for ASTPrinter {
+  fn default() -> Self {
+    Self::new()
+  }
+}
+
 pub struct ASTPrintContext {
   /** Number of indent level, 1 indent for 2 space. */
   indent: usize,
@@ -63,6 +69,12 @@ impl ASTPrintContext {
 
   pub fn decrement(&mut self) {
     self.indent -= 1;
+  }
+}
+
+impl Default for ASTPrintContext {
+  fn default() -> Self {
+    Self::new()
   }
 }
 

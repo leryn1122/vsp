@@ -1,18 +1,16 @@
-use target_lexicon::Triple;
-
 use crate::option::TargetOptions;
 
 pub mod option;
 
+/// Entrypoint to compile the source codes.
 pub fn compile() {
   let compiler = Compiler::instance();
 
   compiler.create_diagnostics();
 
   let mut target_options = TargetOptions::default();
-  target_options.triplet = Triple::host();
   compiler.set_target_options(target_options);
-  // let file_manager: FileManager = compiler.create_file_manager();
+  // let mut file_manager: FileManager = compiler.create_file_manager();
   // let source_manager = compiler.create_source_manager(&mut file_manager);
   compiler.create_preprocessor();
   compiler.create_ast_context();
@@ -32,7 +30,7 @@ impl Compiler {
 
   pub fn set_target_options(&self, target_options: TargetOptions) -> Self {
     Self {
-      target_options: target_options,
+      target_options,
     }
   }
 

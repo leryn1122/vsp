@@ -8,20 +8,22 @@ use clap::Command;
 use clap::ValueHint;
 use vsp_compiler::compile;
 
-pub(crate) fn cli() -> Command {
-  Command::new("compile")
-    .about("Language compiler")
-    .arg_required_else_help(true)
-    .args(&[
-      arg!(<source>  "Source codes to compile")
-        .required(true)
-        .value_parser(value_parser!(PathBuf))
-        .value_hint(ValueHint::AnyPath),
-      arg!(--lib "Build only the project's library"),
-      arg!(--bin <bin> "Build only the project's binaries"),
-      arg!(--target <triple> "Target triple"),
-      arg!(-q --quiet "Enable quiet mode"),
-    ])
+pub(crate) fn cli(alias: bool) -> Command {
+  let command = if alias {
+    Command::new("vspc")
+  } else {
+    Command::new("compile")
+  };
+  command.about("Language compiler").arg_required_else_help(true).args(&[
+    arg!(<source>  "Source codes to compile")
+      .required(true)
+      .value_parser(value_parser!(PathBuf))
+      .value_hint(ValueHint::AnyPath),
+    arg!(--lib "Build only the project's library"),
+    arg!(--bin <bin> "Build only the project's binaries"),
+    arg!(--target <triple> "Target triple"),
+    arg!(-q --quiet "Enable quiet mode"),
+  ])
 }
 
 #[allow(unused_variables)]

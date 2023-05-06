@@ -25,8 +25,8 @@ impl NewProjectConfig {
   pub fn new(name: impl Into<String>, vcs: Option<VersionControl>, path: PathBuf) -> Self {
     Self {
       name: name.into(),
-      vcs:  vcs,
-      path: path,
+      vcs,
+      path,
     }
   }
 

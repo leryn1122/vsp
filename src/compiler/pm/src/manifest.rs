@@ -14,7 +14,7 @@ impl Manifest {
       version: Version::parse("0.1.0").unwrap(),
     };
 
-    Self { project: project }
+    Self { project }
   }
 }
 
@@ -26,6 +26,7 @@ impl Default for Manifest {
 }
 
 // #[derive(Deserialize, Serialize, Debug)]
+#[allow(dead_code)]
 pub(crate) struct Project {
   name:    String,
   version: Version,

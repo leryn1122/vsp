@@ -1,5 +1,9 @@
-pub(crate) fn cli() -> clap::Command {
-  clap::Command::new("test").about("Run all unit and integration tests")
+use clap::arg;
+
+pub(crate) fn cli(_: bool) -> clap::Command {
+  clap::Command::new("test")
+    .about("Run all unit tests and integration tests")
+    .args(&[arg!(--unittests "Run all unit tests only.")])
 }
 
 #[allow(unused_variables)]

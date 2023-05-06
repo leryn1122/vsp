@@ -10,7 +10,7 @@ use clap::Command;
 use vsp_pm::new::NewProjectConfig;
 use vsp_pm::vcs::VersionControl;
 
-pub(crate) fn cli() -> Command {
+pub(crate) fn cli(_: bool) -> Command {
   Command::new("new")
     .about("Create new project")
     .arg_required_else_help(true)

@@ -10,7 +10,7 @@ use CandidateShell::Fish;
 use CandidateShell::PowerShell;
 use CandidateShell::Zsh;
 
-pub(crate) fn cli() -> Command {
+pub(crate) fn cli(_: bool) -> Command {
   Command::new("completion")
     .about("Generate autocompletion scripts for the specified shell.")
     .arg(

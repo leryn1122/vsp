@@ -23,7 +23,7 @@ install: ## Install dependencies.
 
 .PHONY: check
 check: ## Check
-	$(CARGO) check
+	$(CARGO) clippy
 
 .PHONY: lint
 lint: check ## Lint

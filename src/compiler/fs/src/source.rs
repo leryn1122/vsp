@@ -69,6 +69,7 @@ struct SourceFileHash {
 }
 
 impl SourceFileHash {
+  #[allow(dead_code)]
   pub fn new(algorithm: SourceFileHashAlgorithm, src: &str) -> SourceFileHash {
     let mut hash = SourceFileHash {
       algorithm,
@@ -96,6 +97,7 @@ impl SourceFileHash {
     hash
   }
 
+  #[allow(dead_code)]
   fn hash_len(&self) -> usize {
     match self.algorithm {
       SourceFileHashAlgorithm::MD5Sum => 16,
@@ -105,6 +107,7 @@ impl SourceFileHash {
     }
   }
 
+  #[allow(dead_code)]
   pub fn matches(&self, src: &str) -> bool {
     Self::new(self.algorithm, src) == *self
   }

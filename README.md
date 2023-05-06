@@ -34,7 +34,7 @@ Long term:
 | `vsp compile`         | `vspc`        | Language compiler                     |
 | `vsp debug`           | `vspd`        | Runtime debugger                      |
 | `vsp help`            |               | Print help info                       |
-| `vsp repl`            | `vsprepl`     | REPL (Read-Eval-Print Loop) or shell  |
+| `vsp repl`            | `vspsh`     | REPL (Read-Eval-Print Loop) or shell  |
 | `vsp tar`             | `vspx`        | Tool of Compression and Decompression |
 | `vsp version`         |               | Print version info                    |
 

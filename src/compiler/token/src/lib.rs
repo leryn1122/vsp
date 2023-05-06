@@ -16,10 +16,7 @@ pub struct Token {
 
 impl Token {
   pub fn new(token: TokenType, span: Span) -> Self {
-    Self {
-      token: token,
-      span:  span,
-    }
+    Self { token, span }
   }
 }
 
