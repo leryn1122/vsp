@@ -3,6 +3,7 @@ use std::io::Write;
 use std::path::PathBuf;
 
 use anyhow::anyhow;
+use vsp_support::resources_bytes;
 
 use crate::vcs::fossil::FossilRepo;
 use crate::vcs::git::GitRepo;
@@ -58,15 +59,15 @@ impl NewProjectConfig {
     // `cd` into project directory.
     std::env::set_current_dir(&path).unwrap();
 
-    for entry in vec!["build.vsp", "lib.vsp", "module.vsp", "manifest.toml"] {
+    for entry in &["build.vsp", "lib.vsp", "module.vsp", "manifest.toml"] {
       let res = OpenOptions::new().create_new(true).write(true).open(entry);
       match res {
         Ok(mut f) => {
-          f.write_all(match entry {
-            "build.vsp" => include_bytes!("build.vsp"),
-            "lib.vsp" => include_bytes!("lib.vsp"),
-            "module.vsp" => include_bytes!("module.vsp"),
-            "manifest.toml" => include_bytes!("manifest.toml"),
+          f.write_all(match *entry {
+            "build.vsp" => resources_bytes!("new/build.vsp"),
+            "lib.vsp" => resources_bytes!("new/lib.vsp"),
+            "module.vsp" => resources_bytes!("new/module.vsp"),
+            "manifest.toml" => resources_bytes!("new/manifest.toml"),
             _ => unreachable!(),
           })
           .map_err(|e| anyhow!(e))

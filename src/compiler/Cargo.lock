@@ -736,7 +736,6 @@ checksum = "49874b5167b65d7193b8aba1567f5c7d93d001cafc34600cee003eda787e483f"
 name = "vsp-ast"
 version = "0.1.0"
 dependencies = [
- "vsp-lexer",
  "vsp-span",
  "vsp-support",
  "vsp-token",
@@ -789,15 +788,6 @@ version = "0.1.0"
 dependencies = [
  "anyhow",
  "md-5",
-]
-
-[[package]]
-name = "vsp-lexer"
-version = "0.1.0"
-dependencies = [
- "anyhow",
- "vsp-span",
- "vsp-token",
 ]
 
 [[package]]

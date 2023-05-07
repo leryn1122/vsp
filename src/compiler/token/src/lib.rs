@@ -1,174 +1,56 @@
-use core::fmt::Debug;
-use core::fmt::Formatter;
-use core::str::FromStr;
-
-use vsp_span::span::Span;
-
-/// The final result of the lexical analysis, which are transferred to the AST
-/// parser.
+/// The final result of the lexical analysis, which are transferred to the AST parser.
 pub type TokenStream = Vec<Token>;
 
-/// The locatable token.
-pub struct Token {
-  pub token: TokenType,
-  pub span:  Span,
-}
-
-impl Token {
-  pub fn new(token: TokenType, span: Span) -> Self {
-    Self { token, span }
-  }
-}
-
-impl Debug for Token {
-  fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
-    write!(
-      f,
-      "Token = [{:?}]:{},{}:{},{}",
-      self.token,
-      self.span.start.line,
-      self.span.start.column,
-      self.span.end.line,
-      self.span.end.column
-    )
-  }
-}
-
-///
-#[derive(Clone, Debug, Eq, PartialEq)]
-pub enum TokenType {
-  Keyword(Keyword),
-  Identifier(String),
-  LiteralText(String),
-  LiteralNumeric(i64),
-  Punctuator(Punctuator),
-  EOF,
-}
-
-impl FromStr for TokenType {
-  type Err = anyhow::Error;
-
-  fn from_str(_s: &str) -> Result<Self, Self::Err> {
-    todo!()
-  }
-}
-
+/// A token in lexical analysis.
 #[rustfmt::skip]
 #[derive(Clone, Debug, Eq, PartialEq)]
-pub enum Punctuator {
+#[repr(u8)]
+pub enum Token {
+  //============================================================================//
+  //  Punctuator
   //============================================================================//
 
-  // Separator
-  /* `.` */ Dot,
-  /// `,`
-  Comma,
-  /// `;`
-  Colon,
-  /// `:`
-  SemiColon,
-  /// `+`
-  Plus,
-  /// `-`
-  Minus,
-  /// `*`
-  Asterisk,
-  /// `/`
-  Slash,
-  /// `%`
-  Percentage,
-
-  /// `(`
-  LParenthesis,
-  /// `)`
-  RParenthesis,
-  /// `[`
-  LBracket,
-  /// `]`
-  RBracket,
-  /// `{`
-  LBrace,
-  /// `}`
-  RBrace,
-
-  // Comparison
-  /// `<`
-  Less,
-  /// `>`
-  Greater,
-  /// `<=`
-  LessEqual,
-  /// `>=`
-  GreaterEqual,
-  /// `==`
-  Equal,
-  /// `!=`
-  NotEqual,
-  /// `=`
-  Assigment,
-
-  /// `@`
-  At,
-
-  // Logic Operators
-  /// `!`
-  Not,
-  /// `&&`
-  And,
-  /// `||`
-  Or,
-  /// `^`
-  Xor,
-
-  // Bit Operators
-  // TODO
-
-  // Quotation
-  /// `?`
-  Question,
-  /// `'`
-  SQuote,
-  /// `"`
-  DQuote,
-  /// `"""`
-  TQuote,
-
-  // Lambda
-  /// `->`
-  Arrow,
-  /// `=>`
-  DArrow,
-  /// `::`
-  DColon,
+  /*  `.`   */Dot = 0,
+  /*  `,`   */Comma,
+  /*  `;`   */Colon,
+  /*  `:`   */SemiColon,
+  /*  `+`   */Plus,
+  /*  `-`   */Minus,
+  /*  `*`   */Asterisk,
+  /*  `/`   */Slash,
+  /*  `%`   */Percentage,
+  /*  `(`   */LParenthesis,
+  /*  `)`   */RParenthesis,
+  /*  `[`   */LBracket,
+  /*  `]`   */RBracket,
+  /*  `{`   */LBrace,
+  /*  `}`   */RBrace,
+  /*  `<`   */Less,
+  /*  `>`   */Greater,
+  /*  `<=`  */LessEqual,
+  /*  `>=`  */GreaterEqual,
+  /*  `==`  */Equal,
+  /*  `!=`  */NotEqual,
+  /*  `=`   */Assigment,
+  /*  `@`   */At,
+  /*  `!`   */Not,
+  /*  `&&`  */And,
+  /*  `||`  */Or,
+  /*  `^`   */Xor,
+  /*  `?`   */Question,
+  /*  `'`   */SQuote,
+  /*  `"`   */DQuote,
+  /*  `"""` */TQuote,
+  /*  `->`  */Arrow,
+  /*  `=>`  */DArrow,
+  /*  `::`  */DColon,
+  
   //============================================================================//
-}
-
-impl Punctuator {
-  pub fn from_string(s: &str) -> Option<Punctuator> {
-    match s {
-      "." => Some(Punctuator::Dot),
-      "," => Some(Punctuator::Comma),
-      ";" => Some(Punctuator::Colon),
-      ":" => Some(Punctuator::SemiColon),
-      "*" => Some(Punctuator::Asterisk),
-      "%" => Some(Punctuator::Percentage),
-      "(" => Some(Punctuator::LParenthesis),
-      ")" => Some(Punctuator::RParenthesis),
-      "[" => Some(Punctuator::LBracket),
-      "]" => Some(Punctuator::RBracket),
-      "{" => Some(Punctuator::LBrace),
-      "}" => Some(Punctuator::RBrace),
-      "@" => Some(Punctuator::At),
-      _ => None,
-    }
-  }
-}
-
-#[derive(Clone, Debug, PartialEq, Eq)]
-pub enum Keyword {
+  //  Keywords
   //============================================================================//
 
   // A-G
-  As,
+  As = 1 << 6,
   Async,
   Await,
   Break,
@@ -208,51 +90,132 @@ pub enum Keyword {
   Var,
   Where,
   While,
+
+  Self_, // for Self
+  
   //============================================================================//
+  //  Literals
+  //============================================================================//
+  #[allow(deprecated)]
+  Identifier(String) = std::u8::MAX - 4,
+  LiteralText(String),
+  LiteralInteger(i64),
+  LiteralFloat(String),
 }
 
-impl FromStr for Keyword {
-  type Err = String;
-
-  fn from_str(s: &str) -> Result<Self, Self::Err> {
+impl Token {
+  /// Mapping the literal string to the corresponding non-literal token.
+  /// If the return values is `None`, try to
+  #[rustfmt::skip]
+  pub fn mapping_non_literal_token(s: &str) -> Option<Token> {
     match s {
-      "as" => Ok(Keyword::As),
-      "async" => Ok(Keyword::Async),
-      "await" => Ok(Keyword::Await),
-      "break" => Ok(Keyword::Break),
-      "const" => Ok(Keyword::Const),
-      "continue" => Ok(Keyword::Continue),
-      "else" => Ok(Keyword::Else),
-      "enum" => Ok(Keyword::Enum),
-      "false" => Ok(Keyword::False),
-      "func" => Ok(Keyword::Func),
-      "for" => Ok(Keyword::For),
-      "if" => Ok(Keyword::If),
-      "impl" => Ok(Keyword::Impl),
-      "import" => Ok(Keyword::Import),
-      "in" => Ok(Keyword::In),
-      "int" => Ok(Keyword::Int),
-      "let" => Ok(Keyword::Let),
-      "loop" => Ok(Keyword::Loop),
-      "module" => Ok(Keyword::Module),
-      "optional" => Ok(Keyword::Optional),
-      "public" => Ok(Keyword::Public),
-      "ref" => Ok(Keyword::Ref),
-      "return" => Ok(Keyword::Return),
-      "static" => Ok(Keyword::Static),
-      "struct" => Ok(Keyword::Struct),
-      "super" => Ok(Keyword::Super),
-      "true" => Ok(Keyword::True),
-      "type" => Ok(Keyword::Type),
-      "union" => Ok(Keyword::Union),
-      "unsafe" => Ok(Keyword::Unsafe),
-      "use" => Ok(Keyword::Use),
-      "var" => Ok(Keyword::Var),
-      "where" => Ok(Keyword::Where),
-      "while" => Ok(Keyword::While),
-      &_ => Err(s.to_string()),
+      "."         => Some(Self::Dot),
+      ","         => Some(Self::Comma),
+      ";"         => Some(Self::Colon),
+      ":"         => Some(Self::SemiColon),
+      "+"         => Some(Self::Plus),
+      "-"         => Some(Self::Minus),
+      "*"         => Some(Self::Asterisk),
+      "/"         => Some(Self::Slash),
+      "%"         => Some(Self::Percentage),
+      "("         => Some(Self::LParenthesis),
+      ")"         => Some(Self::RParenthesis),
+      "["         => Some(Self::LBracket),
+      "]"         => Some(Self::RBracket),
+      "{"         => Some(Self::LBrace),
+      "}"         => Some(Self::RBrace),
+      "<"         => Some(Self::Less),
+      ">"         => Some(Self::Greater),
+      "<="        => Some(Self::LessEqual),
+      ">="        => Some(Self::GreaterEqual),
+      "=="        => Some(Self::Equal),
+      "!="        => Some(Self::NotEqual),
+      "="         => Some(Self::Assigment),
+      "@"         => Some(Self::At),
+      "!"         => Some(Self::Not),
+      "&&"        => Some(Self::And),
+      "||"        => Some(Self::Or),
+      "^"         => Some(Self::Xor),
+      "?"         => Some(Self::Question),
+      "->"        => Some(Self::Arrow),
+      "=>"        => Some(Self::DArrow),
+      "::"        => Some(Self::DColon),
+      "'"         => Some(Self::SQuote),
+      "\""        => Some(Self::DQuote),
+      "\"\"\""    => Some(Self::TQuote),
+
+      "as"               => Some(Self::As),
+      "async"            => Some(Self::Async),
+      "await"            => Some(Self::Await),
+      "break"            => Some(Self::Break),
+      "const"            => Some(Self::Const),
+      "continue"         => Some(Self::Continue),
+      "else"             => Some(Self::Else),
+      "enum"             => Some(Self::Enum),
+      "false"            => Some(Self::False),
+      "func"             => Some(Self::Func),
+      "for"              => Some(Self::For),
+      "if"               => Some(Self::If),
+      "impl"             => Some(Self::Impl),
+      "import"           => Some(Self::Import),
+      "in"               => Some(Self::In),
+      "int"              => Some(Self::Int),
+      "let"              => Some(Self::Let),
+      "loop"             => Some(Self::Loop),
+      "module"           => Some(Self::Module),
+      "optional"         => Some(Self::Optional),
+      "public"           => Some(Self::Public),
+      "ref"              => Some(Self::Ref),
+      "return"           => Some(Self::Return),
+      "static"           => Some(Self::Static),
+      "struct"           => Some(Self::Struct),
+      "super"            => Some(Self::Super),
+      "true"             => Some(Self::True),
+      "type"             => Some(Self::Type),
+      "union"            => Some(Self::Union),
+      "unsafe"           => Some(Self::Unsafe),
+      "use"              => Some(Self::Use),
+      "var"              => Some(Self::Var),
+      "where"            => Some(Self::Where),
+      "while"            => Some(Self::While),
+      "self"             => Some(Self::Self_),
+
+      _ => None,
     }
   }
+
+  #[allow(clippy::wrong_self_convention)]
+  fn into_u8(&self) -> u8 {
+    unsafe { *(self as *const Self as *const u8) }
+  }
+
+  /// Use ordinal number to determine which range it belongs to.
+  pub fn token_type(&self) -> TokenType {
+    let ord = self.into_u8();
+    if ord < Self::Dot.into_u8() {
+      match self {
+        Token::Identifier(_) => TokenType::Identifier,
+        Token::LiteralText(_) => TokenType::LiteralText,
+        Token::LiteralInteger(_) => TokenType::LiteralInteger,
+        Token::LiteralFloat(_) => TokenType::LiteralFloat,
+        _ => unreachable!("Unsupported token type"),
+      }
+    } else if ord < Self::As.into_u8() {
+      TokenType::Punctuator
+    } else {
+      TokenType::Keyword
+    }
+  }
+}
+
+#[repr(usize)]
+pub enum TokenType {
+  Punctuator,
+  Keyword,
+  Identifier,
+  LiteralText,
+  LiteralInteger,
+  LiteralFloat,
 }
 
 /// Base of numeric literal value.

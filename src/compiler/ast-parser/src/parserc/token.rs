@@ -1,5 +1,3 @@
-use std::str::FromStr;
-
 use combine::between;
 use combine::many;
 use combine::many1;
@@ -11,34 +9,32 @@ use combine::token;
 use combine::ParseError;
 use combine::Parser;
 use combine::Stream;
-use vsp_token::Keyword;
-use vsp_token::TokenType;
+use vsp_token::Token;
 
 /// A function, of great importance in lexical analysis, splits the character stream into sequences
 /// of lexemes.
-pub fn tokenize<Input>() -> impl Parser<Input, Output = TokenType>
+pub fn tokenize<Input>() -> impl Parser<Input, Output = Token>
 where
   Input: Stream<Token = char>,
   Input::Error: ParseError<Input::Token, Input::Range, Input::Position>,
 {
-  let token = keyword()
+  keyword()
     // .or(punctuator())
     .or(identifier())
     .or(literal_text())
     // .or(literal_numeric())
-    .skip(spaces());
-  token
+    .skip(spaces())
 }
 
-pub(crate) fn keyword<Input>() -> impl Parser<Input, Output = TokenType>
+pub(crate) fn keyword<Input>() -> impl Parser<Input, Output = Token>
 where
   Input: Stream<Token = char>,
   Input::Error: ParseError<Input::Token, Input::Range, Input::Position>,
 {
   many::<String, _, _>(letter())
-    .map(|s| match Keyword::from_str(s.as_ref()) {
-      Ok(k) => TokenType::Keyword(k),
-      Err(s) => TokenType::Identifier(s),
+    .map(|s| match Token::mapping_non_literal_token(s.as_ref()) {
+      Some(token) => token,
+      None => Token::Identifier(s),
     })
     .expected("valid keyword")
 }
@@ -68,7 +64,7 @@ where
 }
 
 /// Regular expression pattern as `[a-zA-Z][a-zA-Z0-9_]+`.
-pub fn identifier<Input>() -> impl Parser<Input, Output = TokenType>
+pub fn identifier<Input>() -> impl Parser<Input, Output = Token>
 where
   Input: Stream<Token = char>,
   Input::Error: ParseError<Input::Token, Input::Range, Input::Position>,
@@ -77,19 +73,17 @@ where
     identifier_starter(),
     many::<String, _, _>(identifier_successor()),
   )
-    .map(|(starter, successor)| TokenType::Identifier(format!("{}{}", starter, successor)))
+    .map(|(starter, successor)| Token::Identifier(format!("{}{}", starter, successor)))
     .expected("valid identifier successor")
 }
 
-pub(crate) fn literal_text<Input>() -> impl Parser<Input, Output = TokenType>
+pub(crate) fn literal_text<Input>() -> impl Parser<Input, Output = Token>
 where
   Input: Stream<Token = char>,
   Input::Error: ParseError<Input::Token, Input::Range, Input::Position>,
 {
-  let string = || {
-    between(token('"'), token('"'), many1(none_of(Some('"'))))
-      .map(|s: String| TokenType::LiteralText(s.into()))
-  };
+  let string =
+    || between(token('"'), token('"'), many1(none_of(Some('"')))).map(Token::LiteralText);
   string().skip(spaces()).expected("valid literal text")
 }
 
@@ -187,11 +181,8 @@ mod tests {
 
   #[test]
   pub fn test_identifier() {
-    let mut parser = sep_by(identifier(), space()).map(|tokens: Vec<TokenType>| {
-      println!(
-        "{:?}",
-        <Vec<TokenType> as AsRef<Vec<TokenType>>>::as_ref(&tokens)
-      );
+    let mut parser = sep_by(identifier(), space()).map(|tokens: Vec<Token>| {
+      println!("{:?}", <Vec<Token> as AsRef<Vec<Token>>>::as_ref(&tokens));
     });
     let result = parser.parse("t token token_ token token123 token_123 token123token");
   }

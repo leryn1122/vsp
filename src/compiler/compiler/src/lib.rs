@@ -29,12 +29,10 @@ impl Compiler {
   }
 
   pub fn set_target_options(&self, target_options: TargetOptions) -> Self {
-    Self {
-      target_options,
-    }
+    Self { target_options }
   }
 
-  pub fn create_diagnostics(&self) -> () {}
+  pub fn create_diagnostics(&self) {}
 
   // pub fn create_file_manager<F>(&self) -> F
   // where

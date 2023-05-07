@@ -90,10 +90,11 @@ impl Span {
     Self { start, end }
   }
 
+  #[allow(clippy::clone_on_copy)]
   pub fn single_char(pos: Position) -> Self {
     Self {
       start: pos,
-      end:   pos.clone(),
+      end:   pos,
     }
   }
 

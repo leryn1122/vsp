@@ -5,7 +5,7 @@ edition = "2021"
 
 [dependencies]
 # Workspace dependencies
-vsp-lexer.path = "../lexer"
+#vsp-lexer.path = "../lexer"
 vsp-span.path = "../span"
 vsp-support.path = "../support"
 vsp-token.path = "../token"

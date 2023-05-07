@@ -36,6 +36,7 @@ pub struct SourceMap {
 
 /// Available algorithm of source file hash.
 #[derive(Copy, Clone, Debug, PartialEq, Eq)]
+#[allow(clippy::enum_variant_names)]
 enum SourceFileHashAlgorithm {
   MD5Sum,
   SHA1Sum,

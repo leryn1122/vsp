@@ -7,7 +7,7 @@ members = [
   "compiler",
   "fs",
   "mx",
-  "lexer",
+#  "lexer",
   "llvm",
   "platform",
   "pm",

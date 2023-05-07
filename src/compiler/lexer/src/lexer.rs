@@ -1,6 +1,5 @@
 use core::iter::Peekable;
 use core::str::Chars;
-use core::str::FromStr;
 
 use anyhow::anyhow;
 use vsp_span::span::Position;

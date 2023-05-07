@@ -6,6 +6,13 @@ macro_rules! resources {
 }
 
 #[macro_export]
+macro_rules! resources_bytes {
+  ($path:literal) => {
+    include_bytes!(concat!(env!("CARGO_MANIFEST_DIR"), "/resources/", $path))
+  };
+}
+
+#[macro_export]
 macro_rules! resources_str {
   ($path:literal) => {
     include_str!(concat!(env!("CARGO_MANIFEST_DIR"), "/resources/", $path))
