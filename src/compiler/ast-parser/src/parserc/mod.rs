@@ -1,8 +1,6 @@
 pub mod ast;
 pub mod token;
 
-pub struct IntegerParser;
-
 #[cfg(test)]
 mod tests {
   use combine::many1;

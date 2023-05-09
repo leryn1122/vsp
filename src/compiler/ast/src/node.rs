@@ -3,6 +3,7 @@
 // pub const DUMMY_NODE_ID: NodeId = NodeId::from_u32(u32::MAX);
 
 /// AST Node ID
+#[derive(Debug)]
 pub struct NodeId {
   id: u32,
 }

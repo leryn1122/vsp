@@ -6,6 +6,7 @@ use crate::ast::annotation::Annotation;
 use crate::ast::function::Function;
 use crate::ast::function::FunctionSignature;
 use crate::ast::module::Module;
+use crate::ast::CompilationUnit;
 use crate::visitor::CompilationUnitASTVisitor;
 use crate::visitor::FunctionASTVisitor;
 
@@ -29,21 +30,12 @@ impl ASTPrinter {
   }
 
   fn print_location(&self, span: &Span) -> String {
-    let array = span.expand_as_array();
-    format!(
-      "start:{}:{}, end:{}:{}",
-      array[0], array[1], array[2], array[3]
-    )
+    let arr = span.expand_as_array();
+    format!("start:{}:{}, end:{}:{}", arr[0], arr[1], arr[2], arr[3])
   }
 
-  ///
-  ///
-  ///
-  /// ```plaintext
-  /// ModuleDeclaration <col:12, col:16> col:16 used num 'int'
-  /// ```
   fn print_segment(&self, types: &str, span: &Span) -> String {
-    format!("`-{} <{}>", types, self.print_location(&span))
+    format!("`-{} <{}>", types, self.print_location(span))
   }
 }
 
@@ -79,8 +71,11 @@ impl Default for ASTPrintContext {
 }
 
 impl CompilationUnitASTVisitor for ASTPrinter {
-  fn before_visit(&mut self) {
-    println!("CompilationUnit");
+  fn before_visit(&mut self, compilation_unit: &CompilationUnit) {
+    println!(
+      "CompilationUnit <file:`{}`>",
+      compilation_unit.meta.filename
+    );
   }
 
   fn visit_shebang(&mut self, _shebang: &Option<String>) {
@@ -104,7 +99,7 @@ impl CompilationUnitASTVisitor for ASTPrinter {
 }
 
 impl FunctionASTVisitor for ASTPrinter {
-  fn visit_name(&mut self, _name: &String) {
+  fn visit_name(&mut self, name: &str) {
     todo!()
   }
 
@@ -128,7 +123,7 @@ mod test {
   #[test]
   fn test_indent() {
     let mut printer = ASTPrinter::new();
-    let mut root = CompilationUnit::new("hello-world.vsp");
-    root.accept(&mut printer);
+    let mut unit = CompilationUnit::new("hello-world.vsp");
+    unit.accept(&mut printer);
   }
 }

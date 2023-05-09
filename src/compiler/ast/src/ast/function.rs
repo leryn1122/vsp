@@ -1,11 +1,11 @@
 use vsp_support::ptr::SharedPtr;
 
 use crate::ast::annotation::Annotation;
+use crate::ast::modifier::Accessibility;
+use crate::ast::modifier::Constancy;
+use crate::ast::stmt::StatementBlock;
 use crate::ast::types::Parameter;
 use crate::ast::types::Type;
-use crate::ast::Accessibility;
-use crate::ast::Constancy;
-use crate::ast::StatementBlock;
 
 // Aliases for types.
 pub type FunctionAccessibility = Accessibility;

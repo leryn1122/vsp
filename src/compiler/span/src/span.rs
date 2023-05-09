@@ -69,7 +69,22 @@ impl Default for Position {
   }
 }
 
-/// Code span, from the start to the end position within the file.
+/// It is typically represented as a pair of start and end positions, where each location is a tuple
+/// of line and column numbers.
+/// It is useful for operations such as code highlighting, error reporting, and code generation,
+/// where it is necessary to work with a range of characters rather than just a single point in the
+/// source code.
+///
+/// Construct the span:
+///
+/// ```rust
+/// use vsp_span::span::Position;
+/// use vsp_span::span::Span;
+///
+/// let start = Position::at(0, 0);
+/// let end = Position::at(0, 12);
+/// let span = Span::range(start, end);
+/// ```
 #[derive(Clone, Debug)]
 pub struct Span {
   pub start: Position,

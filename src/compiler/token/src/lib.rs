@@ -1,3 +1,9 @@
+use std::fmt::Debug;
+use std::fmt::Formatter;
+
+use vsp_span::span::Span;
+use vsp_span::Locatable;
+
 /// The final result of the lexical analysis, which are transferred to the AST parser.
 pub type TokenStream = Vec<Token>;
 
@@ -7,7 +13,7 @@ pub type TokenStream = Vec<Token>;
 #[repr(u8)]
 pub enum Token {
   //============================================================================//
-  //  Punctuator
+  //  Punctuation
   //============================================================================//
 
   /*  `.`   */Dot = 0,
@@ -109,40 +115,40 @@ impl Token {
   #[rustfmt::skip]
   pub fn mapping_non_literal_token(s: &str) -> Option<Token> {
     match s {
-      "."         => Some(Self::Dot),
-      ","         => Some(Self::Comma),
-      ";"         => Some(Self::Colon),
-      ":"         => Some(Self::SemiColon),
-      "+"         => Some(Self::Plus),
-      "-"         => Some(Self::Minus),
-      "*"         => Some(Self::Asterisk),
-      "/"         => Some(Self::Slash),
-      "%"         => Some(Self::Percentage),
-      "("         => Some(Self::LParenthesis),
-      ")"         => Some(Self::RParenthesis),
-      "["         => Some(Self::LBracket),
-      "]"         => Some(Self::RBracket),
-      "{"         => Some(Self::LBrace),
-      "}"         => Some(Self::RBrace),
-      "<"         => Some(Self::Less),
-      ">"         => Some(Self::Greater),
-      "<="        => Some(Self::LessEqual),
-      ">="        => Some(Self::GreaterEqual),
-      "=="        => Some(Self::Equal),
-      "!="        => Some(Self::NotEqual),
-      "="         => Some(Self::Assigment),
-      "@"         => Some(Self::At),
-      "!"         => Some(Self::Not),
-      "&&"        => Some(Self::And),
-      "||"        => Some(Self::Or),
-      "^"         => Some(Self::Xor),
-      "?"         => Some(Self::Question),
-      "->"        => Some(Self::Arrow),
-      "=>"        => Some(Self::DArrow),
-      "::"        => Some(Self::DColon),
-      "'"         => Some(Self::SQuote),
-      "\""        => Some(Self::DQuote),
-      "\"\"\""    => Some(Self::TQuote),
+      "."                => Some(Self::Dot),
+      ","                => Some(Self::Comma),
+      ";"                => Some(Self::Colon),
+      ":"                => Some(Self::SemiColon),
+      "+"                => Some(Self::Plus),
+      "-"                => Some(Self::Minus),
+      "*"                => Some(Self::Asterisk),
+      "/"                => Some(Self::Slash),
+      "%"                => Some(Self::Percentage),
+      "("                => Some(Self::LParenthesis),
+      ")"                => Some(Self::RParenthesis),
+      "["                => Some(Self::LBracket),
+      "]"                => Some(Self::RBracket),
+      "{"                => Some(Self::LBrace),
+      "}"                => Some(Self::RBrace),
+      "<"                => Some(Self::Less),
+      ">"                => Some(Self::Greater),
+      "<="               => Some(Self::LessEqual),
+      ">="               => Some(Self::GreaterEqual),
+      "=="               => Some(Self::Equal),
+      "!="               => Some(Self::NotEqual),
+      "="                => Some(Self::Assigment),
+      "@"                => Some(Self::At),
+      "!"                => Some(Self::Not),
+      "&&"               => Some(Self::And),
+      "||"               => Some(Self::Or),
+      "^"                => Some(Self::Xor),
+      "?"                => Some(Self::Question),
+      "->"               => Some(Self::Arrow),
+      "=>"               => Some(Self::DArrow),
+      "::"               => Some(Self::DColon),
+      "'"                => Some(Self::SQuote),
+      "\""               => Some(Self::DQuote),
+      "\"\"\""           => Some(Self::TQuote),
 
       "as"               => Some(Self::As),
       "async"            => Some(Self::Async),
@@ -184,6 +190,7 @@ impl Token {
     }
   }
 
+  /// Internal implementation, don't use.
   #[allow(clippy::wrong_self_convention)]
   fn into_u8(&self) -> u8 {
     unsafe { *(self as *const Self as *const u8) }
@@ -201,7 +208,7 @@ impl Token {
         _ => unreachable!("Unsupported token type"),
       }
     } else if ord < Self::As.into_u8() {
-      TokenType::Punctuator
+      TokenType::Punctuation
     } else {
       TokenType::Keyword
     }
@@ -210,7 +217,7 @@ impl Token {
 
 #[repr(usize)]
 pub enum TokenType {
-  Punctuator,
+  Punctuation,
   Keyword,
   Identifier,
   LiteralText,
@@ -227,4 +234,27 @@ pub(crate) enum Base {
   /// Default numeric base.
   Decimal = 10,
   Hexadecimal = 16,
+}
+
+/// A locatable token with span, as its start and end location in the source codes.
+pub struct LocatableToken {
+  pub token: Token,
+  pub span:  Span,
+}
+
+impl Debug for LocatableToken {
+  fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
+    let arr = self.span.expand_as_array();
+    write!(
+      f,
+      "Token = [{:?}]:{},{}:{},{}",
+      self.token, arr[0], arr[1], arr[2], arr[3],
+    )
+  }
+}
+
+impl Locatable for LocatableToken {
+  fn get_span(&self) -> &Span {
+    &self.span
+  }
 }
