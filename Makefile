@@ -56,7 +56,7 @@ test: ## Run all integrity tests.
 
 .PHONY: bootstrap
 bootstrap: ## Bootstrap.
-	$(SHELL) src/distro/main.sh
+	$(SHELL) -c src/distro/main.sh
 
 .PHONY: build
 build: ## Build target artifact.

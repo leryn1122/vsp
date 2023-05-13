@@ -86,6 +86,7 @@ pub enum Token {
   Static,
   Struct,
   Super,
+  Trait,
   True,
   Type,
 
@@ -176,6 +177,7 @@ impl Token {
       "static"           => Some(Self::Static),
       "struct"           => Some(Self::Struct),
       "super"            => Some(Self::Super),
+      "trait"            => Some(Self::Trait),
       "true"             => Some(Self::True),
       "type"             => Some(Self::Type),
       "union"            => Some(Self::Union),

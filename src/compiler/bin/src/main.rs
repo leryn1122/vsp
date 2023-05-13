@@ -42,6 +42,7 @@ pub(crate) fn create_command_line_runner<'ctx>() -> CommandLineRunner<'ctx> {
   handlers.insert("completion", crate::ops::completion::entrypoint);
   handlers.insert("debug", crate::ops::debug::entrypoint);
   handlers.insert("dump", crate::ops::dump::entrypoint);
+  handlers.insert("lsp", crate::ops::lsp::entrypoint);
   handlers.insert("new", crate::ops::new::entrypoint);
   handlers.insert("pm", crate::ops::pm::entrypoint);
   handlers.insert("repl", crate::ops::repl::entrypoint);
@@ -50,6 +51,7 @@ pub(crate) fn create_command_line_runner<'ctx>() -> CommandLineRunner<'ctx> {
   handlers.insert("vspc", crate::ops::new::entrypoint);
   handlers.insert("vspdp", crate::ops::dump::entrypoint);
   handlers.insert("vspdb", crate::ops::debug::entrypoint);
+  handlers.insert("vsplsp", crate::ops::lsp::entrypoint);
   handlers.insert("vspm", crate::ops::pm::entrypoint);
   handlers.insert("vspsh", crate::ops::repl::entrypoint);
 
@@ -57,22 +59,28 @@ pub(crate) fn create_command_line_runner<'ctx>() -> CommandLineRunner<'ctx> {
     command: command
       .clone()
       .subcommand(
-        command.subcommand_required(true).help_expected(true).subcommands(&[
-          crate::ops::clean::cli(false),
-          crate::ops::compile::cli(false),
-          crate::ops::completion::cli(false),
-          crate::ops::debug::cli(false),
-          crate::ops::dump::cli(false),
-          crate::ops::new::cli(false),
-          crate::ops::pm::cli(false),
-          crate::ops::repl::cli(false),
-          crate::ops::test::cli(false),
-        ]),
+        command
+          .subcommand_required(true)
+          .help_expected(true)
+          .arg_required_else_help(true)
+          .subcommands(&[
+            crate::ops::clean::cli(false),
+            crate::ops::compile::cli(false),
+            crate::ops::completion::cli(false),
+            crate::ops::debug::cli(false),
+            crate::ops::dump::cli(false),
+            crate::ops::lsp::cli(false),
+            crate::ops::new::cli(false),
+            crate::ops::pm::cli(false),
+            crate::ops::repl::cli(false),
+            crate::ops::test::cli(false),
+          ]),
       )
       .subcommands(&[
         crate::ops::compile::cli(true),
         crate::ops::debug::cli(true),
         crate::ops::dump::cli(true),
+        crate::ops::lsp::cli(true),
         crate::ops::pm::cli(true),
         crate::ops::repl::cli(true),
       ]),

@@ -14,6 +14,8 @@ default = ["runtime"]
 compact = []
 runtime = []
 gui = []
+docker = []
+dev-tools-only = []
 
 [dependencies]
 anyhow.workspace = true
@@ -24,6 +26,7 @@ target-lexicon.workspace = true
 vsp-cli.path = "../cli"
 vsp-compiler.path = "../compiler"
 vsp-mx.path = "../mx"
+vsp-platform.path = "../platform"
 vsp-pm.path = "../pm"
 vsp-support.path = "../support"
 

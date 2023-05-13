@@ -4,3 +4,5 @@ pub mod linux;
 pub mod macos;
 #[cfg(target_os = "windows")]
 pub mod windows;
+
+pub mod proc;
