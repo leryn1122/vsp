@@ -7,6 +7,7 @@ use clap::builder::PossibleValuesParser;
 use clap::value_parser;
 use clap::ArgMatches;
 use clap::Command;
+use clap::ValueHint;
 use vsp_pm::new::NewProjectConfig;
 use vsp_pm::vcs::VersionControl;
 
@@ -18,13 +19,14 @@ pub(crate) fn cli(_: bool) -> Command {
     arg!([project] "Project name")
       .required(true)
       .value_parser(value_parser!(String)),
-    arg!(--vcs [vcs] "Version control service. Initialize the project with given version control \
+    arg!(--vcs <vcs> "Version control service. Initialize the project with given version control \
 system.")
-    .required(false)
     .value_parser(PossibleValuesParser::new(vec![
       "git", "fossil", "hg", "svn",
     ])),
-    arg!(--path [path] "Path to the project.").value_parser(value_parser!(PathBuf)),
+    arg!(--path <path> "Path to the project.")
+      .value_parser(value_parser!(PathBuf))
+      .value_hint(ValueHint::AnyPath),
   ])
 }
 

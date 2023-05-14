@@ -187,14 +187,14 @@ mod tests {
   use super::*;
 
   #[test]
-  pub fn test_tokenize() {
+  fn test_tokenize() {
     let result = tokenize()
       .parse("public func main ( ) -> int { print return 0 ; }")
       .map(|(t, _)| println!("{:?}", t));
   }
 
   #[test]
-  pub fn test_identifier() {
+  fn test_identifier() {
     let mut parser = sep_by(identifier(), space()).map(|tokens: Vec<VspToken>| {
       println!(
         "{:?}",
@@ -205,7 +205,7 @@ mod tests {
   }
 
   #[test]
-  pub fn test_literal_text() {
+  fn test_literal_text() {
     let result = literal_text()
       .skip(spaces())
       .parse("\"Lorem ipsum dolor sit amet, consectetur adipisicing elit\"   ")

@@ -3,10 +3,11 @@ use std::collections::HashMap;
 use clap::ArgMatches;
 use clap::Command;
 use vsp_bin::REPORT_URL;
+use vsp_support::debug_println;
 use vsp_support::exitcode::EXIT_FAILURE;
 use vsp_support::resources_str;
 
-pub mod ops;
+pub(crate) mod ops;
 
 pub type CommandLineHandler = fn(&ArgMatches) -> anyhow::Result<()>;
 
@@ -61,8 +62,10 @@ pub(crate) fn create_command_line_runner<'ctx>() -> CommandLineRunner<'ctx> {
       .subcommand(
         command
           .subcommand_required(true)
-          .help_expected(true)
           .arg_required_else_help(true)
+          .disable_help_subcommand(false)
+          .disable_help_flag(false)
+          .disable_version_flag(false)
           .subcommands(&[
             crate::ops::clean::cli(false),
             crate::ops::compile::cli(false),
@@ -98,6 +101,12 @@ impl<'ctx> CommandLineRunner<'ctx> {
     let matches = self.command.get_matches_mut();
     let subcommand = matches.subcommand();
     match subcommand {
+      Some((env!("CARGO_BIN_NAME"), args)) => {
+        let cmd = args.subcommand_name();
+        debug_println!("Actual command with multicall: {:?}", cmd);
+        let handler = self.handlers.get(cmd.unwrap()).unwrap();
+        handler(&args.clone())
+      }
       Some((cmd, args)) => {
         let handler = self.handlers.get(cmd).unwrap();
         handler(&args.clone())
@@ -111,7 +120,7 @@ impl<'ctx> CommandLineRunner<'ctx> {
 //   #[macro_export]
 //   macro_rules! register_command {
 //     ($command:ident $name:ident) => {
-//       use crate::ops::$name;
+//       use crate::$name;
 //       $command.register(
 //         stringify!($name),
 //         None,
@@ -120,7 +129,7 @@ impl<'ctx> CommandLineRunner<'ctx> {
 //       );
 //     };
 //     ($command:ident $name:ident $alias:ident) => {
-//       use crate::ops::$name;
+//       use crate::$name;
 //       $command.register(
 //         stringify!($name),
 //         Some($alias),

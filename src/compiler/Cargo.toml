@@ -5,8 +5,8 @@ members = [
   "bin",
   "cli",
   "compiler",
+  "dbg",
   "fs",
-  "mx",
 #  "lexer",
   "llvm",
   "lsp",
@@ -22,6 +22,7 @@ anyhow = "^1.0.66"
 clap = { version = "^4.2.1", features = ["derive"] }
 clap_complete = "^4.2.1"
 combine = "^4.6.6"
+getset = "^0.1.2"
 git2 = "^0.16.1"
 inkwell = { version = "0.1.0-beta.5", features = [ "llvm14-0" ] }
 lsp-server = "^0.7.0"
@@ -29,4 +30,5 @@ nanoid = "^0.4.0"
 regex = "^1.7.3"
 semver = "^1.0.17"
 serde = { version = "^1.0.147", features = [ "derive" ] }
+shlex = "^1.1.0"
 target-lexicon = "^0.12.6"

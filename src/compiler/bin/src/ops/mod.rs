@@ -6,7 +6,5 @@ pub(crate) mod dump;
 pub(crate) mod lsp;
 pub(crate) mod new;
 pub(crate) mod pm;
-#[allow(dead_code)]
-pub(crate) mod ps;
 pub(crate) mod repl;
 pub(crate) mod test;

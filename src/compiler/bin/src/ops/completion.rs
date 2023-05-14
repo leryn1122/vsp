@@ -10,18 +10,22 @@ use CandidateShell::Fish;
 use CandidateShell::PowerShell;
 use CandidateShell::Zsh;
 
+/// See also `crate::ops::completion::entrypoint`.
 pub(crate) fn cli(_: bool) -> Command {
   Command::new("completion")
-    .about("Generate autocompletion scripts for the specified shell.")
+    .about("Generate autocompletion scripts for the specified shell")
     .arg(
-      arg!([shell] "Shell which autocompletion generated scripts for.")
+      arg!(<shell> "Shell which autocompletion generated scripts for")
         .required(true)
         .value_parser(EnumValueParser::<CandidateShell>::new()),
     )
     .after_help(resources_str!("completion/help.txt"))
 }
 
+/// # Autocompletion for shell
+///
 /// ## How to use auto completion
+///
 /// It supports 4 shells currently. No more shells are about to be available in the
 /// future, since following shells cover most terminal users.
 ///
@@ -70,6 +74,7 @@ pub(crate) fn cli(_: bool) -> Command {
 /// ```
 ///
 /// ## Implementation
+///
 /// It is a simple implementation, print the mapped completion script based on inline built-in
 /// script located at `resources/completion/completion-<shell>.sh`.
 /// Available shell candidates refer to `crate::ops::completion::CandidateShell`.

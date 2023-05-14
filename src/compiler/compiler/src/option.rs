@@ -1,5 +1,6 @@
 use target_lexicon::Triple;
 
+/// Target options for compilation.
 pub struct TargetOptions {
   pub host_triplet:   Triple,
   pub target_triplet: Triple,

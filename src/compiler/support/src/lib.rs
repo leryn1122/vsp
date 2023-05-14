@@ -1,8 +1,12 @@
 pub mod exitcode;
+#[macro_use]
+pub mod debug;
 pub mod id;
 pub mod process;
 #[allow(dead_code, unused_variables)]
 pub mod ptr;
-pub mod substring;
 #[macro_use]
 pub mod resources;
+pub mod clap_ext;
+pub mod substring;
+pub mod timer;

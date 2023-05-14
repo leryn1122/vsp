@@ -7,6 +7,7 @@ use clap::ArgMatches;
 use clap::Command;
 use clap::ValueHint;
 use vsp_compiler::compile;
+use vsp_support::clap_ext::TripleValueParser;
 
 pub(crate) fn cli(alias: bool) -> Command {
   let command = if alias {
@@ -21,8 +22,9 @@ pub(crate) fn cli(alias: bool) -> Command {
       .value_hint(ValueHint::AnyPath),
     arg!(--lib "Build only the project's library"),
     arg!(--bin <bin> "Build only the project's binaries"),
-    arg!(--target <triple> "Target triple"),
     arg!(-q --quiet "Enable quiet mode"),
+    arg!(--target <triple> "Target triple to compile the artifacts for")
+      .value_parser(TripleValueParser::default()),
   ])
 }
 

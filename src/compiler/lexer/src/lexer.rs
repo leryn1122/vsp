@@ -151,7 +151,7 @@ mod tests {
   use super::*;
 
   #[test]
-  pub fn test_tokenize() -> Result<(), ()> {
+  fn test_tokenize() -> Result<(), ()> {
     let source = "\
 public func int main() {
   print(\"Hello world!!\");

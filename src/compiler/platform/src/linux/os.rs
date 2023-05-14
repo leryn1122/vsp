@@ -139,7 +139,7 @@ fn getpw_r_size_max() -> usize {
 #[cfg(test)]
 mod tests {
   #[test]
-  pub fn test_get_passwd() {
+  fn test_get_passwd() {
     if let Some(passwd) = super::current_user() {
       println!("Username: {}", passwd.pw_name.to_str().unwrap());
     } else {

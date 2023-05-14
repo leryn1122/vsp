@@ -37,7 +37,7 @@ mod tests {
 
   /// Tests write the project config file to the temporary directory.
   #[test]
-  pub fn test_manifest() {
+  fn test_manifest() {
     let temp_dir = std::env::temp_dir();
   }
 }

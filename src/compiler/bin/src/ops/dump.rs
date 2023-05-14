@@ -18,13 +18,13 @@ pub(crate) fn cli(alias: bool) -> Command {
     .arg_required_else_help(true)
     .alias("dump123")
     .args(&[
-      arg!(-i --input [path] "Input file path")
+      arg!(-i --input <path> "Input file path")
         .required(true)
         .value_parser(value_parser!(PathBuf)),
-      arg!(-o --output [path] "Output file path")
+      arg!(-o --output <path> "Output file path")
         .required(false)
         .value_parser(value_parser!(PathBuf)),
-      arg!(--preprocess "Print preprocessed source codes."),
+      arg!(--preprocess "Print preprocessed source codes").visible_alias("--pp"),
       arg!(--ast "Print AST (Abstract Syntax Tree)"),
       arg!(--llvm "Print LLVM IR (Intermediate Representation)"),
     ])
@@ -33,8 +33,12 @@ pub(crate) fn cli(alias: bool) -> Command {
 
 #[allow(unused_variables)]
 pub(crate) fn entrypoint(args: &ArgMatches) -> anyhow::Result<()> {
+  let input = args.get_one::<PathBuf>("input").unwrap();
+  let output = args.get_one::<PathBuf>("output").unwrap();
+
   let ast = args.get_flag("ast");
   let llvm = args.get_flag("llvm");
-  let input = args.get_one::<String>("input").unwrap();
+  let preprocess = args.get_flag("preprocess");
+
   Ok(())
 }

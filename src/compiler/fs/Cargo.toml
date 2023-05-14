@@ -5,4 +5,7 @@ edition = "2021"
 
 [dependencies]
 anyhow.workspace = true
+getset.workspace = true
 md5 = { package = "md-5", version = "^0.10.0" }
+
+vsp-support.path = "../support"

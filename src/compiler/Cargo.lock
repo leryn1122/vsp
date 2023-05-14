@@ -272,6 +272,18 @@ dependencies = [
 ]
 
 [[package]]
+name = "getset"
+version = "0.1.2"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "e45727250e75cc04ff2846a66397da8ef2b3db8e40e0cef4df67950a07621eb9"
+dependencies = [
+ "proc-macro-error",
+ "proc-macro2",
+ "quote",
+ "syn 1.0.103",
+]
+
+[[package]]
 name = "git2"
 version = "0.16.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -564,6 +576,30 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "5b40af805b3121feab8a3c29f04d8ad262fa8e0561883e7653e024ae4479e6de"
 
 [[package]]
+name = "proc-macro-error"
+version = "1.0.4"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "da25490ff9892aab3fcf7c36f08cfb902dd3e71ca0f9f9517bea02a73a5ce38c"
+dependencies = [
+ "proc-macro-error-attr",
+ "proc-macro2",
+ "quote",
+ "syn 1.0.103",
+ "version_check",
+]
+
+[[package]]
+name = "proc-macro-error-attr"
+version = "1.0.4"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "a1be40180e52ecc98ad80b184934baf3d0d29f979574e439af5a55274b35f869"
+dependencies = [
+ "proc-macro2",
+ "quote",
+ "version_check",
+]
+
+[[package]]
 name = "proc-macro2"
 version = "1.0.56"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -845,7 +881,7 @@ dependencies = [
  "target-lexicon",
  "vsp-cli",
  "vsp-compiler",
- "vsp-mx",
+ "vsp-dbg",
  "vsp-platform",
  "vsp-pm",
  "vsp-support",
@@ -869,11 +905,23 @@ dependencies = [
 ]
 
 [[package]]
+name = "vsp-dbg"
+version = "0.1.0"
+dependencies = [
+ "anyhow",
+ "clap",
+ "shlex",
+ "vsp-support",
+]
+
+[[package]]
 name = "vsp-fs"
 version = "0.1.0"
 dependencies = [
  "anyhow",
+ "getset",
  "md-5",
+ "vsp-support",
 ]
 
 [[package]]
@@ -889,15 +937,6 @@ name = "vsp-lsp"
 version = "0.1.0"
 dependencies = [
  "lsp-server",
-]
-
-[[package]]
-name = "vsp-mx"
-version = "0.1.0"
-dependencies = [
- "anyhow",
- "vsp-cli",
- "vsp-platform",
 ]
 
 [[package]]
@@ -929,9 +968,11 @@ name = "vsp-support"
 version = "0.1.0"
 dependencies = [
  "anyhow",
+ "clap",
  "nanoid",
  "semver",
  "serde",
+ "target-lexicon",
 ]
 
 [[package]]

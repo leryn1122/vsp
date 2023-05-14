@@ -50,4 +50,4 @@ test: ## Run all integrity tests.
 build: ## Build target artifact.
 	#RUSTFLAGS=-Awarnings $(CARGO) build
 	$(CARGO) build --release
-	strip target/release/vsp
+	llvm-strip target/release/vsp

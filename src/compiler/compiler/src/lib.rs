@@ -1,35 +1,43 @@
+use crate::dispatch::CompilationDispatcher;
 use crate::option::TargetOptions;
 
+pub mod dispatch;
 pub mod option;
 
 /// Entrypoint to compile the source codes.
 pub fn compile() {
-  let compiler = Compiler::instance();
-
+  let target_options = TargetOptions::default();
+  let dispatcher = CompilationDispatcher::default();
+  let mut compiler = CompilerInstance::from(dispatcher, target_options);
   compiler.create_diagnostics();
-
-  let mut target_options = TargetOptions::default();
-  compiler.set_target_options(target_options);
   // let mut file_manager: FileManager = compiler.create_file_manager();
   // let source_manager = compiler.create_source_manager(&mut file_manager);
   compiler.create_preprocessor();
   compiler.create_ast_context();
 }
 
-pub struct Compiler {
+/// Compiler instance for all the compilation job.
+pub struct CompilerInstance {
+  diagnostics:    (),
+  dispatcher:     CompilationDispatcher,
+  preprocessor:   (),
+  source_manager: (),
   target_options: TargetOptions,
 }
 
-impl Compiler {
-  /// Create a new compiler instance with all default fields.
-  pub fn instance() -> Self {
+impl CompilerInstance {
+  pub fn from(dispatcher: CompilationDispatcher, target_options: TargetOptions) -> Self {
     Self {
-      target_options: TargetOptions::default(),
+      diagnostics: (),
+      dispatcher,
+      preprocessor: (),
+      source_manager: (),
+      target_options,
     }
   }
 
-  pub fn set_target_options(&self, target_options: TargetOptions) -> Self {
-    Self { target_options }
+  pub fn set_target_options(&mut self, target_options: TargetOptions) {
+    self.target_options = target_options;
   }
 
   pub fn create_diagnostics(&self) {}
@@ -47,7 +55,7 @@ impl Compiler {
   // {
   // }
 
-  pub fn create_preprocessor(&self) -> () {}
+  pub fn create_preprocessor(&self) {}
 
-  pub fn create_ast_context(&self) -> () {}
+  pub fn create_ast_context(&self) {}
 }

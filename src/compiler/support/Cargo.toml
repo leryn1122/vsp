@@ -5,6 +5,8 @@ edition = "2021"
 
 [dependencies]
 anyhow.workspace = true
+clap.workspace = true
 nanoid.workspace = true
 semver.workspace = true
 serde.workspace = true
+target-lexicon.workspace = true
