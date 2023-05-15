@@ -7,7 +7,6 @@ members = [
   "compiler",
   "dbg",
   "fs",
-#  "lexer",
   "llvm",
   "lsp",
   "platform",
@@ -20,7 +19,6 @@ members = [
 [workspace.dependencies]
 anyhow = "^1.0.66"
 clap = { version = "^4.2.1", features = ["derive"] }
-clap_complete = "^4.2.1"
 combine = "^4.6.6"
 getset = "^0.1.2"
 git2 = "^0.16.1"

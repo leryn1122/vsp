@@ -11,6 +11,10 @@
 /// - [Maximum value of the Process ID](https://unix.stackexchange.com/questions/16883/what-is-the-maximum-value-of-the-process-id)
 pub const PID_MAX: u32 = if cfg!(target_os = "macos") {
   99998
+} else if cfg!(target_os = "linux") && cfg!(target_pointer_width = "64") {
+  4194304
+} else if cfg!(target_os = "linux") && cfg!(target_pointer_width = "32") {
+  32768
 } else if cfg!(target_family = "windows") {
   4294967295
 } else if cfg!(target_os = "openbsd") {
@@ -18,5 +22,5 @@ pub const PID_MAX: u32 = if cfg!(target_os = "macos") {
 } else if cfg!(target_os = "netbsd") {
   30000
 } else {
-  4194304
+  32768
 };

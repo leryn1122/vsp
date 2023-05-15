@@ -5,10 +5,14 @@ use std::path::PathBuf;
 use anyhow::anyhow;
 use vsp_support::resources_bytes;
 
-use crate::vcs::fossil::FossilRepo;
+#[rustfmt::skip]
+#[cfg(not(target_env = "musl"))]
+use crate::vcs::{
+  fossil::FossilRepo,
+  hg::HgRepo,
+  svn::SvnRepo
+};
 use crate::vcs::git::GitRepo;
-use crate::vcs::hg::HgRepo;
-use crate::vcs::svn::SvnRepo;
 use crate::vcs::VersionControl;
 
 /// Configuration for creating a brand-new project.
@@ -51,8 +55,11 @@ impl NewProjectConfig {
     match self.vcs {
       None => std::fs::create_dir(path.clone()).expect("Fail to create project: {}"),
       Some(VersionControl::Git) => GitRepo::init(project, cwd).unwrap(),
+      #[cfg(not(target_env = "musl"))]
       Some(VersionControl::Fossil) => FossilRepo::init(project, cwd).unwrap(),
+      #[cfg(not(target_env = "musl"))]
       Some(VersionControl::Hg) => HgRepo::init(project, cwd).unwrap(),
+      #[cfg(not(target_env = "musl"))]
       Some(VersionControl::Svn) => SvnRepo::init(project, cwd).unwrap(),
     }
 

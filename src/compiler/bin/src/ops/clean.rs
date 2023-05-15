@@ -5,7 +5,6 @@ use clap::arg;
 use clap::value_parser;
 use clap::ArgMatches;
 use clap::Command;
-use target_lexicon::Triple;
 use vsp_support::clap_ext::TripleValueParser;
 
 pub(crate) fn cli(_: bool) -> Command {
@@ -26,11 +25,11 @@ pub(crate) fn cli(_: bool) -> Command {
 #[allow(unused_variables)]
 pub(crate) fn entrypoint(args: &ArgMatches) -> anyhow::Result<()> {
   let target_dir = std::env::current_dir().unwrap().join("target");
-  let path = args.get_one::<PathBuf>("path");
-  let quiet = args.get_flag("quiet");
-  let package = args.get_one::<String>("package");
-  let verbose = args.get_flag("verbose");
-  let triple = args.get_one::<Triple>("target");
+  // let path = args.get_one::<PathBuf>("path");
+  // let quiet = args.get_flag("quiet");
+  // let package = args.get_one::<String>("package");
+  // let verbose = args.get_flag("verbose");
+  // let triple = args.get_one::<Triple>("target");
 
   match std::fs::remove_dir_all(target_dir) {
     Ok(_) => Ok(()),

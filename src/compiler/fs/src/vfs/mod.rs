@@ -41,9 +41,7 @@ impl DirectoryEntry {
 }
 
 ///
-pub trait DirectoryEntryIterator: Iterator<Item = DirectoryEntry> {
-  type Item = DirectoryEntry;
-}
+pub trait DirectoryEntryIterator: Iterator<Item = DirectoryEntry> {}
 
 pub(crate) struct DirectoryEntryIteratorImpl;
 

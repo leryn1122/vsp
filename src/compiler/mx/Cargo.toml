@@ -1,0 +1,10 @@
+[package]
+name = "vsp-mx"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+anyhow.workspace = true
+# Workspace dependencies
+vsp-cli.path = "../cli"
+vsp-platform.path = "../platform"

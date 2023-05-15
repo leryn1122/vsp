@@ -21,9 +21,7 @@ pub(crate) fn cli(_: bool) -> Command {
       .value_parser(value_parser!(String)),
     arg!(--vcs <vcs> "Version control service. Initialize the project with given version control \
 system.")
-    .value_parser(PossibleValuesParser::new(vec![
-      "git", "fossil", "hg", "svn",
-    ])),
+    .value_parser(get_vcs_value_parser()),
     arg!(--path <path> "Path to the project.")
       .value_parser(value_parser!(PathBuf))
       .value_hint(ValueHint::AnyPath),
@@ -45,4 +43,14 @@ pub(crate) fn entrypoint(args: &ArgMatches) -> anyhow::Result<()> {
     .to_path_buf();
   let config = NewProjectConfig::new(project, vcs, path);
   config.create_new_project()
+}
+
+#[cfg(not(target_env = "musl"))]
+fn get_vcs_value_parser() -> PossibleValuesParser {
+  PossibleValuesParser::new(vec!["git", "fossil", "hg", "svn"])
+}
+
+#[cfg(target_env = "musl")]
+fn get_vcs_value_parser() -> PossibleValuesParser {
+  PossibleValuesParser::new(vec!["git"])
 }
