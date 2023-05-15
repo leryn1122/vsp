@@ -4,7 +4,12 @@ version = "0.1.0"
 edition = "2021"
 
 [dependencies]
-combine.workspace = true
-# Workspace dependencies
-vsp-token.path = "../token"
-vsp-ast.path = "../ast"
+
+    [dependencies.combine]
+    workspace = true
+
+    [dependencies.vsp-ast]
+    path = "../ast"
+
+    [dependencies.vsp-token]
+    path = "../token"

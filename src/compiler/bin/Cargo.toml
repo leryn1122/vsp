@@ -18,17 +18,33 @@ container = []
 dev-tools-only = []
 
 [dependencies]
-anyhow.workspace = true
-clap.workspace = true
-target-lexicon.workspace = true
 
-# Workspace dependencies
-vsp-cli.path = "../cli"
-vsp-compiler.path = "../compiler"
-vsp-dbg.path = "../dbg"
-vsp-platform.path = "../platform"
-vsp-pm.path = "../pm"
-vsp-support.path = "../support"
+    [dependencies.anyhow]
+    workspace = true
+
+    [dependencies.clap]
+    workspace = true
+
+    [dependencies.target-lexicon]
+    workspace = true
+
+    [dependencies.vsp-cli]
+    path = "../cli"
+
+    [dependencies.vsp-compiler]
+    path = "../compiler"
+
+    [dependencies.vsp-dbg]
+    path = "../dbg"
+
+    [dependencies.vsp-platform]
+    path = "../platform"
+
+    [dependencies.vsp-pm]
+    path = "../pm"
+
+    [dependencies.vsp-support]
+    path = "../support"
 
 [target.'cfg(target_os = "linux")']
 rustflags = ["-C", "link-arg=-nostartfiles"]

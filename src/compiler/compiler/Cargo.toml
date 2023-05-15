@@ -4,7 +4,9 @@ version = "0.1.0"
 edition = "2021"
 
 [dependencies]
-target-lexicon.workspace = true
 
-# Workspace dependencies
-vsp-fs.path = "../fs"
+    [dependencies.target-lexicon]
+    workspace = true
+
+    [dependencies.vsp-fs]
+    path = "../fs"

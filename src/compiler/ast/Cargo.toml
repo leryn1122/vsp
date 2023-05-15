@@ -4,8 +4,12 @@ version = "0.1.0"
 edition = "2021"
 
 [dependencies]
-# Workspace dependencies
-#vsp-lexer.path = "../lexer"
-vsp-span.path = "../span"
-vsp-support.path = "../support"
-vsp-token.path = "../token"
+
+    [dependencies.vsp-span]
+    path = "../span"
+
+    [dependencies.vsp-support]
+    path = "../support"
+
+    [dependencies.vsp-token]
+    path = "../token"

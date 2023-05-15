@@ -4,6 +4,9 @@ version = "0.1.0"
 edition = "2021"
 
 [dependencies]
-anyhow.workspace = true
-# Workespace dependencies
-vsp-span.path = "../span"
+
+    [dependencies.anyhow]
+    workspace = true
+
+    [dependencies.vsp-span]
+    path = "../span"

@@ -4,12 +4,18 @@ version = "0.1.0"
 edition = "2021"
 
 [dependencies]
-anyhow.workspace = true
-semver.workspace = true
-serde.workspace = true
 
-# Workspace dependencies
-vsp-support.path = "../support"
+    [dependencies.anyhow]
+    workspace = true
+
+    [dependencies.semver]
+    workspace = true
+
+    [dependencies.serde]
+    workspace = true
+
+    [dependencies.vsp-support]
+    path = "../support"
 
 [target.'cfg(target_env = "musl")'.dependencies]
 

@@ -4,7 +4,9 @@ version = "0.1.0"
 edition = "2021"
 
 [dependencies]
-anyhow.workspace = true
+
+    [dependencies.anyhow]
+    workspace = true
 
 [target.'cfg(unix)'.dependencies]
 libc = "^0.2.137"

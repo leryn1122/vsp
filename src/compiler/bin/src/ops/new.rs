@@ -47,10 +47,10 @@ pub(crate) fn entrypoint(args: &ArgMatches) -> anyhow::Result<()> {
 
 #[cfg(not(target_env = "musl"))]
 fn get_vcs_value_parser() -> PossibleValuesParser {
-  PossibleValuesParser::new(vec!["git", "fossil", "hg", "svn"])
+  PossibleValuesParser::new(["git", "fossil", "hg", "svn"])
 }
 
 #[cfg(target_env = "musl")]
 fn get_vcs_value_parser() -> PossibleValuesParser {
-  PossibleValuesParser::new(vec!["git"])
+  PossibleValuesParser::new(["git"])
 }

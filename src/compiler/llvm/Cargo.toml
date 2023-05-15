@@ -6,6 +6,9 @@ edition = "2021"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-inkwell.workspace = true
-# Workspace dependencies
-vsp-ast.path = "../ast"
+
+    [dependencies.inkwell]
+    workspace = true
+
+    [dependencies.vsp-ast]
+    path = "../ast"
