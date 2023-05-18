@@ -1,16 +1,12 @@
-use clap::ArgMatches;
-use clap::Command;
+use clap::Args;
 
-pub(crate) fn cli(alias: bool) -> Command {
-  let command = if alias {
-    Command::new("vspm")
-  } else {
-    Command::new("pm")
-  };
-  command.about("Project manager").arg_required_else_help(true)
-}
+use crate::ops::Entrypoint;
 
-#[allow(unused_variables)]
-pub(crate) fn entrypoint(args: &ArgMatches) -> anyhow::Result<()> {
-  todo!()
+#[derive(Args)]
+pub struct CandidateArgument {}
+
+impl Entrypoint for CandidateArgument {
+  fn entrypoint(&self) -> anyhow::Result<()> {
+    Ok(())
+  }
 }

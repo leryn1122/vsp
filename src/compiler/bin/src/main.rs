@@ -1,141 +1,81 @@
-use std::collections::HashMap;
-
-use clap::ArgMatches;
-use clap::Command;
-use vsp_bin::REPORT_URL;
-use vsp_support::debug_println;
-use vsp_support::exitcode::EXIT_FAILURE;
+use clap::Parser;
+use clap::Subcommand;
+use vsp_support::exitcode;
 use vsp_support::resources_str;
+
+use crate::ops::clean;
+use crate::ops::compile;
+use crate::ops::completion;
+use crate::ops::debug;
+use crate::ops::dump;
+use crate::ops::lsp;
+use crate::ops::new;
+use crate::ops::pm;
+use crate::ops::repl;
+use crate::ops::test;
+use crate::ops::Entrypoint;
 
 pub(crate) mod ops;
 
-pub type CommandLineHandler = fn(&ArgMatches) -> anyhow::Result<()>;
+#[derive(Parser)]
+#[command(name = env!("CARGO_BIN_NAME"))]
+#[command(author = env!("CARGO_PKG_AUTHORS"))]
+#[command(version = env!("CARGO_PKG_VERSION"))]
+#[command(about = env!("CARGO_PKG_DESCRIPTION"))]
+#[command(subcommand_help_heading = "Toolchains")]
+#[command(subcommand_value_name = "TOOLCHAINS")]
+#[command(subcommand_required = true)]
+#[command(arg_required_else_help = true)]
+#[command(propagate_version = true)]
+#[command(disable_help_subcommand = true)]
+#[command(after_help = format!(resources_str!("help.txt"), url = vsp_bin::REPORT_URL))]
+pub struct MainCommand {
+  #[command(subcommand)]
+  subcommand: CandidateCommand,
+}
 
-/// All the command line entrypoints.
+#[derive(Subcommand)]
+pub enum CandidateCommand {
+  /// Clean target directory
+  Clean(clean::CandidateArgument),
+  /// Language compiler
+  Compile(compile::CandidateArgument),
+  /// Generate autocompletion scripts for the specified shell
+  Completion(completion::CandidateArgument),
+  /// Native debugger
+  Debug(debug::CandidateArgument),
+  /// Dump tools for miscellaneous utilities on source codes
+  Dump(dump::CandidateArgument),
+  /// Language server based on LSP (language server protocol)
+  LSP(lsp::CandidateArgument),
+  /// Create new project
+  New(new::CandidateArgument),
+  /// Project manager
+  PM(pm::CandidateArgument),
+  /// REPL (Read-Eval-Print Loop) or shell
+  REPL(repl::CandidateArgument),
+  /// Run all unit tests and integration tests
+  Test(test::CandidateArgument),
+}
+
 fn main() {
-  let mut command = create_command_line_runner();
-  command.execute().unwrap_or_else(exit_with_error);
+  let command = MainCommand::parse();
+  match command.subcommand {
+    CandidateCommand::Clean(args) => args.entrypoint(),
+    CandidateCommand::Compile(args) => args.entrypoint(),
+    CandidateCommand::Completion(args) => args.entrypoint(),
+    CandidateCommand::Debug(args) => args.entrypoint(),
+    CandidateCommand::Dump(args) => args.entrypoint(),
+    CandidateCommand::LSP(args) => args.entrypoint(),
+    CandidateCommand::New(args) => args.entrypoint(),
+    CandidateCommand::PM(args) => args.entrypoint(),
+    CandidateCommand::REPL(args) => args.entrypoint(),
+    CandidateCommand::Test(args) => args.entrypoint(),
+  }
+  .unwrap_or_else(exit_with_error);
 }
 
 fn exit_with_error(error: anyhow::Error) {
   eprintln!("{}", error);
-  std::process::exit(EXIT_FAILURE);
+  std::process::exit(exitcode::EXIT_FAILURE);
 }
-
-/// Create a command line runner instance.
-/// TODO: Simplify using macros
-pub(crate) fn create_command_line_runner<'ctx>() -> CommandLineRunner<'ctx> {
-  let mut handlers: HashMap<&str, CommandLineHandler> = HashMap::new();
-  let command = Command::new(env!("CARGO_BIN_NAME"))
-    .version(env!("CARGO_PKG_VERSION"))
-    .author(env!("CARGO_PKG_AUTHORS"))
-    .about(env!("CARGO_PKG_DESCRIPTION"))
-    .subcommand_value_name("TOOLCHAIN")
-    .subcommand_help_heading("Toolchains")
-    .arg_required_else_help(true)
-    .propagate_version(true)
-    .help_expected(true)
-    .multicall(true)
-    .after_help(format!(resources_str!("help.txt"), url = REPORT_URL));
-
-  handlers.insert("clean", crate::ops::clean::entrypoint);
-  handlers.insert("compile", crate::ops::compile::entrypoint);
-  handlers.insert("completion", crate::ops::completion::entrypoint);
-  handlers.insert("debug", crate::ops::debug::entrypoint);
-  handlers.insert("dump", crate::ops::dump::entrypoint);
-  handlers.insert("lsp", crate::ops::lsp::entrypoint);
-  handlers.insert("new", crate::ops::new::entrypoint);
-  handlers.insert("pm", crate::ops::pm::entrypoint);
-  handlers.insert("repl", crate::ops::repl::entrypoint);
-  handlers.insert("test", crate::ops::test::entrypoint);
-
-  handlers.insert("vspc", crate::ops::new::entrypoint);
-  handlers.insert("vspdp", crate::ops::dump::entrypoint);
-  handlers.insert("vspdb", crate::ops::debug::entrypoint);
-  handlers.insert("vsplsp", crate::ops::lsp::entrypoint);
-  handlers.insert("vspm", crate::ops::pm::entrypoint);
-  handlers.insert("vspsh", crate::ops::repl::entrypoint);
-
-  CommandLineRunner {
-    command: command
-      .clone()
-      .subcommand(
-        command
-          .subcommand_required(true)
-          .arg_required_else_help(true)
-          .disable_help_subcommand(false)
-          .disable_help_flag(false)
-          .disable_version_flag(false)
-          .subcommands(&[
-            crate::ops::clean::cli(false),
-            crate::ops::compile::cli(false),
-            crate::ops::completion::cli(false),
-            crate::ops::debug::cli(false),
-            crate::ops::dump::cli(false),
-            crate::ops::lsp::cli(false),
-            crate::ops::new::cli(false),
-            crate::ops::pm::cli(false),
-            crate::ops::repl::cli(false),
-            crate::ops::test::cli(false),
-          ]),
-      )
-      .subcommands(&[
-        crate::ops::compile::cli(true),
-        crate::ops::debug::cli(true),
-        crate::ops::dump::cli(true),
-        crate::ops::lsp::cli(true),
-        crate::ops::pm::cli(true),
-        crate::ops::repl::cli(true),
-      ]),
-    handlers,
-  }
-}
-
-pub struct CommandLineRunner<'ctx> {
-  pub(crate) command:  Command,
-  pub(crate) handlers: HashMap<&'ctx str, CommandLineHandler>,
-}
-
-impl<'ctx> CommandLineRunner<'ctx> {
-  pub fn execute(&mut self) -> anyhow::Result<()> {
-    let matches = self.command.get_matches_mut();
-    let subcommand = matches.subcommand();
-    match subcommand {
-      Some((env!("CARGO_BIN_NAME"), args)) => {
-        let cmd = args.subcommand_name();
-        debug_println!("Actual command with multicall: {:?}", cmd);
-        let handler = self.handlers.get(cmd.unwrap()).unwrap();
-        handler(&args.clone())
-      }
-      Some((cmd, args)) => {
-        let handler = self.handlers.get(cmd).unwrap();
-        handler(&args.clone())
-      }
-      None => unreachable!("Unsupported commands."),
-    }
-  }
-}
-// #[macro_use]
-// mod __private {
-//   #[macro_export]
-//   macro_rules! register_command {
-//     ($command:ident $name:ident) => {
-//       use crate::$name;
-//       $command.register(
-//         stringify!($name),
-//         None,
-//         $name::cli(false),
-//         $name::entrypoint,
-//       );
-//     };
-//     ($command:ident $name:ident $alias:ident) => {
-//       use crate::$name;
-//       $command.register(
-//         stringify!($name),
-//         Some($alias),
-//         $name::cli(false),
-//         $name::entrypoint,
-//       );
-//     };
-//   }
-// }

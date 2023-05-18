@@ -8,3 +8,7 @@ pub(crate) mod new;
 pub(crate) mod pm;
 pub(crate) mod repl;
 pub(crate) mod test;
+
+pub trait Entrypoint {
+  fn entrypoint(&self) -> anyhow::Result<()>;
+}

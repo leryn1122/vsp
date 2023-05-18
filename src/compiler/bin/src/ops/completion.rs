@@ -1,25 +1,17 @@
 use clap::arg;
-use clap::builder::EnumValueParser;
 use clap::builder::PossibleValue;
-use clap::ArgMatches;
-use clap::Command;
+use clap::Args;
 use clap::ValueEnum;
 use vsp_support::resources_str;
-use CandidateShell::Bash;
-use CandidateShell::Fish;
-use CandidateShell::PowerShell;
-use CandidateShell::Zsh;
 
-/// See also `crate::ops::completion::entrypoint`.
-pub(crate) fn cli(_: bool) -> Command {
-  Command::new("completion")
-    .about("Generate autocompletion scripts for the specified shell")
-    .arg(
-      arg!(<shell> "Shell which autocompletion generated scripts for")
-        .required(true)
-        .value_parser(EnumValueParser::<CandidateShell>::new()),
-    )
-    .after_help(resources_str!("completion/help.txt"))
+use crate::ops::Entrypoint;
+
+/// .after_help(resources_str!("completion/help.txt")
+#[derive(Args)]
+pub struct CandidateArgument {
+  /// Shell which autocompletion generated scripts for
+  #[arg()]
+  shell: CandidateShell,
 }
 
 /// # Autocompletion for shell
@@ -78,15 +70,18 @@ pub(crate) fn cli(_: bool) -> Command {
 /// It is a simple implementation, print the mapped completion script based on inline built-in
 /// script located at `resources/completion/completion-<shell>.sh`.
 /// Available shell candidates refer to `crate::ops::completion::CandidateShell`.
-pub(crate) fn entrypoint(args: &ArgMatches) -> anyhow::Result<()> {
-  let shell = args.get_one::<CandidateShell>("shell").expect("Invalid shell");
-  match shell {
-    Bash => println!("{}", resources_str!("completion/completion-bash.sh")),
-    Fish => println!("{}", resources_str!("completion/completion-fish.sh")),
-    Zsh => println!("{}", resources_str!("completion/completion-zsh.sh")),
-    PowerShell => println!("{}", resources_str!("completion/completion-powershell.ps1")),
-  };
-  Ok(())
+impl Entrypoint for CandidateArgument {
+  fn entrypoint(&self) -> anyhow::Result<()> {
+    match self.shell {
+      CandidateShell::Bash => println!("{}", resources_str!("completion/completion-bash.sh")),
+      CandidateShell::Fish => println!("{}", resources_str!("completion/completion-fish.sh")),
+      CandidateShell::Zsh => println!("{}", resources_str!("completion/completion-zsh.sh")),
+      CandidateShell::PowerShell => {
+        println!("{}", resources_str!("completion/completion-powershell.ps1"))
+      }
+    };
+    Ok(())
+  }
 }
 
 /// Enumeration of shell which is enabled for auto completion. Implementation for enumeration value
@@ -101,15 +96,20 @@ pub enum CandidateShell {
 
 impl ValueEnum for CandidateShell {
   fn value_variants<'a>() -> &'a [Self] {
-    &[Bash, Fish, Zsh, PowerShell]
+    &[
+      CandidateShell::Bash,
+      CandidateShell::Fish,
+      CandidateShell::Zsh,
+      CandidateShell::PowerShell,
+    ]
   }
 
   fn to_possible_value<'a>(&self) -> Option<PossibleValue> {
     let possible_value = match self {
-      Bash => PossibleValue::new("bash"),
-      Fish => PossibleValue::new("fish"),
-      Zsh => PossibleValue::new("zsh"),
-      PowerShell => PossibleValue::new("powershell"),
+      CandidateShell::Bash => PossibleValue::new("bash"),
+      CandidateShell::Fish => PossibleValue::new("fish"),
+      CandidateShell::Zsh => PossibleValue::new("zsh"),
+      CandidateShell::PowerShell => PossibleValue::new("powershell"),
     };
     Some(possible_value)
   }

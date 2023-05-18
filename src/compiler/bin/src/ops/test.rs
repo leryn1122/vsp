@@ -1,13 +1,17 @@
 use clap::arg;
+use clap::Args;
 
-pub(crate) fn cli(_: bool) -> clap::Command {
-  clap::Command::new("test")
-    .about("Run all unit tests and integration tests")
-    .args(&[arg!(--unittests "Run all unit tests only")])
+use crate::ops::Entrypoint;
+
+#[derive(Args)]
+pub struct CandidateArgument {
+  /// Run all unit tests only
+  #[arg(short, long)]
+  unittest: bool,
 }
 
-#[allow(unused_variables)]
-pub(crate) fn entrypoint(args: &clap::ArgMatches) -> anyhow::Result<()> {
-  let unittests = args.get_flag("unittests");
-  Ok(())
+impl Entrypoint for CandidateArgument {
+  fn entrypoint(&self) -> anyhow::Result<()> {
+    Ok(())
+  }
 }

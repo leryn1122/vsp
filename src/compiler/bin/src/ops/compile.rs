@@ -1,40 +1,35 @@
 use std::path::PathBuf;
 
-use anyhow::anyhow;
 use clap::arg;
-use clap::value_parser;
-use clap::ArgMatches;
-use clap::Command;
-use clap::ValueHint;
+use clap::Args;
+use target_lexicon::Triple;
 use vsp_compiler::compile;
 use vsp_support::clap_ext::TripleValueParser;
 
-pub(crate) fn cli(alias: bool) -> Command {
-  let command = if alias {
-    Command::new("vspc")
-  } else {
-    Command::new("compile")
-  };
-  command.about("Language compiler").arg_required_else_help(true).args(&[
-    arg!(<source>  "Source codes to compile")
-      .required(true)
-      .value_parser(value_parser!(PathBuf))
-      .value_hint(ValueHint::AnyPath),
-    arg!(--lib "Build only the project's library"),
-    arg!(--bin <bin> "Build only the project's binaries"),
-    arg!(-q --quiet "Enable quiet mode"),
-    arg!(--target <triple> "Target triple to compile the artifacts for")
-      .value_parser(TripleValueParser::default()),
-  ])
+use crate::ops::Entrypoint;
+
+#[derive(Args)]
+pub struct CandidateArgument {
+  /// Source codes to compile
+  #[arg()]
+  source:  PathBuf,
+  /// Build only the project's binaries
+  #[arg(long)]
+  bin:     Option<String>,
+  /// Build only the project's library
+  #[arg(long)]
+  lib:     bool,
+  /// Target triple to compile the artifacts for
+  #[arg(long, value_parser = TripleValueParser::default())]
+  target:  Option<Triple>,
+  /// Enable verbose mode
+  #[arg(short, long)]
+  verbose: bool,
 }
 
-#[allow(unused_variables)]
-pub(crate) fn entrypoint(args: &ArgMatches) -> anyhow::Result<()> {
-  let target_triple = args
-    .get_one::<String>("target")
-    .ok_or(anyhow!("Unsupported target triple"))
-    .ok();
-  let quiet = args.get_flag("quiet");
-  let result = compile();
-  Ok(result)
+impl Entrypoint for CandidateArgument {
+  fn entrypoint(&self) -> anyhow::Result<()> {
+    let result = compile();
+    Ok(())
+  }
 }

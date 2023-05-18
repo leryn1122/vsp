@@ -27,11 +27,11 @@ pub struct NewProjectConfig {
 }
 
 impl NewProjectConfig {
-  pub fn new(name: impl Into<String>, vcs: Option<VersionControl>, path: PathBuf) -> Self {
+  pub fn new(name: impl Into<String>, vcs: Option<VersionControl>, path: Option<PathBuf>) -> Self {
     Self {
       name: name.into(),
       vcs,
-      path,
+      path: path.unwrap_or(std::env::current_dir().unwrap()),
     }
   }
 
