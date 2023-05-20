@@ -13,10 +13,14 @@ pub struct CandidateArgument {
   /// Input file path
   #[arg(short, long)]
   output:     Option<PathBuf>,
+  /// Print token stream
+  #[cfg(debug_assertions)]
+  #[arg(long, group = "dump-type")]
+  tokens:     bool,
   /// Print preprocessed source codes
   #[arg(long, group = "dump-type")]
   preprocess: bool,
-  /// Print AST (Abstract Syntax Tree)
+  /// Print AST (Abstract syntax tree)
   #[arg(short, long, group = "dump-type")]
   ast:        bool,
   /// Print LLVM IR (Intermediate Representation)

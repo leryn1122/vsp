@@ -37,6 +37,9 @@ dev-tools-only = []
     [dependencies.vsp-dbg]
     path = "../dbg"
 
+    [dependencies.vsp-lsp]
+    path = "../lsp"
+
     [dependencies.vsp-platform]
     path = "../platform"
 

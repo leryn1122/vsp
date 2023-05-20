@@ -20,5 +20,8 @@ edition = "2021"
     [dependencies.serde]
     workspace = true
 
+    [dependencies.serde_json]
+    workspace = true
+
     [dependencies.target-lexicon]
     workspace = true

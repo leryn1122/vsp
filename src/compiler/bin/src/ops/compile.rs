@@ -29,7 +29,7 @@ pub struct CandidateArgument {
 
 impl Entrypoint for CandidateArgument {
   fn entrypoint(&self) -> anyhow::Result<()> {
-    let result = compile();
+    let _ = compile();
     Ok(())
   }
 }

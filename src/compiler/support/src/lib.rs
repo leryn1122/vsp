@@ -8,5 +8,6 @@ pub mod ptr;
 #[macro_use]
 pub mod resources;
 pub mod clap_ext;
+pub mod json;
 pub mod substring;
 pub mod timer;

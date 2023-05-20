@@ -7,5 +7,23 @@ edition = "2021"
 
 [dependencies]
 
+    [dependencies.anyhow]
+    workspace = true
+
+    [dependencies.log]
+    workspace = true
+
     [dependencies.lsp-server]
     workspace = true
+
+    [dependencies.lsp-types]
+    workspace = true
+
+    [dependencies.serde_json]
+    workspace = true
+
+    [dependencies.simplelog]
+    workspace = true
+
+    [dependencies.vsp-support]
+    path = "../support"

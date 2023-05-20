@@ -9,6 +9,6 @@ pub(crate) mod pm;
 pub(crate) mod repl;
 pub(crate) mod test;
 
-pub trait Entrypoint {
+pub trait Entrypoint: clap::Args {
   fn entrypoint(&self) -> anyhow::Result<()>;
 }

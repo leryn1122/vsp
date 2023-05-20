@@ -8,7 +8,7 @@ pub mod option;
 pub fn compile() {
   let target_options = TargetOptions::default();
   let dispatcher = CompilationDispatcher::default();
-  let mut compiler = CompilerInstance::from(dispatcher, target_options);
+  let compiler = CompilerInstance::from(dispatcher, target_options);
   compiler.create_diagnostics();
   // let mut file_manager: FileManager = compiler.create_file_manager();
   // let source_manager = compiler.create_source_manager(&mut file_manager);
@@ -18,9 +18,9 @@ pub fn compile() {
 
 /// Compiler instance for all the compilation job.
 pub struct CompilerInstance {
-  diagnostics:    (),
+  diagnostics:    Option<()>,
   dispatcher:     CompilationDispatcher,
-  preprocessor:   (),
+  preprocessor:   Option<()>,
   source_manager: (),
   target_options: TargetOptions,
 }
@@ -28,9 +28,9 @@ pub struct CompilerInstance {
 impl CompilerInstance {
   pub fn from(dispatcher: CompilationDispatcher, target_options: TargetOptions) -> Self {
     Self {
-      diagnostics: (),
+      diagnostics: None,
       dispatcher,
-      preprocessor: (),
+      preprocessor: None,
       source_manager: (),
       target_options,
     }

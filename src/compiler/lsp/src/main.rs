@@ -1,3 +1,5 @@
+use vsp_lsp::run_server;
+
 fn main() {
-  println!("Hello, world!");
+  let _ = run_server();
 }
