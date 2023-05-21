@@ -1,5 +1,18 @@
+//! The main application which is designed in a `clap_derive` pattern.
+//!
+//! ```bash
+//! $ vsp --help
+//!
+//! $ vsp new helloword
+//!
+//! $ cd helloworld
+//! $ vsp compile helloworld.vsp
+//! ```
+//!
+//! See also the [guide](https://vsp.io/guide)
 use clap::Parser;
 use clap::Subcommand;
+use vsp_error::VspError;
 use vsp_support::exitcode;
 use vsp_support::resources_str;
 
@@ -28,12 +41,14 @@ pub(crate) mod ops;
 #[command(arg_required_else_help = true)]
 #[command(propagate_version = true)]
 #[command(disable_help_subcommand = true)]
+#[command(external_subcommand = true)]
 #[command(after_help = format!(resources_str!("help.txt"), url = vsp_bin::REPORT_URL))]
 pub struct MainCommand {
   #[command(subcommand)]
   subcommand: CandidateCommand,
 }
 
+/// Registered subcommand for the application, following `clap::derive` as an enumeration.
 #[derive(Subcommand)]
 pub enum CandidateCommand {
   /// Clean target directory
@@ -75,7 +90,9 @@ fn main() {
   .unwrap_or_else(exit_with_error);
 }
 
-fn exit_with_error(error: anyhow::Error) {
+/// Prints the error message simply and exits the process once error occurred.
+/// The application must do the error handling itself.
+fn exit_with_error(error: VspError) {
   eprintln!("{}", error);
   std::process::exit(exitcode::EXIT_FAILURE);
 }

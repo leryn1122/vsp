@@ -1,5 +1,6 @@
 use clap::arg;
 use clap::Args;
+use vsp_error::VspResult;
 use vsp_lsp::run_server;
 
 use crate::ops::Entrypoint;
@@ -28,7 +29,7 @@ pub struct CandidateArgument {
 }
 
 impl Entrypoint for CandidateArgument {
-  fn entrypoint(&self) -> anyhow::Result<()> {
+  fn entrypoint(&self) -> VspResult<()> {
     let _socket = self.socket.as_deref().unwrap_or(&"unix:///tmp/vsplsp.sock".to_string());
 
     let _ = run_server();

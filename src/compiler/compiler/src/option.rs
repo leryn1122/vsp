@@ -25,7 +25,7 @@ pub struct TargetOptions {
 
 impl TargetOptions {
   #[cfg(debug_assertions)]
-  pub fn print_status(&self) {
+  pub fn debug_print_status(&self) {
     println!("Version = {}", &self.version);
     println!("Binary = {}", &self.binary.clone().unwrap_or(Cow::from("")));
     println!("Library = {}", &self.library);

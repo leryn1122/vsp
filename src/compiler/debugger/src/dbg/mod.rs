@@ -6,6 +6,7 @@ use std::io::Write;
 
 use clap::ArgMatches;
 use clap::Command;
+use vsp_error::VspResult;
 use vsp_support::debug_println;
 
 /// The debugger instance.
@@ -25,7 +26,7 @@ impl DebuggerInstance {
 
   /// Core loop on the debugger instance.
   /// Accept the stdin line and invoke the debugger instruction.
-  pub fn core_loop(&self) -> anyhow::Result<()> {
+  pub fn core_loop(&self) -> VspResult<()> {
     'main: loop {
       let line = self.readline().unwrap();
       let line = line.trim();
@@ -62,7 +63,7 @@ impl DebuggerInstance {
     }
   }
 
-  pub(crate) fn readline(&self) -> anyhow::Result<String, String> {
+  pub(crate) fn readline(&self) -> Result<String, String> {
     self.print_prompt();
     let mut buffer = String::new();
     stdin().read_line(&mut buffer).map_err(|e| e.to_string())?;

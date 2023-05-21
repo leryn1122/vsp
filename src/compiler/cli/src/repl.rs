@@ -2,12 +2,14 @@ use std::io::stdout;
 use std::io::Write;
 
 use clap::Command;
+use vsp_error::VspError;
+use vsp_error::VspResult;
 
-pub fn do_run_repl() -> anyhow::Result<()> {
+pub fn do_run_repl() -> VspResult<()> {
   let repl = REPL::new();
   match repl.core_loop() {
     Ok(res) => Ok(res),
-    Err(message) => Err(anyhow::Error::msg(message)),
+    Err(message) => Err(VspError::new(message)),
   }
 }
 
@@ -28,7 +30,7 @@ impl REPL {
   }
 
   #[allow(unused_must_use)]
-  pub fn core_loop(&self) -> anyhow::Result<(), String> {
+  pub fn core_loop(&self) -> VspResult<(), String> {
     loop {
       let line = readline().unwrap();
       let line = line.trim();

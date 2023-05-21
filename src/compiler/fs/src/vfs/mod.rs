@@ -1,12 +1,11 @@
 pub mod path;
 
 use std::ffi::OsString;
-use std::fmt::Debug;
 
 use getset::Getters;
 use getset::MutGetters;
+use vsp_error::VspResult;
 use vsp_support::exitcode::ExitCode;
-use vsp_support::exitcode::EXIT_OK;
 
 use crate::vfs::path::VFSPath;
 
@@ -129,11 +128,11 @@ pub trait VirtualFileSystem: Sync + Send + 'static {
   where
     File: crate::vfs::File;
 
-  fn read_dir<Dirs>(&self, path: &VFSPath) -> anyhow::Result<Dirs>
+  fn read_dir<Dirs>(&self, path: &VFSPath) -> VspResult<Dirs>
   where
     Dirs: DirectoryEntryIterator;
 
-  fn create_dir(&self, path: &VFSPath) -> anyhow::Result<()>;
+  fn create_dir(&self, path: &VFSPath) -> VspResult<()>;
 }
 
 /// A normal and default implementation of `VirtualFileSystem` refers to the real filesystem.

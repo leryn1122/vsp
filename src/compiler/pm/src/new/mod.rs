@@ -2,7 +2,8 @@ use std::fs::OpenOptions;
 use std::io::Write;
 use std::path::PathBuf;
 
-use anyhow::anyhow;
+use vsp_error::VspError;
+use vsp_error::VspResult;
 use vsp_support::resources_bytes;
 
 #[rustfmt::skip]
@@ -40,10 +41,10 @@ impl NewProjectConfig {
   /// - Create the empty dir named after project.
   /// - Create the list of files.
   /// - Write the content of files.
-  pub fn create_new_project(&self) -> anyhow::Result<()> {
+  pub fn create_new_project(&self) -> VspResult<()> {
     let path = self.path.join(&self.name);
     if path.exists() {
-      return Err(anyhow!("Directory has already existed."));
+      return Err(VspError::new("Directory has already existed."));
     }
 
     // Use a hack to create the project directory by vcs.
@@ -77,10 +78,10 @@ impl NewProjectConfig {
             "manifest.toml" => resources_bytes!("new/manifest.toml"),
             _ => unreachable!(),
           })
-          .map_err(|e| anyhow!(e))
+          .map_err(VspError::from)
           .expect("Failed to create file.");
         }
-        Err(e) => return Err(anyhow!(e)),
+        Err(e) => return Err(VspError::from(e)),
       }
     }
 

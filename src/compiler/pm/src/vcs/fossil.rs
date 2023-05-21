@@ -1,6 +1,6 @@
 use std::path::Path;
 
-use anyhow::Result;
+use vsp_error::VspResult;
 
 pub(crate) struct FossilRepo;
 
@@ -13,7 +13,7 @@ impl FossilRepo {
   ///
   /// fossil open ../example.fossil
   /// ```
-  pub fn init(_path: &Path, _cwd: &Path) -> Result<()> {
+  pub fn init(_path: &Path, _cwd: &Path) -> VspResult<()> {
     todo!();
 
     // ProcessBuilder::new("fossil")

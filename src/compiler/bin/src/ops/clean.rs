@@ -1,9 +1,10 @@
 use std::path::PathBuf;
 
-use anyhow::anyhow;
 use clap::arg;
 use clap::Args;
 use target_lexicon::Triple;
+use vsp_error::VspError;
+use vsp_error::VspResult;
 use vsp_support::clap_ext::TripleValueParser;
 
 use crate::ops::Entrypoint;
@@ -25,11 +26,11 @@ pub struct CandidateArgument {
 }
 
 impl Entrypoint for CandidateArgument {
-  fn entrypoint(&self) -> anyhow::Result<()> {
+  fn entrypoint(&self) -> VspResult<()> {
     let target_dir = std::env::current_dir().unwrap().join("target");
     match std::fs::remove_dir_all(target_dir) {
       Ok(_) => Ok(()),
-      Err(e) => Err(anyhow!(e)),
+      Err(e) => Err(VspError::from(e)),
     }
   }
 }

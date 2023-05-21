@@ -1,5 +1,6 @@
 use clap::arg;
 use clap::Args;
+use vsp_error::VspResult;
 
 use crate::ops::Entrypoint;
 
@@ -11,7 +12,7 @@ pub struct CandidateArgument {
 }
 
 impl Entrypoint for CandidateArgument {
-  fn entrypoint(&self) -> anyhow::Result<()> {
+  fn entrypoint(&self) -> VspResult<()> {
     Ok(())
   }
 }

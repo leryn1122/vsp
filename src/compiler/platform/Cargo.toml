@@ -5,8 +5,8 @@ edition = "2021"
 
 [dependencies]
 
-    [dependencies.anyhow]
-    workspace = true
+    [dependencies.vsp-error]
+    path = "../error"
 
 [target.'cfg(unix)'.dependencies]
 libc = "^0.2.137"

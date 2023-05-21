@@ -9,7 +9,7 @@ pub(crate) mod svn;
 
 use std::str::FromStr;
 
-use anyhow::anyhow;
+use vsp_error::VspError;
 
 /// Version control toolchains.
 #[derive(Clone)]
@@ -24,7 +24,7 @@ pub enum VersionControl {
 }
 
 impl FromStr for VersionControl {
-  type Err = anyhow::Error;
+  type Err = VspError;
 
   fn from_str(s: &str) -> Result<Self, Self::Err> {
     #[cfg(not(target_env = "musl"))]
@@ -33,13 +33,13 @@ impl FromStr for VersionControl {
       "fossil" => Ok(VersionControl::Fossil),
       "hg" => Ok(VersionControl::Hg),
       "svn" => Ok(VersionControl::Svn),
-      s => Err(anyhow!("Unsupported version control: {}", s)),
+      s => Err(VspError::new(format!("Unsupported version control: {}", s))),
     }
 
     #[cfg(target_env = "musl")]
     match s {
       "git" => Ok(VersionControl::Git),
-      s => Err(anyhow!("Unsupported version control: {}", s)),
+      s => Err(VspError::new("Unsupported version control: {}", s)),
     }
   }
 }

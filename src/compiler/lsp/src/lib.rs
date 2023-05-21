@@ -3,7 +3,6 @@ pub(crate) mod server;
 
 use log::info;
 use log::trace;
-use log::warn;
 use log::LevelFilter;
 use lsp_server::Connection;
 use lsp_types::InitializeResult;
@@ -14,12 +13,13 @@ use simplelog::Config;
 use simplelog::SharedLogger;
 use simplelog::TermLogger;
 use simplelog::TerminalMode;
+use vsp_error::VspResult;
 use vsp_support::json::from_json;
 
 use crate::server::server_capabilities;
 
 /// Run language server.
-pub fn run_server() -> anyhow::Result<()> {
+pub fn run_server() -> VspResult<()> {
   // Initialize.
   init_logger();
 

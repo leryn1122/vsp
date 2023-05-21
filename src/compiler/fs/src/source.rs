@@ -2,14 +2,15 @@ use core::str::FromStr;
 use std::fs;
 use std::path::Path;
 
-use anyhow::anyhow;
+use vsp_error::VspError;
+use vsp_error::VspResult;
 
 /// File loader for source code file.
 pub trait FileLoader {
   /// Determine whether the source code file exists.
   fn exists(&self, path: &Path) -> bool;
   /// Read the contents of source code file.
-  fn read_file(&self, path: &Path) -> anyhow::Result<String>;
+  fn read_file(&self, path: &Path) -> VspResult<String>;
 }
 
 /// A source code file loader to read plain source code file using `std::fs`.
@@ -20,10 +21,10 @@ impl FileLoader for PlainFileLoader {
     path.exists()
   }
 
-  fn read_file(&self, path: &Path) -> anyhow::Result<String> {
+  fn read_file(&self, path: &Path) -> VspResult<String> {
     match fs::read_to_string(path) {
       Ok(s) => Ok(s),
-      Err(e) => Err(anyhow!(e)),
+      Err(e) => Err(VspError::from(e)),
     }
   }
 }

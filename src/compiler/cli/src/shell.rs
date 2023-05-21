@@ -1,7 +1,8 @@
 use core::fmt::Display;
 use std::io::Write;
 
-use anyhow::anyhow;
+use vsp_error::VspError;
+use vsp_error::VspResult;
 
 #[allow(dead_code)]
 pub struct Shell {
@@ -25,12 +26,12 @@ impl Shell {
     self.output.stderr()
   }
 
-  pub fn print(&mut self, message: Option<&dyn Display>) -> anyhow::Result<()> {
+  pub fn print(&mut self, message: Option<&dyn Display>) -> VspResult<()> {
     self
       .output
       .stdout()
       .write_all(message.unwrap().to_string().as_bytes())
-      .map_err(|e| anyhow!(e))
+      .map_err(VspError::from)
   }
 }
 

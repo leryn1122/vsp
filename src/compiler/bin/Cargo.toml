@@ -19,9 +19,6 @@ dev-tools-only = []
 
 [dependencies]
 
-    [dependencies.anyhow]
-    workspace = true
-
     [dependencies.clap]
     workspace = true
 
@@ -35,7 +32,10 @@ dev-tools-only = []
     path = "../compiler"
 
     [dependencies.vsp-dbg]
-    path = "../dbg"
+    path = "../debugger"
+
+    [dependencies.vsp-error]
+    path = "../error"
 
     [dependencies.vsp-lsp]
     path = "../lsp"

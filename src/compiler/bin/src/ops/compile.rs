@@ -6,6 +6,7 @@ use clap::Args;
 use target_lexicon::Triple;
 use vsp_compiler::compile;
 use vsp_compiler::option::TargetOptions;
+use vsp_error::VspResult;
 use vsp_support::clap_ext::TripleValueParser;
 
 use crate::ops::Entrypoint;
@@ -30,7 +31,7 @@ pub struct CandidateArgument {
 }
 
 impl Entrypoint for CandidateArgument {
-  fn entrypoint(&self) -> anyhow::Result<()> {
+  fn entrypoint(&self) -> VspResult<()> {
     let target_options = self.new_target_options();
 
     compile(target_options)

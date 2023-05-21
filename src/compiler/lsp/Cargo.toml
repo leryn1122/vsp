@@ -7,9 +7,6 @@ edition = "2021"
 
 [dependencies]
 
-    [dependencies.anyhow]
-    workspace = true
-
     [dependencies.log]
     workspace = true
 
@@ -24,6 +21,9 @@ edition = "2021"
 
     [dependencies.simplelog]
     workspace = true
+
+    [dependencies.vsp-error]
+    path = "../error"
 
     [dependencies.vsp-support]
     path = "../support"

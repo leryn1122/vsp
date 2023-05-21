@@ -8,6 +8,9 @@ use std::process::Command;
 use std::process::ExitStatus;
 use std::process::Output;
 
+use vsp_error::VspError;
+use vsp_error::VspResult;
+
 /// Builder for external process invocation instead of `std::process::Command`.
 #[derive(Clone, Debug)]
 pub struct ProcessBuilder {
@@ -48,17 +51,22 @@ impl ProcessBuilder {
     self
   }
 
-  pub fn status(&self) -> std::io::Result<ExitStatus> {
+  pub fn status(&self) -> VspResult<ExitStatus> {
     let mut cmd = self.build_command();
-    cmd.spawn()?.wait()
+    let mut child = cmd.spawn().unwrap();
+    match child.wait() {
+      Ok(exit) => Ok(exit),
+      Err(e) => Err(VspError::from(e)),
+    }
   }
 
-  pub fn exec(&self) -> anyhow::Result<()> {
+  pub fn exec(&self) -> VspResult<()> {
     let exit = self.status()?;
     if exit.success() {
       Ok(())
     } else {
-      Err(ProcessError::new(Some(exit), &format!("fail to run: {}", self), None).into())
+      let e = ProcessError::new(Some(exit), &format!("fail to run: {}", self), None);
+      Err(VspError::from(e))
     }
   }
 

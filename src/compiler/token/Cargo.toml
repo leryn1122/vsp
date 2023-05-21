@@ -5,8 +5,8 @@ edition = "2021"
 
 [dependencies]
 
-    [dependencies.anyhow]
-    workspace = true
-
     [dependencies.vsp-span]
     path = "../span"
+
+    [dependencies.vsp-error]
+    path = "../error"

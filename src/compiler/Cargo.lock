@@ -942,6 +942,7 @@ version = "0.1.0"
 dependencies = [
  "combine",
  "vsp-ast",
+ "vsp-error",
  "vsp-token",
 ]
 
@@ -949,12 +950,12 @@ dependencies = [
 name = "vsp-bin"
 version = "0.1.0"
 dependencies = [
- "anyhow",
  "clap",
  "target-lexicon",
  "vsp-cli",
  "vsp-compiler",
  "vsp-dbg",
+ "vsp-error",
  "vsp-lsp",
  "vsp-platform",
  "vsp-pm",
@@ -965,20 +966,20 @@ dependencies = [
 name = "vsp-cli"
 version = "0.1.0"
 dependencies = [
- "anyhow",
  "clap",
  "shlex",
+ "vsp-error",
 ]
 
 [[package]]
 name = "vsp-compiler"
 version = "0.1.0"
 dependencies = [
- "anyhow",
  "getset",
  "semver",
  "target-lexicon",
  "vsp-diag",
+ "vsp-error",
  "vsp-fs",
 ]
 
@@ -986,9 +987,9 @@ dependencies = [
 name = "vsp-dbg"
 version = "0.1.0"
 dependencies = [
- "anyhow",
  "clap",
  "shlex",
+ "vsp-error",
  "vsp-support",
 ]
 
@@ -997,12 +998,19 @@ name = "vsp-diag"
 version = "0.1.0"
 
 [[package]]
-name = "vsp-fs"
+name = "vsp-error"
 version = "0.1.0"
 dependencies = [
  "anyhow",
+]
+
+[[package]]
+name = "vsp-fs"
+version = "0.1.0"
+dependencies = [
  "getset",
  "md-5",
+ "vsp-error",
  "vsp-support",
 ]
 
@@ -1018,12 +1026,12 @@ dependencies = [
 name = "vsp-lsp"
 version = "0.1.0"
 dependencies = [
- "anyhow",
  "log",
  "lsp-server",
  "lsp-types",
  "serde_json",
  "simplelog",
+ "vsp-error",
  "vsp-support",
 ]
 
@@ -1031,8 +1039,8 @@ dependencies = [
 name = "vsp-platform"
 version = "0.1.0"
 dependencies = [
- "anyhow",
  "libc",
+ "vsp-error",
  "winapi",
 ]
 
@@ -1040,10 +1048,10 @@ dependencies = [
 name = "vsp-pm"
 version = "0.1.0"
 dependencies = [
- "anyhow",
  "git2",
  "semver",
  "serde",
+ "vsp-error",
  "vsp-support",
 ]
 
@@ -1055,20 +1063,20 @@ version = "0.1.0"
 name = "vsp-support"
 version = "0.1.0"
 dependencies = [
- "anyhow",
  "clap",
  "nanoid",
  "semver",
  "serde",
  "serde_json",
  "target-lexicon",
+ "vsp-error",
 ]
 
 [[package]]
 name = "vsp-token"
 version = "0.1.0"
 dependencies = [
- "anyhow",
+ "vsp-error",
  "vsp-span",
 ]
 

@@ -4,6 +4,7 @@ use clap::arg;
 use clap::value_parser;
 use clap::Args;
 use vsp_dbg::dbg::DebuggerInstance;
+use vsp_error::VspResult;
 use vsp_platform::proc::PID_MAX;
 
 use crate::ops::Entrypoint;
@@ -26,7 +27,7 @@ pub struct CandidateArgument {
 }
 
 impl Entrypoint for CandidateArgument {
-  fn entrypoint(&self) -> anyhow::Result<()> {
+  fn entrypoint(&self) -> VspResult<()> {
     let debugger = DebuggerInstance::default();
     debugger.core_loop()
   }

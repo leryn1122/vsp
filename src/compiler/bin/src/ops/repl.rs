@@ -1,6 +1,7 @@
-use anyhow::anyhow;
 use clap::Args;
 use vsp_cli::repl::do_run_repl;
+use vsp_error::VspError;
+use vsp_error::VspResult;
 
 use crate::ops::Entrypoint;
 
@@ -8,10 +9,10 @@ use crate::ops::Entrypoint;
 pub struct CandidateArgument {}
 
 impl Entrypoint for CandidateArgument {
-  fn entrypoint(&self) -> anyhow::Result<()> {
+  fn entrypoint(&self) -> VspResult<()> {
     match do_run_repl() {
       Ok(res) => Ok(res),
-      Err(e) => Err(anyhow!(e)),
+      Err(e) => Err(VspError::from(e)),
     }
   }
 }

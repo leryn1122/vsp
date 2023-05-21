@@ -2,6 +2,7 @@ use clap::arg;
 use clap::builder::PossibleValue;
 use clap::Args;
 use clap::ValueEnum;
+use vsp_error::VspResult;
 use vsp_support::resources_str;
 
 use crate::ops::Entrypoint;
@@ -71,7 +72,7 @@ pub struct CandidateArgument {
 /// script located at `resources/completion/completion-<shell>.sh`.
 /// Available shell candidates refer to `crate::ops::completion::CandidateShell`.
 impl Entrypoint for CandidateArgument {
-  fn entrypoint(&self) -> anyhow::Result<()> {
+  fn entrypoint(&self) -> VspResult<()> {
     match self.shell {
       CandidateShell::Bash => println!("{}", resources_str!("completion/completion-bash.sh")),
       CandidateShell::Fish => println!("{}", resources_str!("completion/completion-fish.sh")),

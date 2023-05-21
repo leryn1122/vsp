@@ -1,3 +1,5 @@
+use vsp_error::VspResult;
+
 pub(crate) mod clean;
 pub(crate) mod compile;
 pub(crate) mod completion;
@@ -10,5 +12,5 @@ pub(crate) mod repl;
 pub(crate) mod test;
 
 pub trait Entrypoint: clap::Args {
-  fn entrypoint(&self) -> anyhow::Result<()>;
+  fn entrypoint(&self) -> VspResult<()>;
 }

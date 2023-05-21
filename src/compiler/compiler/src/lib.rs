@@ -1,6 +1,7 @@
 use getset::Getters;
 use getset::Setters;
 use vsp_diag::DiagnosticEngine;
+use vsp_error::VspResult;
 
 use crate::action::CompilationInvocation;
 use crate::dispatch::CompilationDispatcher;
@@ -14,7 +15,7 @@ pub mod option;
 pub mod source;
 
 /// Entrypoint to compile the source codes.
-pub fn compile(target_options: TargetOptions) -> anyhow::Result<()> {
+pub fn compile(target_options: TargetOptions) -> VspResult<()> {
   let dispatcher = CompilationDispatcher::default();
   let mut compiler = CompilerInstance::from(dispatcher, target_options);
 
@@ -22,7 +23,7 @@ pub fn compile(target_options: TargetOptions) -> anyhow::Result<()> {
   compiler.create_ast_context();
 
   #[cfg(debug_assertions)]
-  compiler.print_status();
+  compiler.debug_print_status();
 
   compiler.do_compile()
 }
@@ -34,11 +35,11 @@ type InMemoryModuleCache = ();
 /// run the compiler, for example, the target options, AST context.
 #[derive(Getters, Setters)]
 pub struct CompilerInstance {
+  /// AST context.
   ast_context:    Option<ASTContext>,
   #[getset(get = "pub", set = "pub")]
   diagnostics:    DiagnosticEngine,
   dispatcher:     CompilationDispatcher,
-  invocation:     CompilationInvocation,
   lang_options:   LangOptions,
   preprocessor:   Option<()>,
   source_manager: SourceManager,
@@ -53,7 +54,6 @@ impl CompilerInstance {
       ast_context: None,
       diagnostics: DiagnosticEngine::default(),
       dispatcher,
-      invocation: CompilationInvocation {},
       lang_options: LangOptions::default(),
       module_cache: (),
       preprocessor: None,
@@ -73,11 +73,11 @@ impl CompilerInstance {
 
 impl CompilerInstance {
   #[cfg(debug_assertions)]
-  pub fn print_status(&self) {
-    self.target_options.print_status();
+  pub fn debug_print_status(&self) {
+    self.target_options.debug_print_status();
   }
 
-  pub fn do_compile(&mut self) -> anyhow::Result<()> {
+  pub fn do_compile(&mut self) -> VspResult<()> {
     Ok(())
   }
 }

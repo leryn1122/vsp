@@ -5,9 +5,6 @@ edition = "2021"
 
 [dependencies]
 
-    [dependencies.anyhow]
-    workspace = true
-
     [dependencies.clap]
     workspace = true
 
@@ -25,3 +22,6 @@ edition = "2021"
 
     [dependencies.target-lexicon]
     workspace = true
+
+    [dependencies.vsp-error]
+    path = "../error"

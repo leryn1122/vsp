@@ -11,5 +11,8 @@ edition = "2021"
     [dependencies.vsp-ast]
     path = "../ast"
 
+    [dependencies.vsp-error]
+    path = "../error"
+
     [dependencies.vsp-token]
     path = "../token"

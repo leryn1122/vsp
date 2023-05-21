@@ -1,2 +1,2 @@
 Report your issues here:
-  {url}
+  - {url}

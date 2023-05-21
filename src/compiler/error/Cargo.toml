@@ -1,5 +1,5 @@
 [package]
-name = "vsp-dbg"
+name = "vsp-error"
 version = "0.1.0"
 edition = "2021"
 
@@ -9,12 +9,3 @@ edition = "2021"
 
     [dependencies.anyhow]
     workspace = true
-
-    [dependencies.clap]
-    workspace = true
-
-    [dependencies.shlex]
-    workspace = true
-
-    [dependencies.vsp-support]
-    path = "../support"
