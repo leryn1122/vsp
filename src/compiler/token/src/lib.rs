@@ -244,6 +244,12 @@ pub struct LocatableToken {
   pub span:  Span,
 }
 
+impl LocatableToken {
+  pub fn new(token: Token, span: Span) -> Self {
+    Self { token, span }
+  }
+}
+
 impl Debug for LocatableToken {
   fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
     let arr = self.span.expand_as_array();

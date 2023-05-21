@@ -23,7 +23,7 @@ pub struct CandidateArgument {
   /// Print AST (Abstract syntax tree)
   #[arg(short, long, group = "dump-type")]
   ast:        bool,
-  /// Print LLVM IR (Intermediate Representation)
+  /// Print LLVM IR (Intermediate representation)
   #[arg(short, long, group = "dump-type")]
   llvm:       bool,
 }

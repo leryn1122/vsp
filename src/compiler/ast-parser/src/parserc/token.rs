@@ -17,6 +17,7 @@ use combine::Parser;
 use combine::Stream;
 
 pub type VspToken = vsp_token::Token;
+pub type LocatableToken = vsp_token::LocatableToken;
 
 /// A function, of great importance in lexical analysis, splits the character stream into sequences
 /// of lexemes.

@@ -5,8 +5,20 @@ edition = "2021"
 
 [dependencies]
 
+    [dependencies.anyhow]
+    workspace = true
+
+    [dependencies.getset]
+    workspace = true
+
     [dependencies.target-lexicon]
     workspace = true
 
+    [dependencies.vsp-diag]
+    path = "../diag"
+
     [dependencies.vsp-fs]
     path = "../fs"
+
+    [dependencies.semver]
+    workspace = true

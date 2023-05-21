@@ -6,6 +6,7 @@ members = [
   "cli",
   "compiler",
   "dbg",
+  "diag",
   "fs",
   "llvm",
   "lsp",
