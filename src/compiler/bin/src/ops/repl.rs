@@ -9,7 +9,7 @@ use crate::ops::Entrypoint;
 pub struct CandidateArgument {}
 
 impl Entrypoint for CandidateArgument {
-  fn entrypoint(&self) -> VspResult<()> {
+  fn entrypoint(&mut self) -> VspResult<()> {
     match do_run_repl() {
       Ok(res) => Ok(res),
       Err(e) => Err(VspError::from(e)),

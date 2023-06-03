@@ -20,8 +20,8 @@ impl<'ctx> CodegenContext<'ctx> {
   pub fn new(name: String, context: &'ctx Context) -> Self {
     let module = context.create_module(name.as_str());
     Self {
-      context: context,
-      module:  module,
+      context,
+      module,
       builder: context.create_builder(),
     }
   }
@@ -84,6 +84,9 @@ impl<'ctx> CodegenContext<'ctx> {
     let fn_type = i64_type.fn_type(&[], false);
     let function = self.module.add_function(function.name.as_str(), fn_type, None);
     let basic_block = self.context.append_basic_block(function, "entry");
-    ()
   }
+}
+
+pub fn convert_to_llvm_optimization_level(num: u8) -> () {
+  debug_assert!(num <= 3);
 }

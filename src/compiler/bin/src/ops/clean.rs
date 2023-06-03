@@ -26,7 +26,7 @@ pub struct CandidateArgument {
 }
 
 impl Entrypoint for CandidateArgument {
-  fn entrypoint(&self) -> VspResult<()> {
+  fn entrypoint(&mut self) -> VspResult<()> {
     let target_dir = std::env::current_dir().unwrap().join("target");
     match std::fs::remove_dir_all(target_dir) {
       Ok(_) => Ok(()),

@@ -72,7 +72,7 @@ pub struct CandidateArgument {
 /// script located at `resources/completion/completion-<shell>.sh`.
 /// Available shell candidates refer to `crate::ops::completion::CandidateShell`.
 impl Entrypoint for CandidateArgument {
-  fn entrypoint(&self) -> VspResult<()> {
+  fn entrypoint(&mut self) -> VspResult<()> {
     match self.shell {
       CandidateShell::Bash => println!("{}", resources_str!("completion/completion-bash.sh")),
       CandidateShell::Fish => println!("{}", resources_str!("completion/completion-fish.sh")),

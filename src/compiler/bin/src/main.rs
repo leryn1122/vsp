@@ -10,6 +10,7 @@
 //! ```
 //!
 //! See also the [guide](https://vsp.io/guide)
+use clap::builder::Styles;
 use clap::Parser;
 use clap::Subcommand;
 use vsp_error::VspError;
@@ -42,6 +43,7 @@ pub(crate) mod ops;
 #[command(propagate_version = true)]
 #[command(disable_help_subcommand = true)]
 #[command(external_subcommand = true)]
+#[command(styles = get_styles())]
 #[command(after_help = format!(resources_str!("help.txt"), url = vsp_bin::REPORT_URL))]
 pub struct MainCommand {
   #[command(subcommand)]
@@ -74,18 +76,22 @@ pub enum CandidateCommand {
 }
 
 fn main() {
+  #[cfg(target_arch = "wasm32")]
+  unimplemented!("Vespera on wasm32 is not supported yet.");
+
   let command = MainCommand::parse();
+  #[rustfmt::skip]
   match command.subcommand {
-    CandidateCommand::Clean(args) => args.entrypoint(),
-    CandidateCommand::Compile(args) => args.entrypoint(),
-    CandidateCommand::Completion(args) => args.entrypoint(),
-    CandidateCommand::Debug(args) => args.entrypoint(),
-    CandidateCommand::Dump(args) => args.entrypoint(),
-    CandidateCommand::LSP(args) => args.entrypoint(),
-    CandidateCommand::New(args) => args.entrypoint(),
-    CandidateCommand::PM(args) => args.entrypoint(),
-    CandidateCommand::REPL(args) => args.entrypoint(),
-    CandidateCommand::Test(args) => args.entrypoint(),
+    CandidateCommand::Clean     (mut args) => args.entrypoint(),
+    CandidateCommand::Compile   (mut args) => args.entrypoint(),
+    CandidateCommand::Completion(mut args) => args.entrypoint(),
+    CandidateCommand::Debug     (mut args) => args.entrypoint(),
+    CandidateCommand::Dump      (mut args) => args.entrypoint(),
+    CandidateCommand::LSP       (mut args) => args.entrypoint(),
+    CandidateCommand::New       (mut args) => args.entrypoint(),
+    CandidateCommand::PM        (mut args) => args.entrypoint(),
+    CandidateCommand::REPL      (mut args) => args.entrypoint(),
+    CandidateCommand::Test      (mut args) => args.entrypoint(),
   }
   .unwrap_or_else(exit_with_error);
 }
@@ -95,4 +101,13 @@ fn main() {
 fn exit_with_error(error: VspError) {
   eprintln!("{}", error);
   std::process::exit(exitcode::EXIT_FAILURE);
+}
+
+/// Get a designed ANSI style.
+fn get_styles() -> Styles {
+  Styles::styled().literal(
+    anstyle::Style::new()
+      .bold()
+      .fg_color(Some(anstyle::Color::Ansi(anstyle::AnsiColor::Cyan))),
+  )
 }

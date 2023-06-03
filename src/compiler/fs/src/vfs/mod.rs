@@ -1,6 +1,8 @@
 pub mod path;
 
 use std::ffi::OsString;
+use std::fs::File;
+use std::path::PathBuf;
 
 use getset::Getters;
 use getset::MutGetters;
@@ -10,7 +12,7 @@ use vsp_support::exitcode::ExitCode;
 use crate::vfs::path::VFSPath;
 
 /// Abstract file object trait for the virtual filesystem.
-pub trait File {
+pub trait FileObject {
   fn get_name(&self) -> Result<OsString, ()>;
 
   fn close(&mut self) -> ExitCode;
@@ -23,9 +25,12 @@ pub enum FileType {
   DirectoryFile,
   #[cfg(unix)]
   SymbolicLink,
+  /** A unix socket on local machine */
   #[cfg(unix)]
   SocketFile,
+  /** Result for finding a file. */
   FileNotFound,
+  /** Result for unknown or unexpected case. */
   Unknown,
 }
 
@@ -108,10 +113,37 @@ impl Iterator for DirectoryEntryIteratorImpl {
 
 impl DirectoryEntryIterator for DirectoryEntryIteratorImpl {}
 
+/// **DON'T USE IT**
+///
+/// An internal fat pointer of the virtual file system.
+///
+/// @see `crate::vfs::FileSystem`
+#[doc(hidden)]
+pub(crate) struct VFSWrapper {
+  vfs: Box<dyn FileSystem>,
+}
+
+impl VFSWrapper {
+  pub(crate) fn from<VFS>(vfs: VFS) -> Self
+  where
+    VFS: FileSystem + Sized,
+  {
+    Self { vfs: Box::new(vfs) }
+  }
+}
+
 /// # Virtual File System
+///
+/// A virtual file system is a memory object that represents an abstract interface to provide IO
+/// streams with the consistent API over the real filesystem, in-memory filesystem, embedded
+/// filesystem, etc.
+///
+/// It is a higher level interface over the actual filesystem on disk storage, i.e. `ext`, `zfs`,
+/// `xfs`. It is focused on the miscellaneous readable resources.
+///
 /// All file system implementations must implement this trait.
-pub trait VirtualFileSystem: Sync + Send + 'static {
-  fn status(path: &VFSPath) -> Result<ExitCode, ()>;
+pub trait FileSystem: Sync + Send + 'static {
+  fn status(&self, path: &VFSPath) -> Result<ExitCode, ()>;
 
   /// Set the current working directory, aka `cd` command.
   fn set_cwd(&mut self, path: &VFSPath) -> ExitCode;
@@ -119,25 +151,68 @@ pub trait VirtualFileSystem: Sync + Send + 'static {
   /// Get the current working directory of this file system.
   fn get_cwd(&self, path: &VFSPath) -> Result<&VFSPath, ()>;
 
-  fn exists(path: &VFSPath) -> bool;
+  fn exists(&self, path: &VFSPath) -> bool;
 
-  fn get_real_path(path: &VFSPath) -> Result<VFSPath, ()>;
+  fn get_real_path(&self, path: &VFSPath) -> Result<VFSPath, ()>;
 
   /// Open the file object.
-  fn open<File>(path: &VFSPath) -> Result<File, ()>
-  where
-    File: crate::vfs::File;
+  fn open(&mut self, path: &VFSPath) -> Result<(), ()>;
 
-  fn read_dir<Dirs>(&self, path: &VFSPath) -> VspResult<Dirs>
-  where
-    Dirs: DirectoryEntryIterator;
+  fn read_dir(
+    &self,
+    path: &VFSPath,
+  ) -> VspResult<Box<dyn DirectoryEntryIterator<Item = DirectoryEntry>>>;
 
   fn create_dir(&self, path: &VFSPath) -> VspResult<()>;
 }
 
 /// A normal and default implementation of `VirtualFileSystem` refers to the real filesystem.
 pub struct RealFileSystem {
-  // cwd: VFSPath,
+  cwd:      VFSPath,
+  real_cwd: PathBuf,
 }
 
-impl RealFileSystem {}
+/// An associated function to construct a real filesystem instance which located at the current
+/// working directory. It is used as a default behavior for obtaining the filesystem instance,
+pub fn get_real_file_system() -> RealFileSystem {
+  let real_cwd = std::env::current_dir().unwrap();
+  let cwd = VFSPath::from(real_cwd.clone());
+  RealFileSystem { cwd, real_cwd }
+}
+
+impl FileSystem for RealFileSystem {
+  fn status(&self, path: &VFSPath) -> Result<ExitCode, ()> {
+    todo!()
+  }
+
+  fn set_cwd(&mut self, path: &VFSPath) -> ExitCode {
+    todo!()
+  }
+
+  fn get_cwd(&self, path: &VFSPath) -> Result<&VFSPath, ()> {
+    todo!()
+  }
+
+  fn exists(&self, path: &VFSPath) -> bool {
+    path.to_path_buf().exists()
+  }
+
+  fn get_real_path(&self, path: &VFSPath) -> Result<VFSPath, ()> {
+    todo!()
+  }
+
+  fn open(&mut self, path: &VFSPath) -> Result<(), ()> {
+    todo!()
+  }
+
+  fn read_dir(
+    &self,
+    path: &VFSPath,
+  ) -> VspResult<Box<dyn DirectoryEntryIterator<Item = DirectoryEntry>>> {
+    todo!()
+  }
+
+  fn create_dir(&self, path: &VFSPath) -> VspResult<()> {
+    todo!()
+  }
+}

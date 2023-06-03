@@ -11,6 +11,7 @@ pub(crate) mod pm;
 pub(crate) mod repl;
 pub(crate) mod test;
 
+#[doc(hidden)]
 pub trait Entrypoint: clap::Args {
-  fn entrypoint(&self) -> VspResult<()>;
+  fn entrypoint(&mut self) -> VspResult<()>;
 }

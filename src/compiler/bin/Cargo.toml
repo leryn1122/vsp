@@ -19,6 +19,9 @@ dev-tools-only = []
 
 [dependencies]
 
+    [dependencies.anstyle]
+    workspace = true
+
     [dependencies.clap]
     workspace = true
 

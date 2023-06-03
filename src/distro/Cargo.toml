@@ -1,0 +1,43 @@
+[package]
+name = "distro"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+
+  [dependencies.anstyle]
+  version = "^1.0.0"
+
+  [dependencies.clap]
+  version = "^4.2.1"
+  features = [
+    "color",
+    "derive",
+    "unstable-styles"
+  ]
+
+  [dependencies.cargo]
+  version = "^0.70.1"
+
+  [dependencies.target-lexicon]
+  version = "^0.12.6"
+
+  [dependencies.lazy_static]
+  version = "^1.4.0"
+
+  [dependencies.flate2]
+  version = "^1.0.26"
+
+  [dependencies.tar]
+  version = "^0.4.38"
+
+  [dependencies.zip]
+  version = "^0.6.6"
+
+[target.'cfg(unix)'.dependencies]
+libc = "^0.2.137"
+
+[target.'cfg(windows)'.dependencies]
+winapi = "^0.3.9"

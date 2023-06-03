@@ -21,6 +21,9 @@ pub struct TargetOptions {
   /// Target triple
   #[getset(get = "pub", set = "pub")]
   target_triple: Triple,
+  /// Optimization level
+  #[getset(get = "pub", set = "pub")]
+  optimization:  u8,
 }
 
 impl TargetOptions {
@@ -42,6 +45,7 @@ impl Default for TargetOptions {
       library:       false,
       host_triple:   Triple::host(),
       target_triple: Triple::host(),
+      optimization:  3,
     }
   }
 }

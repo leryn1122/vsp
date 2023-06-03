@@ -14,7 +14,8 @@ use target_lexicon::Triple;
 ///
 /// Usage:
 /// ```rust
-/// use clap::{arg, Command};
+/// use clap::arg;
+/// use clap::Command;
 /// use target_lexicon::Triple;
 /// use vsp_support::clap_ext::TripleValueParser;
 ///

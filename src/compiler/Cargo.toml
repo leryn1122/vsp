@@ -19,20 +19,68 @@ members = [
 ]
 
 [workspace.dependencies]
-anyhow = "^1.0.66"
-clap = { version = "^4.2.1", features = ["derive"] }
-combine = "^4.6.6"
-getset = "^0.1.2"
-git2 = "^0.16.1"
-inkwell = { version = "0.1.0-beta.5", features = [ "llvm14-0" ] }
-log = "^0.4.17"
-lsp-server = "^0.7.0"
-lsp-types = "=0.93.2"
-nanoid = "^0.4.0"
-regex = "^1.7.3"
-semver = "^1.0.17"
-serde = { version = "^1.0.147", features = [ "derive" ] }
-serde_json = "^1.0.96"
-simplelog = "^0.12.0"
-shlex = "^1.1.0"
-target-lexicon = "^0.12.6"
+
+  [workspace.dependencies.anstyle]
+  version = "^1.0.0"
+
+  [workspace.dependencies.anyhow]
+  version = "^1.0.66"
+
+  [workspace.dependencies.clap]
+  version = "^4.2.1"
+  features = [
+    "color",
+    "derive",
+    "unstable-styles"
+  ]
+
+  [workspace.dependencies.combine]
+  combine = "^4.6.6"
+
+  [workspace.dependencies.getset]
+  version = "^0.1.2"
+
+  [workspace.dependencies.git2]
+  version = "^0.16.1"
+
+  [workspace.dependencies.inkwell]
+  version = "0.1.0-beta.5"
+  features = [
+    "llvm14-0"
+  ]
+
+  [workspace.dependencies.log]
+  version = "^0.4.17"
+
+  [workspace.dependencies.lsp-server]
+  version = "^0.7.0"
+
+  [workspace.dependencies.lsp-types]
+  version = "=0.93.2"
+
+  [workspace.dependencies.nanoid]
+  version = "^0.4.0"
+
+  [workspace.dependencies.regex]
+  version = "^1.7.3"
+
+  [workspace.dependencies.semver]
+  version = "^1.0.17"
+
+  [workspace.dependencies.serde]
+  version = "^1.0.147"
+  features = [
+    "derive"
+  ]
+
+  [workspace.dependencies.serde_json]
+  version = "^1.0.96"
+
+  [workspace.dependencies.simplelog]
+  version = "^0.12.0"
+
+  [workspace.dependencies.shlex]
+  version = "^1.1.0"
+
+  [workspace.dependencies.target-lexicon]
+  version = "^0.12.6"

@@ -950,6 +950,7 @@ dependencies = [
 name = "vsp-bin"
 version = "0.1.0"
 dependencies = [
+ "anstyle",
  "clap",
  "target-lexicon",
  "vsp-cli",

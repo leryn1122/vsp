@@ -24,7 +24,7 @@ pub struct CandidateArgument {
 }
 
 impl Entrypoint for CandidateArgument {
-  fn entrypoint(&self) -> VspResult<()> {
+  fn entrypoint(&mut self) -> VspResult<()> {
     let vcs = self.vcs.clone().map(|s| VersionControl::from_str(s.as_str()).unwrap());
     let config = NewProjectConfig::new(&self.project, vcs, self.path.clone());
     config.create_new_project()

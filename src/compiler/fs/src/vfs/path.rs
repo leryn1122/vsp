@@ -1,13 +1,15 @@
 use std::ffi::OsString;
 use std::path::PathBuf;
 
-const SEPERATOR: char = '/';
+pub(crate) const SEPERATOR: char = '/';
 
+///
 pub struct VFSPath {
   inner: OsString,
 }
 
 impl VFSPath {
+  /// Construct a new VFS path from `OsString`.
   pub fn from(path: impl Into<OsString>) -> Self {
     Self { inner: path.into() }
   }

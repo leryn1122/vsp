@@ -27,7 +27,7 @@ pub struct CandidateArgument {
 }
 
 impl Entrypoint for CandidateArgument {
-  fn entrypoint(&self) -> VspResult<()> {
+  fn entrypoint(&mut self) -> VspResult<()> {
     let debugger = DebuggerInstance::default();
     debugger.core_loop()
   }

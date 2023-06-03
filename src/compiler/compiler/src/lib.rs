@@ -1,21 +1,27 @@
+use std::io::Read;
+use std::path::PathBuf;
+
 use getset::Getters;
 use getset::Setters;
 use vsp_diag::DiagnosticEngine;
 use vsp_error::VspResult;
+use vsp_fs::manager::VFSManager;
+use vsp_fs::vfs::path::VFSPath;
+use vsp_fs::vfs::RealFileSystem;
 
-use crate::action::CompilationInvocation;
 use crate::dispatch::CompilationDispatcher;
 use crate::option::LangOptions;
 use crate::option::TargetOptions;
 use crate::source::SourceManager;
 
 pub mod action;
+pub mod db;
 pub mod dispatch;
 pub mod option;
 pub mod source;
 
 /// Entrypoint to compile the source codes.
-pub fn compile(target_options: TargetOptions) -> VspResult<()> {
+pub fn start_compile(filename: &PathBuf, target_options: TargetOptions) -> VspResult<()> {
   let dispatcher = CompilationDispatcher::default();
   let mut compiler = CompilerInstance::from(dispatcher, target_options);
 
@@ -25,7 +31,7 @@ pub fn compile(target_options: TargetOptions) -> VspResult<()> {
   #[cfg(debug_assertions)]
   compiler.debug_print_status();
 
-  compiler.do_compile()
+  compiler.run(filename)
 }
 
 type ASTContext = ();
@@ -42,6 +48,8 @@ pub struct CompilerInstance {
   dispatcher:     CompilationDispatcher,
   lang_options:   LangOptions,
   preprocessor:   Option<()>,
+  vfs_manager:    VFSManager,
+  #[getset(get = "pub", set = "pub")]
   source_manager: SourceManager,
   module_cache:   InMemoryModuleCache,
   #[getset(get = "pub", set = "pub")]
@@ -50,6 +58,7 @@ pub struct CompilerInstance {
 
 impl CompilerInstance {
   pub fn from(dispatcher: CompilationDispatcher, target_options: TargetOptions) -> Self {
+    let vfs_manager = VFSManager::default();
     Self {
       ast_context: None,
       diagnostics: DiagnosticEngine::default(),
@@ -57,6 +66,7 @@ impl CompilerInstance {
       lang_options: LangOptions::default(),
       module_cache: (),
       preprocessor: None,
+      vfs_manager,
       source_manager: SourceManager::default(),
       target_options,
     }
@@ -77,7 +87,15 @@ impl CompilerInstance {
     self.target_options.debug_print_status();
   }
 
-  pub fn do_compile(&mut self) -> VspResult<()> {
+  pub fn run(&mut self, file: &PathBuf) -> VspResult<()> {
+    let path = VFSPath::from(file);
+    let mut file = self.vfs_manager.get_file(&path).unwrap();
+    self.source_manager.create_main_file_id(file);
+
+    // let mut file = std::fs::OpenOptions::new().read(true).open(file).unwrap();
+    // let mut content = String::new();
+    // let _ = file.read_to_string(&mut content);
+
     Ok(())
   }
 }

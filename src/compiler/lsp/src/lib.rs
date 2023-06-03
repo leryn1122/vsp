@@ -1,10 +1,10 @@
-pub(crate) mod config;
+pub mod config;
 pub(crate) mod server;
 
-use log::info;
-use log::trace;
 use log::LevelFilter;
 use lsp_server::Connection;
+use lsp_server::IoThreads;
+use lsp_types::InitializeParams;
 use lsp_types::InitializeResult;
 use lsp_types::ServerInfo;
 use simplelog::ColorChoice;
@@ -13,24 +13,29 @@ use simplelog::Config;
 use simplelog::SharedLogger;
 use simplelog::TermLogger;
 use simplelog::TerminalMode;
+use vsp_error::VspError;
 use vsp_error::VspResult;
 use vsp_support::json::from_json;
 
+use crate::config::Configuration;
 use crate::server::server_capabilities;
 
 /// Run language server.
-pub fn run_server() -> VspResult<()> {
+pub fn start_server(config: Configuration) -> VspResult<()> {
   // Initialize.
   init_logger();
 
-  trace!("Ready to run server: {}", env!("CARGO_PKG_VERSION"));
+  log::trace!("Ready to run server: {}", env!("CARGO_PKG_VERSION"));
 
-  let (connection, io_threads) = Connection::stdio();
+  let (connection, io_threads) = match connection_by_type(&config) {
+    Ok(res) => res,
+    Err(e) => return Err(VspError::from(e)),
+  };
   let (initialize_id, initialize_params) = connection.initialize_start().unwrap();
-  info!("Initializing parameters: {}", initialize_params);
+  log::trace!("InitializeParams: {}", initialize_params);
 
   let initialize_params =
-    from_json::<lsp_types::InitializeParams>("InitializeParams", &initialize_params).unwrap();
+    from_json::<InitializeParams>("InitializeParams", &initialize_params).unwrap();
 
   let initialize_result = InitializeResult {
     capabilities: server_capabilities(),
@@ -45,9 +50,21 @@ pub fn run_server() -> VspResult<()> {
   Ok(())
 }
 
+pub fn connection_by_type(config: &Configuration) -> std::io::Result<(Connection, IoThreads)> {
+  if let Some(addr) = config.address {
+    Connection::connect(addr)
+  } else if let Some(addr) = &config.socket {
+    Connection::connect(addr.as_str())
+  } else if config.stdio {
+    Ok(Connection::stdio())
+  } else {
+    Ok(Connection::stdio())
+  }
+}
+
 pub fn init_logger() {
   let loggers: Vec<Box<dyn SharedLogger>> = vec![TermLogger::new(
-    LevelFilter::Info,
+    LevelFilter::Trace,
     Config::default(),
     TerminalMode::Mixed,
     ColorChoice::Auto,

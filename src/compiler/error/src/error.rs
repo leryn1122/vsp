@@ -6,6 +6,7 @@ use std::fmt::Formatter;
 
 use anyhow::anyhow;
 
+/// Wrapper of `anyhow::Error`.
 pub struct Error(anyhow::Error);
 
 impl Error {
