@@ -5,17 +5,17 @@ edition = "2021"
 
 [dependencies]
 
-    [dependencies.semver]
-    workspace = true
+  [dependencies.semver]
+  workspace = true
 
-    [dependencies.serde]
-    workspace = true
+  [dependencies.serde]
+  workspace = true
 
-    [dependencies.vsp-error]
-    path = "../error"
+  [dependencies.vsp-error]
+  path = "../error"
 
-    [dependencies.vsp-support]
-    path = "../support"
+  [dependencies.vsp-support]
+  path = "../support"
 
 [target.'cfg(target_env = "musl")'.dependencies]
 

@@ -7,23 +7,23 @@ edition = "2021"
 
 [dependencies]
 
-    [dependencies.log]
-    workspace = true
+  [dependencies.log]
+  workspace = true
 
-    [dependencies.lsp-server]
-    workspace = true
+  [dependencies.lsp-server]
+  workspace = true
 
-    [dependencies.lsp-types]
-    workspace = true
+  [dependencies.lsp-types]
+  workspace = true
 
-    [dependencies.serde_json]
-    workspace = true
+  [dependencies.serde_json]
+  workspace = true
 
-    [dependencies.simplelog]
-    workspace = true
+  [dependencies.simplelog]
+  workspace = true
 
-    [dependencies.vsp-error]
-    path = "../error"
+  [dependencies.vsp-error]
+  path = "../error"
 
-    [dependencies.vsp-support]
-    path = "../support"
+  [dependencies.vsp-support]
+  path = "../support"

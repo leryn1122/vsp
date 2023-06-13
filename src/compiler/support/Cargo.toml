@@ -5,23 +5,23 @@ edition = "2021"
 
 [dependencies]
 
-    [dependencies.clap]
-    workspace = true
+  [dependencies.clap]
+  workspace = true
 
-    [dependencies.nanoid]
-    workspace = true
+  [dependencies.nanoid]
+  workspace = true
 
-    [dependencies.semver]
-    workspace = true
+  [dependencies.semver]
+  workspace = true
 
-    [dependencies.serde]
-    workspace = true
+  [dependencies.serde]
+  workspace = true
 
-    [dependencies.serde_json]
-    workspace = true
+  [dependencies.serde_json]
+  workspace = true
 
-    [dependencies.target-lexicon]
-    workspace = true
+  [dependencies.target-lexicon]
+  workspace = true
 
-    [dependencies.vsp-error]
-    path = "../error"
+  [dependencies.vsp-error]
+  path = "../error"

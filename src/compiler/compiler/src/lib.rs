@@ -42,16 +42,16 @@ type InMemoryModuleCache = ();
 #[derive(Getters, Setters)]
 pub struct CompilerInstance {
   /// AST context.
-  ast_context:    Option<ASTContext>,
+  ast_context: Option<ASTContext>,
   #[getset(get = "pub", set = "pub")]
-  diagnostics:    DiagnosticEngine,
-  dispatcher:     CompilationDispatcher,
-  lang_options:   LangOptions,
-  preprocessor:   Option<()>,
-  vfs_manager:    VFSManager,
+  diagnostics: DiagnosticEngine,
+  dispatcher: CompilationDispatcher,
+  lang_options: LangOptions,
+  preprocessor: Option<()>,
+  vfs_manager: VFSManager,
   #[getset(get = "pub", set = "pub")]
   source_manager: SourceManager,
-  module_cache:   InMemoryModuleCache,
+  module_cache: InMemoryModuleCache,
   #[getset(get = "pub", set = "pub")]
   target_options: TargetOptions,
 }
@@ -90,7 +90,7 @@ impl CompilerInstance {
   pub fn run(&mut self, file: &PathBuf) -> VspResult<()> {
     let path = VFSPath::from(file);
     let mut file = self.vfs_manager.get_file(&path).unwrap();
-    self.source_manager.create_main_file_id(file);
+    let main_file = self.source_manager.create_main_file_id(&file);
 
     // let mut file = std::fs::OpenOptions::new().read(true).open(file).unwrap();
     // let mut content = String::new();

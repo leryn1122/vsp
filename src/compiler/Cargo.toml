@@ -31,11 +31,11 @@ members = [
   features = [
     "color",
     "derive",
-    "unstable-styles"
+    "unstable-styles",
   ]
 
   [workspace.dependencies.combine]
-  combine = "^4.6.6"
+  version = "^4.6.6"
 
   [workspace.dependencies.getset]
   version = "^0.1.2"
@@ -46,7 +46,7 @@ members = [
   [workspace.dependencies.inkwell]
   version = "0.1.0-beta.5"
   features = [
-    "llvm14-0"
+    "llvm14-0",
   ]
 
   [workspace.dependencies.log]
@@ -70,7 +70,7 @@ members = [
   [workspace.dependencies.serde]
   version = "^1.0.147"
   features = [
-    "derive"
+    "derive",
   ]
 
   [workspace.dependencies.serde_json]

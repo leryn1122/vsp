@@ -7,14 +7,14 @@ edition = "2021"
 
 [dependencies]
 
-    [dependencies.clap]
-    workspace = true
+  [dependencies.clap]
+  workspace = true
 
-    [dependencies.shlex]
-    workspace = true
+  [dependencies.shlex]
+  workspace = true
 
-    [dependencies.vsp-error]
-    path = "../error"
+  [dependencies.vsp-error]
+  path = "../error"
 
-    [dependencies.vsp-support]
-    path = "../support"
+  [dependencies.vsp-support]
+  path = "../support"

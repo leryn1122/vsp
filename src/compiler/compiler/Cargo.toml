@@ -5,20 +5,20 @@ edition = "2021"
 
 [dependencies]
 
-    [dependencies.getset]
-    workspace = true
+  [dependencies.getset]
+  workspace = true
 
-    [dependencies.target-lexicon]
-    workspace = true
+  [dependencies.target-lexicon]
+  workspace = true
 
-    [dependencies.vsp-diag]
-    path = "../diagnostic"
+  [dependencies.vsp-diag]
+  path = "../diagnostic"
 
-    [dependencies.vsp-fs]
-    path = "../fs"
+  [dependencies.vsp-fs]
+  path = "../fs"
 
-    [dependencies.vsp-error]
-    path = "../error"
+  [dependencies.vsp-error]
+  path = "../error"
 
-    [dependencies.semver]
-    workspace = true
+  [dependencies.semver]
+  workspace = true

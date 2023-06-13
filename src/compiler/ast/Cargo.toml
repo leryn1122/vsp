@@ -5,11 +5,11 @@ edition = "2021"
 
 [dependencies]
 
-    [dependencies.vsp-span]
-    path = "../span"
+  [dependencies.vsp-span]
+  path = "../span"
 
-    [dependencies.vsp-support]
-    path = "../support"
+  [dependencies.vsp-support]
+  path = "../support"
 
-    [dependencies.vsp-token]
-    path = "../token"
+  [dependencies.vsp-token]
+  path = "../token"

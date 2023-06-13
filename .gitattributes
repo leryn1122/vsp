@@ -1,6 +1,6 @@
 * text eol=lf
 
-*.vsp linguist-language=TypeScript
+*.vsp linguist-language=Vespera
 
 *.ico binary
 *.png binary

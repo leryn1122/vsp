@@ -5,15 +5,15 @@ edition = "2021"
 
 [dependencies]
 
-    [dependencies.getset]
-    workspace = true
+  [dependencies.getset]
+  workspace = true
 
-    [dependencies.md5]
-    package = "md-5"
-    version = "^0.10.0"
+  [dependencies.md5]
+  package = "md-5"
+  version = "^0.10.0"
 
-    [dependencies.vsp-error]
-    path = "../error"
+  [dependencies.vsp-error]
+  path = "../error"
 
-    [dependencies.vsp-support]
-    path = "../support"
+  [dependencies.vsp-support]
+  path = "../support"

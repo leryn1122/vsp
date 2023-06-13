@@ -9,8 +9,6 @@ use zip::write::FileOptions;
 use zip::CompressionMethod;
 use zip::ZipWriter;
 
-use crate::debug_println;
-
 pub fn create_tar_archive_by_dir(out: &PathBuf, dir: &PathBuf) -> std::io::Result<()> {
   let file = File::create(out)?;
   let encoder = GzEncoder::new(file, Compression::default());

@@ -30,11 +30,11 @@ A toy language compiler during learning custom compiler and Rust lang.
 Long term:
 
 | Command               | Alias (TODO*) | Intro                                 |
-| --------------------- | ------------- | ------------------------------------- |
+| --------------------- |---------------| ------------------------------------- |
 | `vsp compile`         | `vspc`        | Language compiler                     |
 | `vsp debug`           | `vspd`        | Runtime debugger                      |
 | `vsp help`            |               | Print help info                       |
-| `vsp repl`            | `vspsh`     | REPL (Read-Eval-Print Loop) or shell  |
+| `vsp repl`            | `vspsh`       | REPL (Read-Eval-Print Loop) or shell  |
 | `vsp tar`             | `vspx`        | Tool of Compression and Decompression |
 | `vsp version`         |               | Print version info                    |
 
@@ -52,13 +52,8 @@ This project uses [rust](https://www.rust-lang.org/) and [cargo](https://npmjs.c
 
 ```bash
 git clone https://github.com/leryn1122/vsp.git
-cd vsp
-
-# If not Windows
-make bootstrap
-
-# If Windows, use powershell
-.\make.ps1
+cd vsp/src/distro
+cargo run -- build
 ```
 
 ## Usage

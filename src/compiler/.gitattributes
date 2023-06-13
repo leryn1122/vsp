@@ -1,0 +1,8 @@
+* text eol=lf
+
+*.vsp linguist-language=TypeScript
+
+*.ico binary
+*.png binary
+*.jpg binary
+*.jpeg binary

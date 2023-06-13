@@ -19,38 +19,38 @@ dev-tools-only = []
 
 [dependencies]
 
-    [dependencies.anstyle]
-    workspace = true
+  [dependencies.anstyle]
+  workspace = true
 
-    [dependencies.clap]
-    workspace = true
+  [dependencies.clap]
+  workspace = true
 
-    [dependencies.target-lexicon]
-    workspace = true
+  [dependencies.target-lexicon]
+  workspace = true
 
-    [dependencies.vsp-cli]
-    path = "../cli"
+  [dependencies.vsp-cli]
+  path = "../cli"
 
-    [dependencies.vsp-compiler]
-    path = "../compiler"
+  [dependencies.vsp-compiler]
+  path = "../compiler"
 
-    [dependencies.vsp-dbg]
-    path = "../debugger"
+  [dependencies.vsp-dbg]
+  path = "../debugger"
 
-    [dependencies.vsp-error]
-    path = "../error"
+  [dependencies.vsp-error]
+  path = "../error"
 
-    [dependencies.vsp-lsp]
-    path = "../lsp"
+  [dependencies.vsp-lsp]
+  path = "../lsp"
 
-    [dependencies.vsp-platform]
-    path = "../platform"
+  [dependencies.vsp-platform]
+  path = "../platform"
 
-    [dependencies.vsp-pm]
-    path = "../pm"
+  [dependencies.vsp-pm]
+  path = "../pm"
 
-    [dependencies.vsp-support]
-    path = "../support"
+  [dependencies.vsp-support]
+  path = "../support"
 
 [target.'cfg(target_os = "linux")']
 rustflags = ["-C", "link-arg=-nostartfiles"]

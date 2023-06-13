@@ -21,12 +21,14 @@ lazy_static! {
     .join("..")
     .canonicalize()
     .unwrap();
+
   // `<root>/src/target`
   static ref TARGET_PATH: PathBuf = PathBuf::from(env!("CARGO_MANIFEST_DIR"))
     .join("..")
     .join("target")
     .canonicalize()
     .unwrap();
+
   // `<root>/src/compiler`
   static ref PROJECT_COMPILER_PATH: PathBuf = PathBuf::from(env!("CARGO_MANIFEST_DIR"))
     .join("..")
@@ -56,7 +58,12 @@ pub fn cargo_build(cwd: &PathBuf) -> std::io::Result<()> {
   )
   .unwrap();
 
-  let compile_options = CompileOptions::new(&workspace.config(), CompileMode::Build).unwrap();
+  let mut compile_options = CompileOptions::new(&workspace.config(), CompileMode::Build).unwrap();
+  compile_options
+    .target_rustc_args
+    .as_mut()
+    .unwrap()
+    .push("-C target-feature=+crt-static".to_owned());
   let _ = cargo::ops::compile(&workspace, &compile_options).unwrap();
   Ok(())
 }
@@ -65,9 +72,11 @@ pub fn pack_release(cwd: &PathBuf) -> std::io::Result<()> {
   let package_name = format!("vsp-{}", Triple::host().to_string());
   let target_dir = &cwd.join("..").join("target");
 
+  // Create the vsp-<triple>, e.g. `target/vsp-x86_64-unknown-linux-gnu`
   mkdir_p(target_dir, package_name.clone()).expect("Failed to create package directory");
   let package_path = target_dir.join(&package_name);
 
+  // Create the directory
   let dirs = resources_str!("file-tree.csv")
     .split('\n')
     .filter(|&l| !l.is_empty() && !l.starts_with('#'))
@@ -78,6 +87,7 @@ pub fn pack_release(cwd: &PathBuf) -> std::io::Result<()> {
     mkdir(&package_path, d).expect(format!("Failed to create target directory: {}", &d).as_str());
   });
 
+  // `cp -ar ../compiler/target/debug/vsp target/vsp-x86_64-unknown-linux-gnu/bin/vsp`
   cp(
     &package_path,
     PROJECT_COMPILER_PATH
@@ -88,6 +98,7 @@ pub fn pack_release(cwd: &PathBuf) -> std::io::Result<()> {
   )
   .expect("Failed to copy binary: vsp");
 
+  // `cp -ar resources/conf/env target/vsp-x86_64-unknown-linux-gnu/conf`
   for f in vec!["conf/env"] {
     cp(&package_path, resources!("conf/env"), "conf")
       .expect(format!("Failed to copy conf: {}", f).as_str());
