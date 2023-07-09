@@ -1,13 +1,13 @@
 use std::iter::Peekable;
 use std::str::Chars;
 
-use crate::token::LocatableToken;
-use crate::token::TokenStream;
+use crate::parser::token::LocatableToken;
+use crate::parser::token::TokenStream;
+use crate::token::mapping_non_literal_token;
+use crate::token::Token;
 use vsp_error::VspResult;
 use vsp_span::span::Position;
 use vsp_span::span::Span;
-use vsp_token::mapping_non_literal_token;
-use vsp_token::Token;
 
 pub struct DefaultLexer;
 

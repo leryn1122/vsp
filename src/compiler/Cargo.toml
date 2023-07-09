@@ -15,7 +15,6 @@ members = [
   "pm",
   "span",
   "support",
-  "token",
 ]
 
 [workspace.dependencies]

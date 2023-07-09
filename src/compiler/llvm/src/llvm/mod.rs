@@ -12,9 +12,9 @@ use vsp_ast::ast::function::Function;
 pub mod ir;
 
 pub struct CodegenContext<'ctx> {
-  pub context: &'ctx Context,
-  pub module: Module<'ctx>,
-  pub builder: Builder<'ctx>,
+  context: &'ctx Context,
+  module: Module<'ctx>,
+  builder: Builder<'ctx>,
 }
 
 impl<'ctx> CodegenContext<'ctx> {
@@ -25,6 +25,18 @@ impl<'ctx> CodegenContext<'ctx> {
       module,
       builder: context.create_builder(),
     }
+  }
+
+  pub fn context(&self) -> &'ctx Context {
+    self.context
+  }
+
+  pub fn module(&self) -> &Module<'ctx> {
+    &self.module
+  }
+
+  pub fn builder(&self) -> &Builder<'ctx> {
+    &self.builder
   }
 
   pub fn optimize(&mut self) {

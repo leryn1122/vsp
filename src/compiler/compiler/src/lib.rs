@@ -1,14 +1,13 @@
-use std::fs::File;
-use std::io::{Read, Write};
+use std::io::Read;
 use std::path::PathBuf;
 
 use getset::Getters;
 use getset::Setters;
 
 use vsp_diag::DiagnosticEngine;
-use vsp_error::{VspError, VspResult};
+use vsp_error::VspError;
+use vsp_error::VspResult;
 use vsp_fs::manager::VFSManager;
-use vsp_fs::path::VFSPath;
 
 use crate::dispatch::CompilationDispatcher;
 use crate::option::LangOptions;
@@ -90,6 +89,8 @@ impl CompilerInstance {
   }
 
   pub fn run(&mut self, file: &PathBuf) -> VspResult<()> {
+    use vsp_fs::path::VFSPath;
+
     let path = VFSPath::from_str(file.to_str().unwrap());
     let mut file = self.vfs_manager.get_file(&path).unwrap();
     let main_file = self.source_manager.create_main_file_id(&file);
@@ -109,13 +110,16 @@ impl SimpleCompilerInstance {
   }
 
   pub fn compile(&mut self, path: &PathBuf) -> VspResult<()> {
-    let mut file = File::open(path).map_err(|e| VspError::from(e))?;
+    use vsp_ast_parser::lex::DefaultLexer;
+    use vsp_ast_parser::parser::DefaultParser;
+
+    let mut file = std::fs::File::open(path).map_err(|e| VspError::from(e))?;
     let mut buf = String::new();
     let _ = file.read_to_string(&mut buf);
 
-    let mut lex = vsp_ast_parser::lex::DefaultLexer {};
+    let mut lex = DefaultLexer {};
     let mut tokens = lex.tokenize(buf.as_str()).unwrap();
-    let mut parser = vsp_ast_parser::parser::DefaultParser {};
+    let mut parser = DefaultParser {};
     let _ = parser.parse(tokens);
     Ok(())
   }

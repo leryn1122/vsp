@@ -27,7 +27,11 @@ pub enum ExpressionKind {
   /// Unary expression, such as `!foo`.
   Unary(UnaryOpKind, SharedPtr<Expression>),
   /// Binary expression, such as `foo + bar`.
-  Binary(BinaryOpKind, SharedPtr<Expression>, SharedPtr<Expression>),
+  Binary(
+    BinaryOpKind,
+    SharedPtr<ExpressionKind>,
+    SharedPtr<ExpressionKind>,
+  ),
 
   //============================================================================//
   // Call

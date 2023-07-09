@@ -16,6 +16,3 @@ edition = "2021"
 
   [dependencies.vsp-support]
   path = "../support"
-
-  [dependencies.vsp-token]
-  path = "../token"
