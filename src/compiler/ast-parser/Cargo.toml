@@ -5,14 +5,17 @@ edition = "2021"
 
 [dependencies]
 
-  [dependencies.combine]
-  workspace = true
-
   [dependencies.vsp-ast]
   path = "../ast"
 
   [dependencies.vsp-error]
   path = "../error"
+
+  [dependencies.vsp-span]
+  path = "../span"
+
+  [dependencies.vsp-support]
+  path = "../support"
 
   [dependencies.vsp-token]
   path = "../token"

@@ -1,3 +1,7 @@
+use std::str::FromStr;
+
+use vsp_error::VspError;
+
 pub(crate) mod git;
 
 #[cfg(not(target_env = "musl"))]
@@ -6,10 +10,6 @@ pub(crate) mod fossil;
 pub(crate) mod hg;
 #[cfg(not(target_env = "musl"))]
 pub(crate) mod svn;
-
-use std::str::FromStr;
-
-use vsp_error::VspError;
 
 /// Version control toolchains.
 #[derive(Clone)]

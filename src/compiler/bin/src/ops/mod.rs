@@ -1,5 +1,6 @@
 use vsp_error::VspResult;
 
+pub(crate) mod build;
 pub(crate) mod clean;
 pub(crate) mod compile;
 pub(crate) mod completion;

@@ -2,6 +2,7 @@ use std::io::stdout;
 use std::io::Write;
 
 use clap::Command;
+
 use vsp_error::VspError;
 use vsp_error::VspResult;
 

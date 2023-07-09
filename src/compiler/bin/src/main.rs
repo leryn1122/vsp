@@ -13,11 +13,12 @@
 use clap::builder::Styles;
 use clap::Parser;
 use clap::Subcommand;
+use std::env::args;
+
 use vsp_error::VspError;
 use vsp_support::exitcode;
 use vsp_support::resources_str;
 
-use crate::ops::clean;
 use crate::ops::compile;
 use crate::ops::completion;
 use crate::ops::debug;
@@ -28,6 +29,7 @@ use crate::ops::pm;
 use crate::ops::repl;
 use crate::ops::test;
 use crate::ops::Entrypoint;
+use crate::ops::{build, clean};
 
 pub(crate) mod ops;
 
@@ -53,6 +55,8 @@ pub struct MainCommand {
 /// Registered subcommand for the application, following `clap::derive` as an enumeration.
 #[derive(Subcommand)]
 pub enum CandidateCommand {
+  /// Build tools for language compiler
+  Build(build::CandidateArgument),
   /// Clean target directory
   Clean(clean::CandidateArgument),
   /// Language compiler
@@ -82,18 +86,19 @@ fn main() {
   let command = MainCommand::parse();
   #[rustfmt::skip]
   match command.subcommand {
-    CandidateCommand::Clean     (mut args) => args.entrypoint(),
-    CandidateCommand::Compile   (mut args) => args.entrypoint(),
+    CandidateCommand::Build(mut args) => args.entrypoint(),
+    CandidateCommand::Clean(mut args) => args.entrypoint(),
+    CandidateCommand::Compile(mut args) => args.entrypoint(),
     CandidateCommand::Completion(mut args) => args.entrypoint(),
-    CandidateCommand::Debug     (mut args) => args.entrypoint(),
-    CandidateCommand::Dump      (mut args) => args.entrypoint(),
-    CandidateCommand::LSP       (mut args) => args.entrypoint(),
-    CandidateCommand::New       (mut args) => args.entrypoint(),
-    CandidateCommand::PM        (mut args) => args.entrypoint(),
-    CandidateCommand::REPL      (mut args) => args.entrypoint(),
-    CandidateCommand::Test      (mut args) => args.entrypoint(),
+    CandidateCommand::Debug(mut args) => args.entrypoint(),
+    CandidateCommand::Dump(mut args) => args.entrypoint(),
+    CandidateCommand::LSP(mut args) => args.entrypoint(),
+    CandidateCommand::New(mut args) => args.entrypoint(),
+    CandidateCommand::PM(mut args) => args.entrypoint(),
+    CandidateCommand::REPL(mut args) => args.entrypoint(),
+    CandidateCommand::Test(mut args) => args.entrypoint(),
   }
-  .unwrap_or_else(exit_with_error);
+    .unwrap_or_else(exit_with_error);
 }
 
 /// Prints the error message simply and exits the process once error occurred.

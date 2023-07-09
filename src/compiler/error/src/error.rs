@@ -1,4 +1,3 @@
-use std::backtrace::Backtrace;
 use std::error::Error as StdError;
 use std::fmt::Debug;
 use std::fmt::Display;
@@ -25,9 +24,9 @@ impl Error {
     self.0.to_string()
   }
 
-  pub fn backtrace(&self) -> &Backtrace {
-    self.0.backtrace()
-  }
+  // pub fn backtrace(&self) -> &Backtrace {
+  //   self.0.backtrace()
+  // }
 }
 
 impl Debug for Error {

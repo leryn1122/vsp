@@ -31,7 +31,7 @@ impl FileLoader for PlainFileLoader {
 
 #[allow(unused)]
 pub struct SourceMap {
-  loader:    Box<dyn FileLoader>,
+  loader: Box<dyn FileLoader>,
   hash_kind: SourceFileHashAlgorithm,
 }
 
@@ -67,7 +67,7 @@ impl FromStr for SourceFileHashAlgorithm {
 #[derive(Copy, Clone, PartialEq, Eq, Debug)]
 struct SourceFileHash {
   pub algorithm: SourceFileHashAlgorithm,
-  value:         [u8; 32],
+  value: [u8; 32],
 }
 
 impl SourceFileHash {

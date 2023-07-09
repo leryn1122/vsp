@@ -11,6 +11,9 @@ edition = "2021"
   [dependencies.target-lexicon]
   workspace = true
 
+  [dependencies.vsp-ast-parser]
+  path = "../ast-parser"
+
   [dependencies.vsp-diag]
   path = "../diagnostic"
 

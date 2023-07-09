@@ -3,16 +3,13 @@ use core::cmp::Ordering;
 /// Position where the character lies in the file.
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub struct Position {
-  pub line:   usize,
+  pub line: usize,
   pub column: usize,
 }
 
 impl Position {
   pub fn new() -> Self {
-    Self {
-      line:   1,
-      column: 1,
-    }
+    Self { line: 1, column: 1 }
   }
 
   pub fn at(line: usize, column: usize) -> Self {
@@ -85,17 +82,17 @@ impl Default for Position {
 /// let end = Position::at(0, 12);
 /// let span = Span::range(start, end);
 /// ```
-#[derive(Clone, Debug)]
+#[derive(Clone, Copy, Debug)]
 pub struct Span {
   pub start: Position,
-  pub end:   Position,
+  pub end: Position,
 }
 
 impl Default for Span {
   fn default() -> Self {
     Self {
       start: Position::start(),
-      end:   Position::start(),
+      end: Position::start(),
     }
   }
 }
@@ -109,7 +106,7 @@ impl Span {
   pub fn single_char(pos: Position) -> Self {
     Self {
       start: pos,
-      end:   pos,
+      end: pos,
     }
   }
 

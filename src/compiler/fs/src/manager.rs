@@ -1,15 +1,21 @@
-use crate::vfs::get_real_file_system;
-use crate::vfs::path::VFSPath;
+use crate::path::VFSPath;
+use crate::vfs;
 use crate::vfs::FileObject;
 use crate::vfs::FileSystem;
 use crate::vfs::VFSWrapper;
 
+/// Manager for VFS, virtual filesystem.
 pub struct VFSManager {
   vfs: VFSWrapper,
 }
 
 impl VFSManager {
+  fn as_ref_vfs(&self) -> &dyn FileSystem {
+    self.vfs.vfs.as_ref()
+  }
+
   pub fn get_file(&self, file: &VFSPath) -> Option<Box<dyn FileObject>> {
+    let vfs = self.as_ref_vfs();
     None
   }
 }
@@ -27,7 +33,7 @@ impl VFSManager {
 
 impl Default for VFSManager {
   fn default() -> Self {
-    let fs = get_real_file_system();
+    let fs = vfs::get_real_file_system();
     Self {
       vfs: VFSWrapper::from(fs),
     }

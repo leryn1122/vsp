@@ -1,13 +1,14 @@
-use std::io::Read;
+use std::fs::File;
+use std::io::{Read, Write};
 use std::path::PathBuf;
 
 use getset::Getters;
 use getset::Setters;
+
 use vsp_diag::DiagnosticEngine;
-use vsp_error::VspResult;
+use vsp_error::{VspError, VspResult};
 use vsp_fs::manager::VFSManager;
-use vsp_fs::vfs::path::VFSPath;
-use vsp_fs::vfs::RealFileSystem;
+use vsp_fs::path::VFSPath;
 
 use crate::dispatch::CompilationDispatcher;
 use crate::option::LangOptions;
@@ -82,20 +83,40 @@ impl CompilerInstance {
 }
 
 impl CompilerInstance {
+  /// Print the initialized status of the compiler in debug mode.
   #[cfg(debug_assertions)]
   pub fn debug_print_status(&self) {
     self.target_options.debug_print_status();
   }
 
   pub fn run(&mut self, file: &PathBuf) -> VspResult<()> {
-    let path = VFSPath::from(file);
+    let path = VFSPath::from_str(file.to_str().unwrap());
     let mut file = self.vfs_manager.get_file(&path).unwrap();
     let main_file = self.source_manager.create_main_file_id(&file);
 
-    // let mut file = std::fs::OpenOptions::new().read(true).open(file).unwrap();
-    // let mut content = String::new();
-    // let _ = file.read_to_string(&mut content);
+    let mut buf = String::new();
+    let _ = file.as_mut().read_to_string(&mut buf).unwrap();
 
+    Ok(())
+  }
+}
+
+pub struct SimpleCompilerInstance;
+
+impl SimpleCompilerInstance {
+  pub fn new() -> Self {
+    Self {}
+  }
+
+  pub fn compile(&mut self, path: &PathBuf) -> VspResult<()> {
+    let mut file = File::open(path).map_err(|e| VspError::from(e))?;
+    let mut buf = String::new();
+    let _ = file.read_to_string(&mut buf);
+
+    let mut lex = vsp_ast_parser::lex::DefaultLexer {};
+    let mut tokens = lex.tokenize(buf.as_str()).unwrap();
+    let mut parser = vsp_ast_parser::parser::DefaultParser {};
+    let _ = parser.parse(tokens);
     Ok(())
   }
 }

@@ -15,13 +15,13 @@ use vsp_error::VspResult;
 #[derive(Clone, Debug)]
 pub struct ProcessBuilder {
   /// The main command to execute.
-  cmd:  OsString,
+  cmd: OsString,
   /// The current working directory where the command run.
-  cwd:  Option<OsString>,
+  cwd: Option<OsString>,
   /// Argument lists passed to the command.
   args: Vec<OsString>,
   /// Environmental variables used by the command.
-  env:  BTreeMap<String, Option<OsString>>,
+  env: BTreeMap<String, Option<OsString>>,
 }
 
 impl Display for ProcessBuilder {
@@ -34,10 +34,10 @@ impl Display for ProcessBuilder {
 impl ProcessBuilder {
   pub fn new<T: AsRef<OsStr>>(cmd: T) -> Self {
     Self {
-      cmd:  cmd.as_ref().to_os_string(),
-      cwd:  None,
+      cmd: cmd.as_ref().to_os_string(),
+      cwd: None,
       args: Vec::new(),
-      env:  BTreeMap::new(),
+      env: BTreeMap::new(),
     }
   }
 
@@ -102,7 +102,7 @@ impl ProcessBuilder {
 
 #[derive(Debug)]
 pub struct ProcessError {
-  pub code:    Option<i32>,
+  pub code: Option<i32>,
   pub message: String,
 }
 
@@ -120,7 +120,7 @@ impl ProcessError {
   pub fn new(status: Option<ExitStatus>, message: &str, output: Option<&Output>) -> ProcessError {
     Self {
       message: message.to_string(),
-      code:    status.and_then(|s| s.code()),
+      code: status.and_then(|s| s.code()),
     }
   }
 }

@@ -5,8 +5,5 @@ edition = "2021"
 
 [dependencies]
 
-  [dependencies.vsp-span]
-  path = "../span"
-
   [dependencies.vsp-error]
   path = "../error"

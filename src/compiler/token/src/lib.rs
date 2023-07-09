@@ -1,11 +1,4 @@
 use std::fmt::Debug;
-use std::fmt::Formatter;
-
-use vsp_span::span::Span;
-use vsp_span::Locatable;
-
-/// The final result of the lexical analysis, which are transferred to the AST parser.
-pub type TokenStream = Vec<Token>;
 
 /// A token in lexical analysis.
 #[rustfmt::skip]
@@ -50,7 +43,7 @@ pub enum Token {
   /*  `->`  */Arrow,
   /*  `=>`  */DArrow,
   /*  `::`  */DColon,
-  
+
   //============================================================================//
   //  Keywords
   //============================================================================//
@@ -99,7 +92,7 @@ pub enum Token {
   While,
 
   Self_, // for Self
-  
+
   //============================================================================//
   //  Literals
   //============================================================================//
@@ -111,87 +104,6 @@ pub enum Token {
 }
 
 impl Token {
-  /// Mapping the literal string to the corresponding non-literal token.
-  /// If the return values is `None`, try to
-  #[rustfmt::skip]
-  pub fn mapping_non_literal_token(s: &str) -> Option<Token> {
-    match s {
-      "."                => Some(Self::Dot),
-      ","                => Some(Self::Comma),
-      ";"                => Some(Self::Colon),
-      ":"                => Some(Self::SemiColon),
-      "+"                => Some(Self::Plus),
-      "-"                => Some(Self::Minus),
-      "*"                => Some(Self::Asterisk),
-      "/"                => Some(Self::Slash),
-      "%"                => Some(Self::Percentage),
-      "("                => Some(Self::LParenthesis),
-      ")"                => Some(Self::RParenthesis),
-      "["                => Some(Self::LBracket),
-      "]"                => Some(Self::RBracket),
-      "{"                => Some(Self::LBrace),
-      "}"                => Some(Self::RBrace),
-      "<"                => Some(Self::Less),
-      ">"                => Some(Self::Greater),
-      "<="               => Some(Self::LessEqual),
-      ">="               => Some(Self::GreaterEqual),
-      "=="               => Some(Self::Equal),
-      "!="               => Some(Self::NotEqual),
-      "="                => Some(Self::Assigment),
-      "@"                => Some(Self::At),
-      "!"                => Some(Self::Not),
-      "&&"               => Some(Self::And),
-      "||"               => Some(Self::Or),
-      "^"                => Some(Self::Xor),
-      "?"                => Some(Self::Question),
-      "->"               => Some(Self::Arrow),
-      "=>"               => Some(Self::DArrow),
-      "::"               => Some(Self::DColon),
-      "'"                => Some(Self::SQuote),
-      "\""               => Some(Self::DQuote),
-      "\"\"\""           => Some(Self::TQuote),
-
-      "as"               => Some(Self::As),
-      "async"            => Some(Self::Async),
-      "await"            => Some(Self::Await),
-      "break"            => Some(Self::Break),
-      "const"            => Some(Self::Const),
-      "continue"         => Some(Self::Continue),
-      "else"             => Some(Self::Else),
-      "enum"             => Some(Self::Enum),
-      "false"            => Some(Self::False),
-      "func"             => Some(Self::Func),
-      "for"              => Some(Self::For),
-      "if"               => Some(Self::If),
-      "impl"             => Some(Self::Impl),
-      "import"           => Some(Self::Import),
-      "in"               => Some(Self::In),
-      "int"              => Some(Self::Int),
-      "let"              => Some(Self::Let),
-      "loop"             => Some(Self::Loop),
-      "module"           => Some(Self::Module),
-      "optional"         => Some(Self::Optional),
-      "public"           => Some(Self::Public),
-      "ref"              => Some(Self::Ref),
-      "return"           => Some(Self::Return),
-      "static"           => Some(Self::Static),
-      "struct"           => Some(Self::Struct),
-      "super"            => Some(Self::Super),
-      "trait"            => Some(Self::Trait),
-      "true"             => Some(Self::True),
-      "type"             => Some(Self::Type),
-      "union"            => Some(Self::Union),
-      "unsafe"           => Some(Self::Unsafe),
-      "use"              => Some(Self::Use),
-      "var"              => Some(Self::Var),
-      "where"            => Some(Self::Where),
-      "while"            => Some(Self::While),
-      "self"             => Some(Self::Self_),
-
-      _ => None,
-    }
-  }
-
   /// Internal implementation, don't use.
   #[allow(clippy::wrong_self_convention)]
   fn into_u8(&self) -> u8 {
@@ -201,6 +113,7 @@ impl Token {
   /// Use ordinal number to determine which range it belongs to.
   pub fn token_type(&self) -> TokenType {
     let ord = self.into_u8();
+    // Use branch prediction.
     if ord < Self::Dot.into_u8() {
       match self {
         Token::Identifier(_) => TokenType::Identifier,
@@ -214,6 +127,87 @@ impl Token {
     } else {
       TokenType::Keyword
     }
+  }
+}
+
+/// Mapping the literal string to the corresponding non-literal token.
+/// If the return values is `None`, try to
+#[rustfmt::skip]
+pub fn mapping_non_literal_token(s: &str) -> Option<Token> {
+  match s {
+    "."      => Some(Token::Dot),
+    ","      => Some(Token::Comma),
+    ";"      => Some(Token::Colon),
+    ":"      => Some(Token::SemiColon),
+    "+"      => Some(Token::Plus),
+    "-"      => Some(Token::Minus),
+    "*"      => Some(Token::Asterisk),
+    "/"      => Some(Token::Slash),
+    "%"      => Some(Token::Percentage),
+    "("      => Some(Token::LParenthesis),
+    ")"      => Some(Token::RParenthesis),
+    "["      => Some(Token::LBracket),
+    "]"      => Some(Token::RBracket),
+    "{"      => Some(Token::LBrace),
+    "}"      => Some(Token::RBrace),
+    "<"      => Some(Token::Less),
+    ">"      => Some(Token::Greater),
+    "<="     => Some(Token::LessEqual),
+    ">="     => Some(Token::GreaterEqual),
+    "=="     => Some(Token::Equal),
+    "!="     => Some(Token::NotEqual),
+    "="      => Some(Token::Assigment),
+    "@"      => Some(Token::At),
+    "!"      => Some(Token::Not),
+    "&&"     => Some(Token::And),
+    "||"     => Some(Token::Or),
+    "^"      => Some(Token::Xor),
+    "?"      => Some(Token::Question),
+    "->"     => Some(Token::Arrow),
+    "=>"     => Some(Token::DArrow),
+    "::"     => Some(Token::DColon),
+    "'"      => Some(Token::SQuote),
+    "\""     => Some(Token::DQuote),
+    "\"\"\"" => Some(Token::TQuote),
+
+    "as"        => Some(Token::As),
+    "async"     => Some(Token::Async),
+    "await"     => Some(Token::Await),
+    "break"     => Some(Token::Break),
+    "const"     => Some(Token::Const),
+    "continue"  => Some(Token::Continue),
+    "else"      => Some(Token::Else),
+    "enum"      => Some(Token::Enum),
+    "false"     => Some(Token::False),
+    "func"      => Some(Token::Func),
+    "for"       => Some(Token::For),
+    "if"        => Some(Token::If),
+    "impl"      => Some(Token::Impl),
+    "import"    => Some(Token::Import),
+    "in"        => Some(Token::In),
+    "int"       => Some(Token::Int),
+    "let"       => Some(Token::Let),
+    "loop"      => Some(Token::Loop),
+    "module"    => Some(Token::Module),
+    "optional"  => Some(Token::Optional),
+    "public"    => Some(Token::Public),
+    "ref"       => Some(Token::Ref),
+    "return"    => Some(Token::Return),
+    "static"    => Some(Token::Static),
+    "struct"    => Some(Token::Struct),
+    "super"     => Some(Token::Super),
+    "trait"     => Some(Token::Trait),
+    "true"      => Some(Token::True),
+    "type"      => Some(Token::Type),
+    "union"     => Some(Token::Union),
+    "unsafe"    => Some(Token::Unsafe),
+    "use"       => Some(Token::Use),
+    "var"       => Some(Token::Var),
+    "where"     => Some(Token::Where),
+    "while"     => Some(Token::While),
+    "self"      => Some(Token::Self_),
+
+    _ => None,
   }
 }
 
@@ -236,33 +230,4 @@ pub(crate) enum Base {
   /// Default numeric base.
   Decimal = 10,
   Hexadecimal = 16,
-}
-
-/// A locatable token with span, as its start and end location in the source codes.
-pub struct LocatableToken {
-  pub token: Token,
-  pub span:  Span,
-}
-
-impl LocatableToken {
-  pub fn new(token: Token, span: Span) -> Self {
-    Self { token, span }
-  }
-}
-
-impl Debug for LocatableToken {
-  fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
-    let arr = self.span.expand_as_array();
-    write!(
-      f,
-      "Token = [{:?}]:{},{}:{},{}",
-      self.token, arr[0], arr[1], arr[2], arr[3],
-    )
-  }
-}
-
-impl Locatable for LocatableToken {
-  fn get_span(&self) -> &Span {
-    &self.span
-  }
 }

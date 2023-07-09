@@ -15,9 +15,9 @@ type SumFunc = unsafe extern "C" fn(u64, u64, u64) -> u64;
 type VoidFunc = unsafe extern "C" fn() -> c_void;
 
 pub struct CodeGenerator<'ctx> {
-  context:          &'ctx Context,
-  module:           Module<'ctx>,
-  builder:          Builder<'ctx>,
+  context: &'ctx Context,
+  module: Module<'ctx>,
+  builder: Builder<'ctx>,
   execution_engine: ExecutionEngine<'ctx>,
 }
 

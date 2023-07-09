@@ -1,6 +1,6 @@
 extern crate core;
 
 pub mod kind;
+pub mod lex;
 pub mod parser;
-//noinspection SpellCheckingInspection
-pub mod parserc;
+pub mod token;

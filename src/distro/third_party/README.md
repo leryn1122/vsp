@@ -1,4 +1,3 @@
-
 How to update `tzdb` from [IANA](https://www.iana.org/time-zones):
 
 ```bash

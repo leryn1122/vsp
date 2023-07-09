@@ -8,7 +8,7 @@ VERSION=$(lsb_version -sr)
 
 case $DISTRO in
   Ubuntu|Debian)
-    REPO_NAME="deb http://apt.llvm.org/bullseye/ llvm-toolchain-bullseye-14 main"
+    REPO_NAME="deb http://apt.llvm.org/bullseye/ llvm-toolchain-bullseye-${LLVM_VERSION} main"
     ;;
   *)
     exit 1

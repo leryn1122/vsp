@@ -5,7 +5,6 @@ macro_rules! debug_println {
     if cfg!(debug_assertions) {
       print!("=======> ");
       println!($($arg)*);
-      println!()
     }
   };
 }

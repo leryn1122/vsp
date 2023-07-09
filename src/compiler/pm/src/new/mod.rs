@@ -11,7 +11,7 @@ use vsp_support::resources_bytes;
 use crate::vcs::{
   fossil::FossilRepo,
   hg::HgRepo,
-  svn::SvnRepo
+  svn::SvnRepo,
 };
 use crate::vcs::git::GitRepo;
 use crate::vcs::VersionControl;
@@ -23,7 +23,7 @@ use crate::vcs::VersionControl;
 /// ```
 pub struct NewProjectConfig {
   name: String,
-  vcs:  Option<VersionControl>,
+  vcs: Option<VersionControl>,
   path: PathBuf,
 }
 

@@ -114,11 +114,10 @@ impl FunctionASTVisitor for ASTPrinter {
 
 #[cfg(test)]
 mod test {
-  use super::*;
-  use crate::ast;
   use crate::ast::CompilationUnit;
-  use crate::ast::FsMeta;
   use crate::visitor::CompilationUnitASTVisitable;
+
+  use super::*;
 
   #[test]
   fn test_indent() {

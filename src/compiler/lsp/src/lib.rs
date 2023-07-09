@@ -1,6 +1,3 @@
-pub mod config;
-pub(crate) mod server;
-
 use log::LevelFilter;
 use lsp_server::Connection;
 use lsp_server::IoThreads;
@@ -13,12 +10,16 @@ use simplelog::Config;
 use simplelog::SharedLogger;
 use simplelog::TermLogger;
 use simplelog::TerminalMode;
+
 use vsp_error::VspError;
 use vsp_error::VspResult;
 use vsp_support::json::from_json;
 
 use crate::config::Configuration;
 use crate::server::server_capabilities;
+
+pub mod config;
+pub(crate) mod server;
 
 /// Run language server.
 pub fn start_server(config: Configuration) -> VspResult<()> {
@@ -39,8 +40,8 @@ pub fn start_server(config: Configuration) -> VspResult<()> {
 
   let initialize_result = InitializeResult {
     capabilities: server_capabilities(),
-    server_info:  Some(ServerInfo {
-      name:    String::from(""),
+    server_info: Some(ServerInfo {
+      name: String::from(""),
       version: Some(String::from(env!("CARGO_PKG_VERSION"))),
     }),
   };

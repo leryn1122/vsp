@@ -10,20 +10,20 @@ use target_lexicon::Triple;
 pub struct TargetOptions {
   /// Semantic version for target artifact.
   #[getset(get, set)]
-  version:       Version,
+  version: Version,
   #[getset(get = "pub", set = "pub")]
-  binary:        Option<Cow<'static, str>>,
+  binary: Option<Cow<'static, str>>,
   #[getset(get = "pub", set = "pub")]
-  library:       bool,
+  library: bool,
   /// Host triple
   #[getset(get = "pub", set = "pub")]
-  host_triple:   Triple,
+  host_triple: Triple,
   /// Target triple
   #[getset(get = "pub", set = "pub")]
   target_triple: Triple,
   /// Optimization level
   #[getset(get = "pub", set = "pub")]
-  optimization:  u8,
+  optimization: u8,
 }
 
 impl TargetOptions {
@@ -40,12 +40,12 @@ impl TargetOptions {
 impl Default for TargetOptions {
   fn default() -> Self {
     Self {
-      version:       Version::new(0, 0, 0),
-      binary:        None,
-      library:       false,
-      host_triple:   Triple::host(),
+      version: Version::new(0, 0, 0),
+      binary: None,
+      library: false,
+      host_triple: Triple::host(),
       target_triple: Triple::host(),
-      optimization:  3,
+      optimization: 3,
     }
   }
 }

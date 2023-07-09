@@ -5,13 +5,13 @@ use crate::node::NodeId;
 /// <h1>Expression</h1>
 #[derive(Debug)]
 pub struct Expression {
-  id:   NodeId,
+  id: NodeId,
   kind: ExpressionKind,
 }
 
 /// <h1>Expression Kind</h1>
 #[derive(Debug)]
-enum ExpressionKind {
+pub enum ExpressionKind {
   //============================================================================//
   // Literal
   //============================================================================//

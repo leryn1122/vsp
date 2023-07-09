@@ -6,14 +6,14 @@ use vsp_error::VspResult;
 
 #[allow(dead_code)]
 pub struct Shell {
-  output:      ShellOutput,
+  output: ShellOutput,
   needs_clear: bool,
 }
 
 impl Shell {
   pub fn from_writable(out: Box<dyn Write>) -> Self {
     Self {
-      output:      ShellOutput::Write(out),
+      output: ShellOutput::Write(out),
       needs_clear: false,
     }
   }
@@ -38,10 +38,10 @@ impl Shell {
 impl Default for Shell {
   fn default() -> Self {
     Self {
-      output:      ShellOutput::Stream {
+      output: ShellOutput::Stream {
         stdout: std::io::stdout(),
         stderr: std::io::stderr(),
-        tty:    false,
+        tty: false,
       },
       needs_clear: false,
     }
@@ -53,7 +53,7 @@ pub enum ShellOutput {
   Stream {
     stdout: std::io::Stdout,
     stderr: std::io::Stderr,
-    tty:    bool,
+    tty: bool,
   },
 }
 

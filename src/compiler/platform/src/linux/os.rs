@@ -23,17 +23,17 @@ pub struct Passwd {
   /// Username
   pub pw_name: CString,
   /// User password
-  pw_passwd:   CString,
+  pw_passwd: CString,
   /// User ID
-  pw_uid:      libc::uid_t,
+  pw_uid: libc::uid_t,
   /// Group ID
-  pw_gid:      libc::uid_t,
+  pw_gid: libc::uid_t,
   /// User display name
-  pw_gecos:    CString,
+  pw_gecos: CString,
   /// Home directory
-  pw_dir:      CString,
+  pw_dir: CString,
   /// User default shell program
-  pw_shell:    CString,
+  pw_shell: CString,
 }
 
 impl Passwd {
@@ -49,13 +49,13 @@ impl Passwd {
       pw_shell,
     } = *passwd;
     Self {
-      pw_name:   CStr::from_ptr(pw_name).to_owned(),
+      pw_name: CStr::from_ptr(pw_name).to_owned(),
       pw_passwd: CStr::from_ptr(pw_passwd).to_owned(),
-      pw_uid:    pw_uid,
-      pw_gid:    pw_gid,
-      pw_gecos:  CStr::from_ptr(pw_gecos).to_owned(),
-      pw_dir:    CStr::from_ptr(pw_dir).to_owned(),
-      pw_shell:  CStr::from_ptr(pw_shell).to_owned(),
+      pw_uid: pw_uid,
+      pw_gid: pw_gid,
+      pw_gecos: CStr::from_ptr(pw_gecos).to_owned(),
+      pw_dir: CStr::from_ptr(pw_dir).to_owned(),
+      pw_shell: CStr::from_ptr(pw_shell).to_owned(),
     }
   }
 

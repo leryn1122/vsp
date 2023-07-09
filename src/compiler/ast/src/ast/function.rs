@@ -21,13 +21,13 @@ pub type FunctionConstancy = Constancy;
 /// ```
 pub struct Function {
   /** Function name */
-  pub name:        String,
+  pub name: String,
   /** Annotations on the function */
   pub annotations: Option<Vec<Annotation>>,
   /** Function signature */
-  pub signature:   FunctionSignature,
+  pub signature: FunctionSignature,
   /** Function body (statements) */
-  pub body:        Option<SharedPtr<StatementBlock>>,
+  pub body: Option<SharedPtr<StatementBlock>>,
 }
 
 impl Function {
@@ -46,11 +46,11 @@ pub struct FunctionSignature {
   /** Function accessibility */
   pub accessibility: FunctionAccessibility,
   /** Function constancy */
-  pub constancy:     FunctionConstancy,
+  pub constancy: FunctionConstancy,
   /** Parameter list */
-  pub parameters:    Vec<Parameter>,
+  pub parameters: Vec<Parameter>,
   /** Return type */
-  pub return_type:   Type,
+  pub return_type: Type,
 }
 
 impl FunctionSignature {

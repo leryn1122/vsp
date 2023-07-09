@@ -1,7 +1,5 @@
+use crate::ast::expr::{Expression, ExpressionKind};
 use vsp_span::span::Span;
-
-use crate::ast::expr::Expression;
-use crate::node::NodeId;
 
 ///
 pub trait Statement {
@@ -10,9 +8,10 @@ pub trait Statement {
 }
 
 /// # Statement
-enum StatementKind {
+#[derive(Debug)]
+pub enum StatementKind {
   /// No operations: Just a single `;`
-  NoOp(NoOpStatement),
+  NoOp,
   // Expression(SharedPtr<Expression>),
   // Assignment(String, Expression),
 
@@ -27,12 +26,14 @@ enum StatementKind {
   // FunctionDeclaration(String, Option<Expression>),
 
   // Blocks
-  // Return(Option<Expression>),
+  Return(Option<ExpressionKind>),
   /// Statement block consisting of statements
   StatementBlock(Box<StatementBlock>),
 }
 
 pub struct NoOpStatement;
+
+impl NoOpStatement {}
 
 impl Statement for NoOpStatement {
   #[inline(always)]
@@ -42,6 +43,7 @@ impl Statement for NoOpStatement {
 }
 
 /// Statement represents a if / else statement.
+#[derive(Debug)]
 pub struct IfStatement {
   pub span: Span,
 }
@@ -54,6 +56,7 @@ impl Statement for IfStatement {
 }
 
 /// Statement represents a while statement.
+#[derive(Debug)]
 pub struct WhileStatement {}
 
 impl Statement for WhileStatement {
@@ -63,7 +66,36 @@ impl Statement for WhileStatement {
   }
 }
 
-pub struct StatementBlock {}
+/// Statement block contains list of statements.
+#[derive(Debug)]
+pub struct StatementBlock {
+  stmts: Vec<StatementKind>,
+}
+
+impl StatementBlock {
+  pub fn new() -> Self {
+    Self { stmts: vec![] }
+  }
+
+  pub fn add_stmt(&mut self, stmt: StatementKind) -> &Self {
+    self.stmts.push(stmt);
+    self
+  }
+
+  pub fn add_stmts<V>(&mut self, stmts: V) -> &Self
+  where
+    V: IntoIterator<Item = StatementKind>,
+  {
+    stmts.into_iter().for_each(|s| self.stmts.push(s));
+    self
+  }
+}
+
+impl Default for StatementBlock {
+  fn default() -> Self {
+    Self::new()
+  }
+}
 
 impl Statement for StatementBlock {
   fn is_expression(&self) -> bool {

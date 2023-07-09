@@ -6,12 +6,13 @@ use std::io::Write;
 
 use clap::ArgMatches;
 use clap::Command;
+
 use vsp_error::VspResult;
 use vsp_support::debug_println;
 
 /// The debugger instance.
 pub struct DebuggerInstance {
-  prompt:  Cow<'static, str>,
+  prompt: Cow<'static, str>,
   command: Command,
 }
 
@@ -91,7 +92,7 @@ impl DebuggerInstance {
 impl Default for DebuggerInstance {
   fn default() -> Self {
     Self {
-      prompt:  Cow::from("> "),
+      prompt: Cow::from("> "),
       command: DebugInstructionProvider::construct_debug_instruction_set(),
     }
   }

@@ -1,26 +1,29 @@
-pub mod path;
-
 use std::ffi::OsString;
 use std::fs::File;
+use std::io::Read;
 use std::path::PathBuf;
 
 use getset::Getters;
 use getset::MutGetters;
-use vsp_error::VspResult;
+
+use vsp_error::{VspError, VspResult};
+use vsp_support::exitcode;
 use vsp_support::exitcode::ExitCode;
 
-use crate::vfs::path::VFSPath;
+use crate::path::VFSPath;
 
 /// Abstract file object trait for the virtual filesystem.
 pub trait FileObject {
   fn get_name(&self) -> Result<OsString, ()>;
 
   fn close(&mut self) -> ExitCode;
+
+  fn read_to_string(&mut self, buf: &mut String) -> VspResult<()>;
 }
 
 /// File type for file objects on filesystem.
-#[derive(PartialEq)]
-pub enum FileType {
+#[derive(Debug, PartialEq)]
+pub enum VFSFileType {
   RegularFile,
   DirectoryFile,
   #[cfg(unix)]
@@ -41,38 +44,35 @@ enum AccessMode {
 }
 
 /// File metadata type for file objects on virtual filesystem.
-pub struct Metadata {
-  name:       OsString,
-  uid:        u32,
-  gid:        u32,
-  size:       u64,
-  file_type:  FileType,
-  permission: (),
+#[derive(Debug)]
+pub struct VFSMetadata {
+  file_type: VFSFileType,
+  len: u64,
 }
 
-impl Metadata {
+impl VFSMetadata {
   pub fn exists(&self) -> bool {
-    ![FileType::FileNotFound, FileType::Unknown].contains(&self.file_type)
+    ![VFSFileType::FileNotFound, VFSFileType::Unknown].contains(&self.file_type)
   }
 
   pub fn is_directory(&self) -> bool {
-    self.file_type == FileType::DirectoryFile
+    self.file_type == VFSFileType::DirectoryFile
   }
 
   pub fn is_regular_file(&self) -> bool {
-    self.file_type == FileType::RegularFile
+    self.file_type == VFSFileType::RegularFile
   }
 
   pub fn is_symlink(&self) -> bool {
-    self.file_type == FileType::SymbolicLink
+    self.file_type == VFSFileType::SymbolicLink
   }
 
   pub fn is_other(&self) -> bool {
-    ![FileType::RegularFile, FileType::DirectoryFile].contains(&self.file_type)
+    ![VFSFileType::RegularFile, VFSFileType::DirectoryFile].contains(&self.file_type)
   }
 
   pub fn is_unknown(&self) -> bool {
-    self.file_type == FileType::Unknown
+    self.file_type == VFSFileType::Unknown
   }
 }
 
@@ -81,15 +81,15 @@ impl Metadata {
 #[derive(Getters, MutGetters)]
 pub struct DirectoryEntry {
   #[getset(get)]
-  path:      VFSPath,
+  path: VFSPath,
   #[getset(get)]
-  file_type: FileType,
+  file_type: VFSFileType,
   // #[getset(get)]
   // follow_symlinks: bool,
 }
 
 impl DirectoryEntry {
-  fn new(path: VFSPath, file_type: FileType) -> Self {
+  fn new(path: VFSPath, file_type: VFSFileType) -> Self {
     Self { path, file_type }
   }
 }
@@ -120,7 +120,7 @@ impl DirectoryEntryIterator for DirectoryEntryIteratorImpl {}
 /// @see `crate::vfs::FileSystem`
 #[doc(hidden)]
 pub(crate) struct VFSWrapper {
-  vfs: Box<dyn FileSystem>,
+  pub(crate) vfs: Box<dyn FileSystem>,
 }
 
 impl VFSWrapper {
@@ -155,6 +155,8 @@ pub trait FileSystem: Sync + Send + 'static {
 
   fn get_real_path(&self, path: &VFSPath) -> Result<VFSPath, ()>;
 
+  fn get_file(&self, path: &VFSPath) -> Result<Box<dyn FileObject>, ()>;
+
   /// Open the file object.
   fn open(&mut self, path: &VFSPath) -> Result<(), ()>;
 
@@ -168,7 +170,7 @@ pub trait FileSystem: Sync + Send + 'static {
 
 /// A normal and default implementation of `VirtualFileSystem` refers to the real filesystem.
 pub struct RealFileSystem {
-  cwd:      VFSPath,
+  cwd: VFSPath,
   real_cwd: PathBuf,
 }
 
@@ -176,7 +178,7 @@ pub struct RealFileSystem {
 /// working directory. It is used as a default behavior for obtaining the filesystem instance,
 pub fn get_real_file_system() -> RealFileSystem {
   let real_cwd = std::env::current_dir().unwrap();
-  let cwd = VFSPath::from(real_cwd.clone());
+  let cwd = VFSPath::from(real_cwd.to_str().unwrap().to_string());
   RealFileSystem { cwd, real_cwd }
 }
 
@@ -201,6 +203,10 @@ impl FileSystem for RealFileSystem {
     todo!()
   }
 
+  fn get_file(&self, path: &VFSPath) -> Result<Box<dyn FileObject>, ()> {
+    todo!()
+  }
+
   fn open(&mut self, path: &VFSPath) -> Result<(), ()> {
     todo!()
   }
@@ -214,5 +220,27 @@ impl FileSystem for RealFileSystem {
 
   fn create_dir(&self, path: &VFSPath) -> VspResult<()> {
     todo!()
+  }
+}
+
+pub struct RealFileObject {
+  file: File,
+}
+
+impl FileObject for RealFileObject {
+  fn get_name(&self) -> Result<OsString, ()> {
+    Err(())
+  }
+
+  fn close(&mut self) -> ExitCode {
+    exitcode::EXIT_OK
+  }
+
+  fn read_to_string(&mut self, buf: &mut String) -> VspResult<()> {
+    let res = &self.file.read_to_string(buf);
+    match res {
+      Ok(_) => Ok(()),
+      Err(e) => Err(VspError::new(e.to_string())),
+    }
   }
 }

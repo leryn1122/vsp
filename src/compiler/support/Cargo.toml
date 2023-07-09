@@ -11,6 +11,9 @@ edition = "2021"
   [dependencies.nanoid]
   workspace = true
 
+  [dependencies.proc-macro2]
+  workspace = true
+
   [dependencies.semver]
   workspace = true
 

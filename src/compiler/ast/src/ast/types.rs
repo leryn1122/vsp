@@ -139,7 +139,7 @@ impl PrimitiveType {
 
 #[derive(Clone, PartialEq, Eq)]
 pub struct FunctionType {
-  pub parameters:  Vec<Type>,
+  pub parameters: Vec<Type>,
   pub return_type: Box<Type>,
 }
 
@@ -155,7 +155,7 @@ impl FunctionType {
 impl Default for FunctionType {
   fn default() -> Self {
     Self {
-      parameters:  vec![],
+      parameters: vec![],
       return_type: Box::new(Type::void()),
     }
   }
@@ -173,7 +173,7 @@ pub struct StructType {}
 #[derive(Clone, PartialEq, Eq)]
 pub struct ArrayType {
   pub element_type: Box<Type>,
-  pub size:         usize,
+  pub size: usize,
 }
 
 impl ArrayType {}

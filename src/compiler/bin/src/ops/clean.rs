@@ -3,6 +3,7 @@ use std::path::PathBuf;
 use clap::arg;
 use clap::Args;
 use target_lexicon::Triple;
+
 use vsp_error::VspError;
 use vsp_error::VspResult;
 use vsp_support::clap_ext::TripleValueParser;
@@ -13,13 +14,13 @@ use crate::ops::Entrypoint;
 pub struct CandidateArgument {
   /// All things in given directory would be deleted immediately
   #[arg(long, default_value = "target")]
-  path:    Option<PathBuf>,
+  path: Option<PathBuf>,
   /// Package to clean artifacts for
   #[arg(long)]
   package: Option<String>,
   /// Target triple to clean up
   #[arg(long, value_parser = TripleValueParser::default())]
-  target:  Option<Triple>,
+  target: Option<Triple>,
   /// Enable verbose mode
   #[arg(short, long)]
   verbose: bool,

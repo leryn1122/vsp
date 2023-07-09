@@ -10,6 +10,7 @@ pub mod expr;
 pub mod function;
 pub mod modifier;
 pub mod module;
+pub mod naming;
 pub mod stmt;
 pub mod types;
 
@@ -20,22 +21,22 @@ pub type AST = CompilationUnit;
 /// It is also the root of AST (abstract syntax tree) which all the items in a single source file
 /// are mounted at.
 pub struct CompilationUnit {
-  pub meta:      FsMeta,
-  pub span:      Span,
-  pub shebang:   Option<String>,
-  pub modules:   HashMap<String, Module>,
+  pub meta: FsMeta,
+  pub span: Span,
+  pub shebang: Option<String>,
+  pub modules: HashMap<String, Module>,
   pub functions: HashMap<String, Function>,
 }
 
 impl CompilationUnit {
   pub fn new(filename: &str) -> Self {
     Self {
-      meta:      FsMeta {
+      meta: FsMeta {
         filename: filename.to_string(),
       },
-      span:      Span::default(),
-      shebang:   None,
-      modules:   HashMap::new(),
+      span: Span::default(),
+      shebang: None,
+      modules: HashMap::new(),
       functions: HashMap::new(),
     }
   }
