@@ -10,8 +10,8 @@ pub struct Error(anyhow::Error);
 
 impl Error {
   pub fn from<E>(error: E) -> Self
-  where
-    E: StdError + Send + Sync + 'static,
+    where
+      E: StdError + Send + Sync + 'static,
   {
     Self(anyhow!(error))
   }

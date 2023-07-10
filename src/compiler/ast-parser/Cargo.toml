@@ -5,6 +5,9 @@ edition = "2021"
 
 [dependencies]
 
+  [dependencies.smallvec]
+  workspace = true
+
   [dependencies.vsp-ast]
   path = "../ast"
 

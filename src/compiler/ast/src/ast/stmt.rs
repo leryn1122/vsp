@@ -1,15 +1,10 @@
-use crate::ast::expr::ExpressionKind;
 use vsp_span::span::Span;
 
-///
-pub trait Statement {
-  /// True if the statement is an expression.
-  fn is_expression(&self) -> bool;
-}
+use crate::ast::expr::Expression;
 
 /// # Statement
 #[derive(Debug)]
-pub enum StatementKind {
+pub enum Statement {
   /// No operations: Just a single `;`
   NoOp,
   // Expression(SharedPtr<Expression>),
@@ -26,7 +21,7 @@ pub enum StatementKind {
   // FunctionDeclaration(String, Option<Expression>),
 
   // Blocks
-  Return(Option<ExpressionKind>),
+  Return(Option<Expression>),
   /// Statement block consisting of statements
   StatementBlock(Box<StatementBlock>),
 }
@@ -35,41 +30,20 @@ pub struct NoOpStatement;
 
 impl NoOpStatement {}
 
-impl Statement for NoOpStatement {
-  #[inline(always)]
-  fn is_expression(&self) -> bool {
-    false
-  }
-}
-
 /// Statement represents a if / else statement.
 #[derive(Debug)]
 pub struct IfStatement {
   pub span: Span,
 }
 
-impl Statement for IfStatement {
-  #[inline(always)]
-  fn is_expression(&self) -> bool {
-    true
-  }
-}
-
 /// Statement represents a while statement.
 #[derive(Debug)]
 pub struct WhileStatement {}
 
-impl Statement for WhileStatement {
-  #[inline(always)]
-  fn is_expression(&self) -> bool {
-    false
-  }
-}
-
 /// Statement block contains list of statements.
 #[derive(Debug)]
 pub struct StatementBlock {
-  stmts: Vec<StatementKind>,
+  stmts: Vec<Statement>,
 }
 
 impl StatementBlock {
@@ -77,14 +51,14 @@ impl StatementBlock {
     Self { stmts: vec![] }
   }
 
-  pub fn add_stmt(&mut self, stmt: StatementKind) -> &Self {
+  pub fn add_stmt(&mut self, stmt: Statement) -> &Self {
     self.stmts.push(stmt);
     self
   }
 
   pub fn add_stmts<V>(&mut self, stmts: V) -> &Self
   where
-    V: IntoIterator<Item = StatementKind>,
+    V: IntoIterator<Item = Statement>,
   {
     stmts.into_iter().for_each(|s| self.stmts.push(s));
     self
@@ -94,11 +68,5 @@ impl StatementBlock {
 impl Default for StatementBlock {
   fn default() -> Self {
     Self::new()
-  }
-}
-
-impl Statement for StatementBlock {
-  fn is_expression(&self) -> bool {
-    todo!()
   }
 }

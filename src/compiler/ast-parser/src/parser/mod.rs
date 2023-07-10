@@ -1,18 +1,20 @@
-mod context;
-mod state;
-pub mod token;
+use vsp_ast::ast::expr::BinaryOp;
+use vsp_ast::ast::expr::Expression;
+use vsp_ast::ast::stmt::Statement;
+use vsp_ast::ast::stmt::StatementBlock;
+use vsp_error::VspResult;
+use vsp_support::debug_println;
+use vsp_support::ptr::make_shared_ptr;
 
 use crate::parser::context::TokenContext;
 use crate::parser::state::ParserState;
 use crate::parser::token::LocatableToken;
 use crate::parser::token::TokenStream;
 use crate::token::Token;
-use vsp_ast::ast::expr::BinaryOpKind;
-use vsp_ast::ast::expr::ExpressionKind;
-use vsp_ast::ast::stmt::{StatementBlock, StatementKind};
-use vsp_error::VspResult;
-use vsp_support::debug_println;
-use vsp_support::ptr::make_shared_ptr;
+
+mod context;
+mod state;
+pub mod token;
 
 pub struct DefaultParser;
 
@@ -21,15 +23,13 @@ impl DefaultParser {
     let mut ctx = TokenContext::from_str(&tokens);
     let mut state = ParserState::new();
 
-    while let Some(token) = ctx.next() {
-      // Add token to the buff
-      //   or else consume the tokens if met terminator.
+    while let Some(token) = ctx.peek() {
       match token.token() {
         Token::RBrace => {
           parse_stmt_block(&mut state, &mut ctx);
+          ctx.next();
         }
-        Token::Colon => parse_stmt(&mut state, &mut ctx),
-        _ => state.add_token(token),
+        _ => state.add_token(ctx.next().unwrap()),
       }
     }
 
@@ -41,7 +41,7 @@ impl DefaultParser {
 /// Consume all the expressions.
 pub fn parse_stmt(state: &mut ParserState, ctx: &mut TokenContext) {
   if state.exprs().is_empty() && state.tokens().is_empty() {
-    state.add_stmt(StatementKind::NoOp);
+    state.add_stmt(Statement::NoOp);
     return;
   }
 
@@ -65,11 +65,15 @@ pub fn parse_stmt(state: &mut ParserState, ctx: &mut TokenContext) {
       Token::Plus | Token::Minus | Token::Asterisk | Token::Slash | Token::Percentage => {
         parse_binary_op(state, ctx, token);
       }
+
       // Token::LParenthesis => {}
       // Token::RParenthesis => {}
       // Token::LBracket => {}
       // Token::RBracket => {}
-      // Token::LBrace => {}
+      Token::LBrace => {
+        state.add_token(token);
+        break;
+      }
       // Token::RBrace => {}
       // Token::Less => {}
       // Token::Greater => {}
@@ -126,11 +130,14 @@ pub fn parse_stmt(state: &mut ParserState, ctx: &mut TokenContext) {
       // Token::Where => {}
       // Token::While => {}
       // Token::Self_ => {}
-      Token::Identifier(s) => state.add_expr(ExpressionKind::Identifier(s.clone())),
-      Token::LiteralText(s) => state.add_expr(ExpressionKind::LiteralString(s.clone())),
-      Token::LiteralInteger(num) => state.add_expr(ExpressionKind::LiteralInteger(*num)),
+      Token::Identifier(s) => state.add_expr(Expression::Identifier(s.clone())),
+      Token::LiteralText(s) => state.add_expr(Expression::LiteralString(s.clone())),
+      Token::LiteralInteger(num) => state.add_expr(Expression::LiteralInteger(num.clone())),
       Token::LiteralFloat(_) => {}
-      _ => unimplemented!(),
+      _ => {
+        debug_println!("parse_stmt = {:?}", token);
+        unimplemented!()
+      }
     }
   }
 }
@@ -138,6 +145,25 @@ pub fn parse_stmt(state: &mut ParserState, ctx: &mut TokenContext) {
 /// Consume all the statements.
 pub fn parse_stmt_block(state: &mut ParserState, ctx: &mut TokenContext) {
   state.add_stmt_blocks(StatementBlock::new());
+
+  #[cfg(debug_assertions)]
+  {
+    state.print();
+  }
+
+  while let Some(token) = state.pop_token() {
+    #[cfg(debug_assertions)]
+    {
+      debug_println!("Current = {:?}", token);
+      state.print();
+    }
+
+    if token.token().is_stmt_terminator() {
+      parse_stmt(state, ctx);
+    } else if token.token().is_stmt_block_starter() {
+    } else {
+    }
+  }
 }
 
 pub fn parse_expr_if_absent(state: &mut ParserState, ctx: &mut TokenContext) {
@@ -159,60 +185,65 @@ pub fn parse_binary_op(state: &mut ParserState, ctx: &mut TokenContext, token: L
   let lhs = state.pop_expr().unwrap();
 
   let op = match token.token() {
-    Token::Plus => BinaryOpKind::Add,
-    Token::Minus => BinaryOpKind::Subtract,
-    Token::Asterisk => BinaryOpKind::Multiply,
-    Token::Slash => BinaryOpKind::Division,
+    Token::Plus => BinaryOp::Add,
+    Token::Minus => BinaryOp::Subtract,
+    Token::Asterisk => BinaryOp::Multiply,
+    Token::Slash => BinaryOp::Division,
     _ => unreachable!(),
   };
-  let mut expr = ExpressionKind::Binary(op, make_shared_ptr(lhs), make_shared_ptr(rhs));
+  let mut expr = Expression::Binary(op, make_shared_ptr(lhs), make_shared_ptr(rhs));
   state.add_expr(expr);
 }
 
 /// Consume 1 expressions.
 pub fn parse_return(state: &mut ParserState, ctx: &mut TokenContext) {
   let expr = state.pop_expr().unwrap();
-  state.add_stmt(StatementKind::Return(Some(expr)));
+  state.add_stmt(Statement::Return(Some(expr)));
 }
 
 impl Token {
   #[inline]
-  pub fn is_expr_starter(&self) -> bool {
+  pub fn is_stmt_block_starter(&self) -> bool {
+    self == &Token::LBrace
+  }
+
+  #[inline]
+  pub fn is_stmt_starter(&self) -> bool {
     self == &Token::Let || self == &Token::Var
   }
 
   #[inline]
-  pub fn is_expr_terminator(&self) -> bool {
+  pub fn is_stmt_terminator(&self) -> bool {
     self == &Token::Colon
   }
 
   #[inline]
   pub fn is_to_expression(&self) -> bool {
-    match self {
+    matches!(
+      self,
       Token::False
-      | Token::True
-      | Token::Self_
-      | Token::Identifier(_)
-      | Token::LiteralText(_)
-      | Token::LiteralInteger(_)
-      | Token::LiteralFloat(_) => true,
-      _ => false,
-    }
+        | Token::True
+        | Token::Self_
+        | Token::Identifier(_)
+        | Token::LiteralText(_)
+        | Token::LiteralInteger(_)
+        | Token::LiteralFloat(_)
+    )
   }
 }
 
-impl TryInto<ExpressionKind> for LocatableToken {
+impl TryInto<Expression> for LocatableToken {
   type Error = ();
 
-  fn try_into(self) -> Result<ExpressionKind, Self::Error> {
+  fn try_into(self) -> Result<Expression, Self::Error> {
     debug_println!("Try into {:?}", self);
     match self.token() {
-      Token::False => Ok(ExpressionKind::LiteralBoolean(false)),
-      Token::True => Ok(ExpressionKind::LiteralBoolean(true)),
+      Token::False => Ok(Expression::LiteralBoolean(false)),
+      Token::True => Ok(Expression::LiteralBoolean(true)),
       // Token::Self_ => {},
       // Token::Identifier(_) => {},
-      Token::LiteralText(s) => Ok(ExpressionKind::LiteralString(s.clone())),
-      Token::LiteralInteger(val) => Ok(ExpressionKind::LiteralInteger(*val)),
+      Token::LiteralText(s) => Ok(Expression::LiteralString(s.clone())),
+      Token::LiteralInteger(val) => Ok(Expression::LiteralInteger(*val)),
       // Token::LiteralFloat(_) => {},
       _ => Err(()),
     }

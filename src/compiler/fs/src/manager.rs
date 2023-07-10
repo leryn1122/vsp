@@ -22,8 +22,8 @@ impl VFSManager {
 
 impl VFSManager {
   pub fn from<VFS>(vfs: VFS) -> VFSManager
-  where
-    VFS: FileSystem + Sized,
+    where
+      VFS: FileSystem + Sized,
   {
     Self {
       vfs: VFSWrapper::from(vfs),

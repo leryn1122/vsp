@@ -1,8 +1,10 @@
-use crate::token::Token;
 use std::fmt::Debug;
 use std::fmt::Formatter;
-use vsp_span::span::Span;
+
 use vsp_span::Locatable;
+use vsp_span::span::Span;
+
+use crate::token::Token;
 
 /// The final result of the lexical analysis, which are transferred to the AST parser.
 pub type TokenStream = Vec<LocatableToken>;

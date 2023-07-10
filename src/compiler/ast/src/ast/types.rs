@@ -85,7 +85,7 @@ impl PrimitiveType {
       PrimitiveType::Char => "Char",
       PrimitiveType::String => "String",
     }
-    .to_string()
+      .to_string()
   }
 
   pub fn from_name(name: &str) -> Option<PrimitiveType> {

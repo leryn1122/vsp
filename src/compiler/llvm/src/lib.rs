@@ -1,3 +1,16 @@
+/// # LLVM vs. Inkwell
+/// This module is using `inkwell`, a type-safe wrapper of expose LLVM APIs.
+use std::error::Error;
+use std::ffi::c_void;
+
+use inkwell::builder::Builder;
+use inkwell::context::Context;
+use inkwell::execution_engine::ExecutionEngine;
+use inkwell::execution_engine::JitFunction;
+use inkwell::module::Module;
+use inkwell::OptimizationLevel;
+use inkwell::values::AnyValue;
+
 pub mod llvm;
 pub(crate) mod types;
 
@@ -181,19 +194,6 @@ pub(crate) mod types;
 /// ```
 #[allow(dead_code)]
 fn nothing() {}
-
-/// # LLVM vs. Inkwell
-/// This module is using `inkwell`, a type-safe wrapper of expose LLVM APIs.
-use std::error::Error;
-use std::ffi::c_void;
-
-use inkwell::builder::Builder;
-use inkwell::context::Context;
-use inkwell::execution_engine::ExecutionEngine;
-use inkwell::execution_engine::JitFunction;
-use inkwell::module::Module;
-use inkwell::values::AnyValue;
-use inkwell::OptimizationLevel;
 
 type SumFunc = unsafe extern "C" fn(u64, u64, u64) -> u64;
 type VoidFunc = unsafe extern "C" fn() -> c_void;

@@ -1,11 +1,11 @@
 use inkwell::builder::Builder;
 use inkwell::context::Context;
 use inkwell::module::Module;
+use inkwell::OptimizationLevel;
 use inkwell::passes::PassManager;
 use inkwell::passes::PassManagerBuilder;
 use inkwell::targets::InitializationConfig;
 use inkwell::targets::Target;
-use inkwell::OptimizationLevel;
 
 use vsp_ast::ast::function::Function;
 

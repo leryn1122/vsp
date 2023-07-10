@@ -4,8 +4,8 @@ use std::ffi::OsStr;
 use std::ffi::OsString;
 use std::str::FromStr;
 
-use clap::builder::TypedValueParser;
 use clap::Arg;
+use clap::builder::TypedValueParser;
 use clap::Command;
 use clap::Error;
 use target_lexicon::Triple;

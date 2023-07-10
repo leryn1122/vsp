@@ -1,23 +1,25 @@
-use crate::parser::token::LocatableToken;
-use vsp_ast::ast::expr::ExpressionKind;
-use vsp_ast::ast::stmt::{StatementBlock, StatementKind};
+use vsp_ast::ast::expr::Expression;
+use vsp_ast::ast::stmt::Statement;
+use vsp_ast::ast::stmt::StatementBlock;
 use vsp_support::debug_println;
 
+use crate::parser::token::LocatableToken;
+
 pub struct ParserState {
-  tokens: Vec<LocatableToken>,
-  exprs: Vec<ExpressionKind>,
-  stmts: Vec<StatementKind>,
-  stmt_blocks: Vec<StatementBlock>,
+  tokens:        Vec<LocatableToken>,
+  exprs:         Vec<Expression>,
+  stmts:         Vec<Statement>,
+  stmt_blocks:   Vec<StatementBlock>,
   expected_type: Vec<TokenType>,
 }
 
 impl ParserState {
   pub fn new() -> Self {
     Self {
-      tokens: vec![],
-      exprs: vec![],
-      stmts: vec![],
-      stmt_blocks: vec![],
+      tokens:        vec![],
+      exprs:         vec![],
+      stmts:         vec![],
+      stmt_blocks:   vec![],
       expected_type: vec![],
     }
   }
@@ -38,27 +40,27 @@ impl ParserState {
   }
 
   #[inline]
-  pub fn exprs(&self) -> &Vec<ExpressionKind> {
+  pub fn exprs(&self) -> &Vec<Expression> {
     &self.exprs
   }
 
   #[inline]
-  pub fn add_expr(&mut self, expr: ExpressionKind) {
+  pub fn add_expr(&mut self, expr: Expression) {
     self.exprs.push(expr);
   }
 
   #[inline]
-  pub fn pop_expr(&mut self) -> Option<ExpressionKind> {
+  pub fn pop_expr(&mut self) -> Option<Expression> {
     self.exprs.pop()
   }
 
   #[inline]
-  pub fn stmts(&self) -> &Vec<StatementKind> {
+  pub fn stmts(&self) -> &Vec<Statement> {
     &self.stmts
   }
 
   #[inline]
-  pub fn add_stmt(&mut self, stmt: StatementKind) {
+  pub fn add_stmt(&mut self, stmt: Statement) {
     self.stmts.push(stmt);
   }
 
@@ -86,22 +88,16 @@ impl ParserState {
 impl ParserState {
   #[cfg(debug_assertions)]
   pub fn print_tokens(&self) {
-    // self.tokens.iter().for_each(|v| debug_println!("{:?}", v));
-    // println!();
     debug_println!("State tokens = {:?}", self.tokens);
   }
 
   #[cfg(debug_assertions)]
   pub fn print_exprs(&self) {
-    // self.exprs.iter().for_each(|v| debug_println!("{:?}", v));
-    // println!();
     debug_println!("State expressions = {:?}", self.exprs);
   }
 
   #[cfg(debug_assertions)]
   pub fn print_stmts(&self) {
-    // self.stmts.iter().for_each(|v| debug_println!("{:?}", v));
-    // println!();
     debug_println!("State statements = {:?}", self.stmts);
   }
 

@@ -94,7 +94,7 @@ impl<T> Into<Vec<T>> for SharedPtr<[T]> {
 }
 
 impl<T> FromIterator<T> for SharedPtr<[T]> {
-  fn from_iter<I: IntoIterator<Item = T>>(iter: I) -> SharedPtr<[T]> {
+  fn from_iter<I: IntoIterator<Item=T>>(iter: I) -> SharedPtr<[T]> {
     Self::from_vec(iter.into_iter().collect())
   }
 }

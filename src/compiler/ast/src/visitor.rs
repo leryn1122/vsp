@@ -9,13 +9,13 @@
 use std::collections::HashMap;
 
 use crate::ast::annotation::Annotation;
+use crate::ast::CompilationUnit;
 use crate::ast::function::Function;
 use crate::ast::function::FunctionAccessibility;
 use crate::ast::function::FunctionSignature;
 use crate::ast::module::Module;
 use crate::ast::types::Parameter;
 use crate::ast::types::Type;
-use crate::ast::CompilationUnit;
 
 pub trait CompilationUnitASTVisitor {
   #[allow(unused_variables)]

@@ -1,17 +1,10 @@
 use vsp_support::ptr::SharedPtr;
 
-use crate::node::NodeId;
-
-/// <h1>Expression</h1>
+/// # Expression
+///
+/// Expression indicates ...
 #[derive(Debug)]
-pub struct Expression {
-  id: NodeId,
-  kind: ExpressionKind,
-}
-
-/// <h1>Expression Kind</h1>
-#[derive(Debug)]
-pub enum ExpressionKind {
+pub enum Expression {
   //============================================================================//
   // Literal
   //============================================================================//
@@ -24,14 +17,10 @@ pub enum ExpressionKind {
   //============================================================================//
   // Operations
   //============================================================================//
-  /// Unary expression, such as `!foo`.
-  Unary(UnaryOpKind, SharedPtr<Expression>),
-  /// Binary expression, such as `foo + bar`.
-  Binary(
-    BinaryOpKind,
-    SharedPtr<ExpressionKind>,
-    SharedPtr<ExpressionKind>,
-  ),
+  /// Unary operation expression, such as `!foo`.
+  Unary(UnaryOp, SharedPtr<Expression>),
+  /// Binary operation expression, such as `foo + bar`.
+  Binary(BinaryOp, SharedPtr<Expression>, SharedPtr<Expression>),
 
   //============================================================================//
   // Call
@@ -42,7 +31,7 @@ pub enum ExpressionKind {
 
 /// <h1>Unary Operation</h1>
 #[derive(Clone, Eq, PartialEq, Debug)]
-pub enum UnaryOpKind {
+pub enum UnaryOp {
   /// `*` for dereference the pointer.
   Dereference,
   /// `!` for logical `not`.
@@ -51,12 +40,12 @@ pub enum UnaryOpKind {
   Negative,
 }
 
-impl UnaryOpKind {
+impl UnaryOp {
   pub fn as_str(&self) -> &'static str {
     match self {
-      UnaryOpKind::Dereference => "*",
-      UnaryOpKind::Not => "!",
-      UnaryOpKind::Negative => "-",
+      UnaryOp::Dereference => "*",
+      UnaryOp::Not => "!",
+      UnaryOp::Negative => "-",
     }
   }
 }
@@ -64,7 +53,7 @@ impl UnaryOpKind {
 ///
 #[rustfmt::skip]
 #[derive(Clone, Eq, PartialEq, Debug)]
-pub enum BinaryOpKind {
+pub enum BinaryOp {
   /*  `+`  */Add,
   /*  `-`  */Subtract,
   /*  `*`  */Multiply,
@@ -72,14 +61,14 @@ pub enum BinaryOpKind {
   /*  `=`  */Assignment,
 }
 
-impl BinaryOpKind {
+impl BinaryOp {
   pub fn as_str(&self) -> &'static str {
     match *self {
-      BinaryOpKind::Add => "+",
-      BinaryOpKind::Subtract => "-",
-      BinaryOpKind::Multiply => "+",
-      BinaryOpKind::Division => "/",
-      BinaryOpKind::Assignment => "=",
+      BinaryOp::Add => "+",
+      BinaryOp::Subtract => "-",
+      BinaryOp::Multiply => "+",
+      BinaryOp::Division => "/",
+      BinaryOp::Assignment => "=",
     }
   }
 }

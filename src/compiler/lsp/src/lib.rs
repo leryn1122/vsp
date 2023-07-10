@@ -10,7 +10,6 @@ use simplelog::Config;
 use simplelog::SharedLogger;
 use simplelog::TermLogger;
 use simplelog::TerminalMode;
-
 use vsp_error::VspError;
 use vsp_error::VspResult;
 use vsp_support::json::from_json;
@@ -40,8 +39,8 @@ pub fn start_server(config: Configuration) -> VspResult<()> {
 
   let initialize_result = InitializeResult {
     capabilities: server_capabilities(),
-    server_info: Some(ServerInfo {
-      name: String::from(""),
+    server_info:  Some(ServerInfo {
+      name:    String::from(""),
       version: Some(String::from(env!("CARGO_PKG_VERSION"))),
     }),
   };
@@ -56,8 +55,6 @@ pub fn connection_by_type(config: &Configuration) -> std::io::Result<(Connection
     Connection::connect(addr)
   } else if let Some(addr) = &config.socket {
     Connection::connect(addr.as_str())
-  } else if config.stdio {
-    Ok(Connection::stdio())
   } else {
     Ok(Connection::stdio())
   }

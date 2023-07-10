@@ -88,5 +88,8 @@ members = [
   [workspace.dependencies.shlex]
   version = "^1.1.0"
 
+  [workspace.dependencies.smallvec]
+  version = "^1.11.0"
+
   [workspace.dependencies.target-lexicon]
   version = "^0.12.6"

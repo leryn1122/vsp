@@ -27,6 +27,7 @@ use crate::ops::completion;
 use crate::ops::debug;
 #[cfg(debug_assertions)]
 use crate::ops::dump;
+use crate::ops::Entrypoint;
 #[cfg(debug_assertions)]
 use crate::ops::lsp;
 use crate::ops::new;
@@ -36,7 +37,6 @@ use crate::ops::pm;
 use crate::ops::repl;
 #[cfg(debug_assertions)]
 use crate::ops::test;
-use crate::ops::Entrypoint;
 
 pub(crate) mod ops;
 

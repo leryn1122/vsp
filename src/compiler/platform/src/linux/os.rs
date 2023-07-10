@@ -69,8 +69,8 @@ impl Passwd {
       result: *mut *mut libc::passwd,
     ) -> libc::c_int,
   ) -> Option<Self>
-  where
-    T: Copy,
+    where
+      T: Copy,
   {
     let mut pwd: libc::passwd = unsafe { std::mem::zeroed() };
     let mut buf = Vec::with_capacity(getpw_r_size_max());

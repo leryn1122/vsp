@@ -78,8 +78,8 @@ impl NewProjectConfig {
             "manifest.toml" => resources_bytes!("new/manifest.toml"),
             _ => unreachable!(),
           })
-          .map_err(VspError::from)
-          .expect("Failed to create file.");
+            .map_err(VspError::from)
+            .expect("Failed to create file.");
         }
         Err(e) => return Err(VspError::from(e)),
       }

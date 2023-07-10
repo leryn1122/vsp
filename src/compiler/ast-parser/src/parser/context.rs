@@ -1,7 +1,7 @@
-use crate::parser::token::{LocatableToken, TokenStream};
 use std::iter::Peekable;
 use std::slice::Iter;
-use vsp_support::debug_println;
+
+use crate::parser::token::{LocatableToken, TokenStream};
 
 pub(crate) type TokenIterator<'a> = Peekable<Iter<'a, LocatableToken>>;
 

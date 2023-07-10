@@ -2,8 +2,8 @@ use core::str::FromStr;
 use std::path::PathBuf;
 
 use clap::arg;
-use clap::builder::PossibleValuesParser;
 use clap::Args;
+use clap::builder::PossibleValuesParser;
 
 use vsp_error::VspResult;
 use vsp_pm::new::NewProjectConfig;

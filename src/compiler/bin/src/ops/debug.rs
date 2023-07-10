@@ -1,8 +1,8 @@
 use std::path::PathBuf;
 
 use clap::arg;
-use clap::value_parser;
 use clap::Args;
+use clap::value_parser;
 
 use vsp_dbg::dbg::DebuggerInstance;
 use vsp_error::VspResult;

@@ -3,10 +3,10 @@ use std::collections::HashMap;
 use vsp_span::span::Span;
 
 use crate::ast::annotation::Annotation;
+use crate::ast::CompilationUnit;
 use crate::ast::function::Function;
 use crate::ast::function::FunctionSignature;
 use crate::ast::module::Module;
-use crate::ast::CompilationUnit;
 use crate::visitor::CompilationUnitASTVisitor;
 use crate::visitor::FunctionASTVisitor;
 

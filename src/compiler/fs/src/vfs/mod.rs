@@ -95,7 +95,7 @@ impl DirectoryEntry {
 }
 
 /// An iterator over a directory.
-pub trait DirectoryEntryIterator: Iterator<Item = DirectoryEntry> {}
+pub trait DirectoryEntryIterator: Iterator<Item=DirectoryEntry> {}
 
 pub(crate) struct DirectoryEntryIteratorImpl {
   current: DirectoryEntry,
@@ -125,8 +125,8 @@ pub(crate) struct VFSWrapper {
 
 impl VFSWrapper {
   pub(crate) fn from<VFS>(vfs: VFS) -> Self
-  where
-    VFS: FileSystem + Sized,
+    where
+      VFS: FileSystem + Sized,
   {
     Self { vfs: Box::new(vfs) }
   }
@@ -163,7 +163,7 @@ pub trait FileSystem: Sync + Send + 'static {
   fn read_dir(
     &self,
     path: &VFSPath,
-  ) -> VspResult<Box<dyn DirectoryEntryIterator<Item = DirectoryEntry>>>;
+  ) -> VspResult<Box<dyn DirectoryEntryIterator<Item=DirectoryEntry>>>;
 
   fn create_dir(&self, path: &VFSPath) -> VspResult<()>;
 }
@@ -214,7 +214,7 @@ impl FileSystem for RealFileSystem {
   fn read_dir(
     &self,
     path: &VFSPath,
-  ) -> VspResult<Box<dyn DirectoryEntryIterator<Item = DirectoryEntry>>> {
+  ) -> VspResult<Box<dyn DirectoryEntryIterator<Item=DirectoryEntry>>> {
     todo!()
   }
 
