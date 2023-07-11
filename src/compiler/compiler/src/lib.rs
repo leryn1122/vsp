@@ -3,7 +3,7 @@ use std::path::PathBuf;
 
 use getset::Getters;
 use getset::Setters;
-
+use vsp_ast_parser::parser::ASTParser;
 use vsp_diag::DiagnosticEngine;
 use vsp_error::VspError;
 use vsp_error::VspResult;
@@ -19,6 +19,7 @@ pub mod db;
 pub mod dispatch;
 pub mod option;
 pub mod source;
+pub mod sym;
 
 /// Entrypoint to compile the source codes.
 pub fn start_compile(filename: &PathBuf, target_options: TargetOptions) -> VspResult<()> {
@@ -42,16 +43,16 @@ type InMemoryModuleCache = ();
 #[derive(Getters, Setters)]
 pub struct CompilerInstance {
   /// AST context.
-  ast_context: Option<ASTContext>,
+  ast_context:    Option<ASTContext>,
   #[getset(get = "pub", set = "pub")]
-  diagnostics: DiagnosticEngine,
-  dispatcher: CompilationDispatcher,
-  lang_options: LangOptions,
-  preprocessor: Option<()>,
-  vfs_manager: VFSManager,
+  diagnostics:    DiagnosticEngine,
+  dispatcher:     CompilationDispatcher,
+  lang_options:   LangOptions,
+  preprocessor:   Option<()>,
+  vfs_manager:    VFSManager,
   #[getset(get = "pub", set = "pub")]
   source_manager: SourceManager,
-  module_cache: InMemoryModuleCache,
+  module_cache:   InMemoryModuleCache,
   #[getset(get = "pub", set = "pub")]
   target_options: TargetOptions,
 }
@@ -111,7 +112,7 @@ impl SimpleCompilerInstance {
 
   pub fn compile(&mut self, path: &PathBuf) -> VspResult<()> {
     use vsp_ast_parser::lex::DefaultLexer;
-    use vsp_ast_parser::parser::DefaultParser;
+    use vsp_ast_parser::parser::TraditionalParser;
 
     let mut file = std::fs::File::open(path).map_err(|e| VspError::from(e))?;
     let mut buf = String::new();
@@ -119,7 +120,7 @@ impl SimpleCompilerInstance {
 
     let mut lex = DefaultLexer {};
     let mut tokens = lex.tokenize(buf.as_str()).unwrap();
-    let mut parser = DefaultParser {};
+    let mut parser = TraditionalParser {};
     let _ = parser.parse(tokens);
     Ok(())
   }

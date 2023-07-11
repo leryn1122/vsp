@@ -1,6 +1,8 @@
 use vsp_span::span::Span;
 
 use crate::ast::expr::Expression;
+use crate::ast::ASTNode;
+use crate::ast::StmtNode;
 
 /// # Statement
 #[derive(Debug)]
@@ -25,6 +27,10 @@ pub enum Statement {
   /// Statement block consisting of statements
   StatementBlock(Box<StatementBlock>),
 }
+
+impl ASTNode for Statement {}
+
+impl StmtNode for Statement {}
 
 pub struct NoOpStatement;
 

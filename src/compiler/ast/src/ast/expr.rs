@@ -1,5 +1,8 @@
 use vsp_support::ptr::SharedPtr;
 
+use crate::ast::ASTNode;
+use crate::ast::ExprNode;
+
 /// # Expression
 ///
 /// Expression indicates ...
@@ -29,6 +32,10 @@ pub enum Expression {
   LambdaExpression(Vec<String>, SharedPtr<Expression>),
 }
 
+impl ASTNode for Expression {}
+
+impl ExprNode for Expression {}
+
 /// <h1>Unary Operation</h1>
 #[derive(Clone, Eq, PartialEq, Debug)]
 pub enum UnaryOp {
@@ -50,15 +57,20 @@ impl UnaryOp {
   }
 }
 
-///
+/// Binary operation refers to the operation which takes two parameters.
 #[rustfmt::skip]
 #[derive(Clone, Eq, PartialEq, Debug)]
 pub enum BinaryOp {
-  /*  `+`  */Add,
-  /*  `-`  */Subtract,
-  /*  `*`  */Multiply,
-  /*  `/`  */Division,
-  /*  `=`  */Assignment,
+  /// `+` for addition.
+  Add,
+  /// `-` for subtraction.
+  Subtract,
+  /// `*` for multiplication.
+  Multiply,
+  /// `/` for division.
+  Division,
+  /// `=` for assignment.
+  Assignment,
 }
 
 impl BinaryOp {

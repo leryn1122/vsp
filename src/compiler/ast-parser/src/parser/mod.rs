@@ -2,24 +2,78 @@ use vsp_ast::ast::expr::BinaryOp;
 use vsp_ast::ast::expr::Expression;
 use vsp_ast::ast::stmt::Statement;
 use vsp_ast::ast::stmt::StatementBlock;
+use vsp_ast::ast::ASTNode;
+use vsp_ast::ast::AST;
 use vsp_error::VspResult;
 use vsp_support::debug_println;
 use vsp_support::ptr::make_shared_ptr;
 
+use crate::parser::combine::CombinatorParser;
 use crate::parser::context::TokenContext;
 use crate::parser::state::ParserState;
 use crate::parser::token::LocatableToken;
 use crate::parser::token::TokenStream;
 use crate::token::Token;
 
+pub(crate) mod combine;
 mod context;
 mod state;
 pub mod token;
 
-pub struct DefaultParser;
+/// Kind of parser.
+pub enum ParserKind {
+  /// Traditional parser.
+  Traditional,
+  /// Parser combinator.
+  Combinator,
+}
 
-impl DefaultParser {
-  pub fn parse(&mut self, tokens: TokenStream) -> VspResult<()> {
+/// ```rust
+/// use vsp_ast_parser::parser::token::TokenStream;
+/// use vsp_ast_parser::parser::ASTFactory;
+/// use vsp_ast_parser::parser::ParserKind;
+///
+/// let mut tokens: TokenStream = vec![];
+/// let mut parser = ASTFactory::create_parser(ParserKind::Default);
+/// let _ = parser.parse(tokens);
+/// ```
+pub struct ASTFactory;
+
+impl ASTFactory {
+  /// Create the specific AST parser by kind.
+  pub fn create_parser(kind: ParserKind) -> Box<dyn ASTParser> {
+    use self::ParserKind::*;
+    match kind {
+      Combinator => Box::new(CombinatorParser {}),
+      _ => Box::new(TraditionalParser {}),
+    }
+  }
+}
+
+pub trait ASTParser {
+  fn parse(&mut self, tokens: TokenStream) -> VspResult<AST>;
+}
+
+/// The lower the precedence enumeration lies, the higher precedence the token has.
+#[repr(u8)]
+pub(crate) enum Precedence {
+  Lowest = 0,
+  Assign,
+  Logic,
+  Ternary,
+  Compare,
+  Sum,
+  Product,
+  Prefix,
+  Call,
+  Index,
+  Dot,
+}
+
+pub struct TraditionalParser;
+
+impl ASTParser for TraditionalParser {
+  fn parse(&mut self, tokens: TokenStream) -> VspResult<AST> {
     let mut ctx = TokenContext::from_str(&tokens);
     let mut state = ParserState::new();
 
@@ -34,7 +88,7 @@ impl DefaultParser {
     }
 
     state.stmts().iter().for_each(|s| println!("{:?}", s));
-    Ok(())
+    Ok(Box::new(Statement::NoOp))
   }
 }
 

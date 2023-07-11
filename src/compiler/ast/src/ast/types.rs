@@ -18,34 +18,42 @@ pub enum Type {
 }
 
 impl Type {
+  #[inline]
   pub fn void() -> Self {
     Self::Primitive(PrimitiveType::Void)
   }
 
+  #[inline]
   pub fn int8() -> Self {
     Self::Primitive(PrimitiveType::Int8)
   }
 
+  #[inline]
   pub fn int16() -> Self {
     Self::Primitive(PrimitiveType::Int16)
   }
 
+  #[inline]
   pub fn int32() -> Self {
     Self::Primitive(PrimitiveType::Int32)
   }
 
+  #[inline]
   pub fn int64() -> Self {
     Self::Primitive(PrimitiveType::Int64)
   }
 
+  #[inline]
   pub fn float64() -> Self {
     Self::Primitive(PrimitiveType::Float64)
   }
 
+  #[inline]
   pub fn double() -> Self {
     Self::Primitive(PrimitiveType::Double64)
   }
 
+  #[inline]
   pub fn array(ty: Type, size: usize) -> Self {
     Self::Array(Box::new(ty), size)
   }
@@ -68,7 +76,6 @@ pub enum PrimitiveType {
   Float64,
   Double64,
   Char,
-  String,
 }
 
 impl PrimitiveType {
@@ -83,9 +90,8 @@ impl PrimitiveType {
       PrimitiveType::Float64 => "Float64",
       PrimitiveType::Double64 => "Double64",
       PrimitiveType::Char => "Char",
-      PrimitiveType::String => "String",
     }
-      .to_string()
+    .to_string()
   }
 
   pub fn from_name(name: &str) -> Option<PrimitiveType> {
@@ -99,7 +105,6 @@ impl PrimitiveType {
       "Float64" => Some(Self::Float64),
       "Double64" => Some(Self::Double64),
       "Char" => Some(Self::Char),
-      "String" => Some(Self::String),
       _ => None,
     }
   }
@@ -131,51 +136,38 @@ impl PrimitiveType {
   pub fn is_char(&self) -> bool {
     matches!(self, PrimitiveType::Char)
   }
-
-  pub fn is_string(&self) -> bool {
-    matches!(self, PrimitiveType::String)
-  }
 }
 
 #[derive(Clone, PartialEq, Eq)]
 pub struct FunctionType {
-  pub parameters: Vec<Type>,
-  pub return_type: Box<Type>,
+  pub params: Vec<Type>,
+  pub ret:    Box<Type>,
 }
 
 impl FunctionType {
-  pub fn new(parameters: Vec<Type>, return_type: Box<Type>) -> Self {
-    Self {
-      parameters,
-      return_type,
-    }
+  pub fn new(params: Vec<Type>, ret: Box<Type>) -> Self {
+    Self { params, ret }
   }
 }
 
 impl Default for FunctionType {
   fn default() -> Self {
     Self {
-      parameters: vec![],
-      return_type: Box::new(Type::void()),
+      params: vec![],
+      ret:    Box::new(Type::void()),
     }
   }
 }
 
-// impl PartialEq for FunctionType {
-//   fn eq(&self, other: &Self) -> bool {
-//     self.parameters.eq(&other.parameters) &&
-// self.return_type.eq(&other.return_type)   }
-// }
-
 #[derive(Clone, PartialEq, Eq)]
-pub struct StructType {}
+pub struct StructType {
+  pub record: Vec<(u8, Type)>,
+}
 
 #[derive(Clone, PartialEq, Eq)]
 pub struct ArrayType {
   pub element_type: Box<Type>,
-  pub size: usize,
+  pub size:         u8,
 }
-
-impl ArrayType {}
 
 pub struct Parameter;

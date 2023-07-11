@@ -1,3 +1,4 @@
+//! # AST for Abstract Syntax Tree
 use std::collections::HashMap;
 
 use vsp_span::span::Span;
@@ -14,7 +15,49 @@ pub mod naming;
 pub mod stmt;
 pub mod types;
 
-pub type AST = CompilationUnit;
+pub type AST = Box<dyn ASTNode>;
+
+/// AST node
+pub trait ASTNode {
+  #[inline]
+  fn is_expr(&self) -> bool {
+    false
+  }
+
+  #[inline]
+  fn is_stmt(&self) -> bool {
+    false
+  }
+
+  #[inline]
+  fn is_decl(&self) -> bool {
+    false
+  }
+}
+
+/// AST nodes for expressions.
+pub trait ExprNode: ASTNode {
+  #[inline]
+  fn is_expr(&self) -> bool {
+    true
+  }
+}
+
+/// AST nodes for statements.
+pub trait StmtNode: ASTNode {
+  #[inline]
+  fn is_expr(&self) -> bool {
+    true
+  }
+}
+
+/// AST nodes for declarations.
+pub trait DeclNode: ASTNode {
+  #[inline]
+  fn is_decl(&self) -> bool {
+    true
+  }
+}
 
 /// A single file is considered as a compilation unit, known as a translation unit in `clang`.
 ///
@@ -46,8 +89,7 @@ impl CompilationUnit {
   }
 }
 
-/// AST node
-pub trait ASTNode {}
+impl ASTNode for CompilationUnit {}
 
 /// FsMeta means filesystem metadata, the essential information about the source
 /// files, including filename, etc.
