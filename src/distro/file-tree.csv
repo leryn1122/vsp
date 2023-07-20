@@ -1,0 +1,14 @@
+# Target file tree for release package
+# All lines start with `#` would be ignored.
+
+# d,dirname
+# f,filename,src
+# s,symlink,src
+#
+
+d,bin
+f,bin/vsp,../../src/compiler/target/debug/vsp
+d,etc
+s,conf,etc
+d,lib
+fx,,LICENSE-*

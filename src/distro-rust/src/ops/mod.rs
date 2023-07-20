@@ -40,7 +40,10 @@ lazy_static! {
 pub fn build() -> std::io::Result<()> {
   let cwd = PROJECT_COMPILER_PATH.clone();
 
-  let vec = vec![cargo_build, pack_release];
+  let vec = vec![
+    // cargo_build,
+    pack_release
+  ];
   for f in vec.into_iter() {
     match f(&cwd) {
       Ok(_) => {}
