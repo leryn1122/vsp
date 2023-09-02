@@ -5,9 +5,9 @@ import os
 import shutil
 from typing import AnyStr
 
-from src.distro import compress
-from src.distro import shell
-from src.distro import support
+import compress
+import shell
+import support
 
 """
 Global variables
@@ -78,7 +78,7 @@ def make_project_file_entries() -> int:
                 # shutil.copy2(src=arr[2], dst=os.path.join(arr[1]))
                 pass
             elif arr[0] == 's':
-                os.symlink(src=arr[2], dst=arr[1])
+                shell.symlink(src=arr[2], dst=arr[1])
             else:
                 raise RuntimeError('Unimplemented file type ' + arr[0])
     return 0
@@ -103,7 +103,7 @@ def compress_project_package() -> int:
     wd = os.path.join(project_root(), "target")
     with shell.cd(wd):
         return compress.compress(
-            name=_package_name + '.tar.gz',
+            name=_package_name,
             src=_package_name,
             wd=wd,
         )

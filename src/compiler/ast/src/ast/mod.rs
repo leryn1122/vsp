@@ -1,7 +1,7 @@
 //! # AST for Abstract Syntax Tree
 use std::collections::HashMap;
 
-use vsp_span::span::Span;
+use vsp_span::Span;
 
 use crate::ast::function::Function;
 use crate::ast::module::Module;

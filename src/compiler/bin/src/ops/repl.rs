@@ -1,5 +1,4 @@
 use clap::Args;
-
 use vsp_cli::repl::do_run_repl;
 use vsp_error::VspError;
 use vsp_error::VspResult;

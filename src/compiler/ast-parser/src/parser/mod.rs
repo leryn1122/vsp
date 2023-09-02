@@ -1,26 +1,19 @@
-use vsp_ast::ast::expr::BinaryOp;
 use vsp_ast::ast::expr::Expression;
-use vsp_ast::ast::stmt::Statement;
-use vsp_ast::ast::stmt::StatementBlock;
-use vsp_ast::ast::ASTNode;
 use vsp_ast::ast::AST;
 use vsp_error::VspResult;
 use vsp_support::debug_println;
-use vsp_support::ptr::make_shared_ptr;
 
 use crate::parser::combine::CombinatorParser;
-use crate::parser::context::TokenContext;
-use crate::parser::state::ParserState;
 use crate::parser::token::LocatableToken;
 use crate::parser::token::TokenStream;
 use crate::token::Token;
 
-pub(crate) mod combine;
 mod context;
 mod state;
 pub mod token;
 
 /// Kind of parser.
+#[repr(u8)]
 pub enum ParserKind {
   /// Traditional parser.
   Traditional,
@@ -48,211 +41,22 @@ impl ASTFactory {
       _ => Box::new(TraditionalParser {}),
     }
   }
+
+  pub fn create_default_parser() -> Box<dyn ASTParser> {
+    Box::new(TraditionalParser {})
+  }
 }
 
 pub trait ASTParser {
   fn parse(&mut self, tokens: TokenStream) -> VspResult<AST>;
 }
 
-/// The lower the precedence enumeration lies, the higher precedence the token has.
-#[repr(u8)]
-pub(crate) enum Precedence {
-  Lowest = 0,
-  Assign,
-  Logic,
-  Ternary,
-  Compare,
-  Sum,
-  Product,
-  Prefix,
-  Call,
-  Index,
-  Dot,
-}
-
 pub struct TraditionalParser;
 
 impl ASTParser for TraditionalParser {
   fn parse(&mut self, tokens: TokenStream) -> VspResult<AST> {
-    let mut ctx = TokenContext::from_str(&tokens);
-    let mut state = ParserState::new();
-
-    while let Some(token) = ctx.peek() {
-      match token.token() {
-        Token::RBrace => {
-          parse_stmt_block(&mut state, &mut ctx);
-          ctx.next();
-        }
-        _ => state.add_token(ctx.next().unwrap()),
-      }
-    }
-
-    state.stmts().iter().for_each(|s| println!("{:?}", s));
-    Ok(Box::new(Statement::NoOp))
+    todo!()
   }
-}
-
-/// Consume all the expressions.
-pub fn parse_stmt(state: &mut ParserState, ctx: &mut TokenContext) {
-  if state.exprs().is_empty() && state.tokens().is_empty() {
-    state.add_stmt(Statement::NoOp);
-    return;
-  }
-
-  #[cfg(debug_assertions)]
-  {
-    state.print();
-  }
-
-  while let Some(token) = state.pop_token() {
-    #[cfg(debug_assertions)]
-    {
-      debug_println!("Current = {:?}", token);
-      state.print();
-    }
-
-    match token.token() {
-      Token::Dot => {}
-      Token::Comma => {}
-      Token::Colon => {}
-      Token::SemiColon => {}
-      Token::Plus | Token::Minus | Token::Asterisk | Token::Slash | Token::Percentage => {
-        parse_binary_op(state, ctx, token);
-      }
-
-      // Token::LParenthesis => {}
-      // Token::RParenthesis => {}
-      // Token::LBracket => {}
-      // Token::RBracket => {}
-      Token::LBrace => {
-        state.add_token(token);
-        break;
-      }
-      // Token::RBrace => {}
-      // Token::Less => {}
-      // Token::Greater => {}
-      // Token::LessEqual => {}
-      // Token::GreaterEqual => {}
-      // Token::Equal => {}
-      // Token::NotEqual => {}
-      // Token::Assigment => {}
-      // Token::At => {}
-      // Token::Not => {}
-      // Token::And => {}
-      // Token::Or => {}
-      // Token::Xor => {}
-      // Token::Question => {}
-      // Token::SQuote => {}
-      // Token::DQuote => {}
-      // Token::TQuote => {}
-      // Token::Arrow => {}
-      // Token::DArrow => {}
-      // Token::DColon => {}
-      // Token::As => {}
-      // Token::Async => {}
-      // Token::Await => {}
-      // Token::Break => {}
-      // Token::Const => {}
-      // Token::Continue => {}
-      // Token::Else => {}
-      // Token::Enum => {}
-      // Token::False => {}
-      // Token::Func => {}
-      // Token::For => {}
-      // Token::If => {}
-      // Token::Impl => {}
-      // Token::Import => {}
-      // Token::In => {}
-      // Token::Int => {}
-      // Token::Let => {}
-      // Token::Loop => {}
-      // Token::Module => {}
-      // Token::Optional => {}
-      // Token::Public => {}
-      // Token::Ref => {}
-      Token::Return => parse_return(state, ctx),
-      // Token::Static => {}
-      // Token::Struct => {}
-      // Token::Super => {}
-      // Token::Trait => {}
-      // Token::True => {}
-      // Token::Type => {}
-      // Token::Union => {}
-      // Token::Unsafe => {}
-      // Token::Use => {}
-      // Token::Var => {}
-      // Token::Where => {}
-      // Token::While => {}
-      // Token::Self_ => {}
-      Token::Identifier(s) => state.add_expr(Expression::Identifier(s.clone())),
-      Token::LiteralText(s) => state.add_expr(Expression::LiteralString(s.clone())),
-      Token::LiteralInteger(num) => state.add_expr(Expression::LiteralInteger(num.clone())),
-      Token::LiteralFloat(_) => {}
-      _ => {
-        debug_println!("parse_stmt = {:?}", token);
-        unimplemented!()
-      }
-    }
-  }
-}
-
-/// Consume all the statements.
-pub fn parse_stmt_block(state: &mut ParserState, ctx: &mut TokenContext) {
-  state.add_stmt_blocks(StatementBlock::new());
-
-  #[cfg(debug_assertions)]
-  {
-    state.print();
-  }
-
-  while let Some(token) = state.pop_token() {
-    #[cfg(debug_assertions)]
-    {
-      debug_println!("Current = {:?}", token);
-      state.print();
-    }
-
-    if token.token().is_stmt_terminator() {
-      parse_stmt(state, ctx);
-    } else if token.token().is_stmt_block_starter() {
-    } else {
-    }
-  }
-}
-
-pub fn parse_expr_if_absent(state: &mut ParserState, ctx: &mut TokenContext) {
-  if let Some(token) = state.pop_token() {
-    if token.token().is_to_expression() {
-      let _ = token.try_into().map(|e| state.add_expr(e)).unwrap();
-    } else {
-      todo!()
-    }
-  } else {
-    return;
-  }
-}
-
-/// Consume to 2 expressions and 1 token.
-pub fn parse_binary_op(state: &mut ParserState, ctx: &mut TokenContext, token: LocatableToken) {
-  let rhs = state.pop_expr().unwrap();
-  parse_expr_if_absent(state, ctx);
-  let lhs = state.pop_expr().unwrap();
-
-  let op = match token.token() {
-    Token::Plus => BinaryOp::Add,
-    Token::Minus => BinaryOp::Subtract,
-    Token::Asterisk => BinaryOp::Multiply,
-    Token::Slash => BinaryOp::Division,
-    _ => unreachable!(),
-  };
-  let mut expr = Expression::Binary(op, make_shared_ptr(lhs), make_shared_ptr(rhs));
-  state.add_expr(expr);
-}
-
-/// Consume 1 expressions.
-pub fn parse_return(state: &mut ParserState, ctx: &mut TokenContext) {
-  let expr = state.pop_expr().unwrap();
-  state.add_stmt(Statement::Return(Some(expr)));
 }
 
 impl Token {
@@ -268,7 +72,7 @@ impl Token {
 
   #[inline]
   pub fn is_stmt_terminator(&self) -> bool {
-    self == &Token::Colon
+    self == &Token::SemiColon
   }
 
   #[inline]
@@ -296,10 +100,33 @@ impl TryInto<Expression> for LocatableToken {
       Token::True => Ok(Expression::LiteralBoolean(true)),
       // Token::Self_ => {},
       // Token::Identifier(_) => {},
-      Token::LiteralText(s) => Ok(Expression::LiteralString(s.clone())),
+      Token::LiteralText(s) => Ok(Expression::LiteralString(s.to_owned())),
       Token::LiteralInteger(val) => Ok(Expression::LiteralInteger(*val)),
       // Token::LiteralFloat(_) => {},
       _ => Err(()),
+    }
+  }
+}
+
+enum TerminatorKind {
+  /// `]`
+  Array,
+  /// `}`
+  Block,
+}
+
+pub(crate) mod combine {
+  use vsp_ast::ast::AST;
+  use vsp_error::VspResult;
+
+  use crate::parser::token::TokenStream;
+  use crate::parser::ASTParser;
+
+  pub struct CombinatorParser;
+
+  impl ASTParser for CombinatorParser {
+    fn parse(&mut self, tokens: TokenStream) -> VspResult<AST> {
+      todo!()
     }
   }
 }

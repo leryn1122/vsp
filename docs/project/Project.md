@@ -1,47 +1,20 @@
-
-Project structure
+# Project structure
 
 ```plaintext
 ├── bin
 │   ├── vsp
-│   ├── vspc -> vsp
-│   ├── vspdb -> vsp
-│   ├── vspm -> vsp
-│   └── vspsh -> vsp
+│   └── vsplsp -> vsp
 ├── conf
 │   └── env
 ├── etc -> conf
 ├── legal
 ├── lib
-│   ├── src.tar.gz
+│   ├── stdlib.tgz
 │   └── tzdb.dat
 ├── share
-├── COPYRIGHT
+│   ├── doc
+│   └── man
+├── LICENSE-MIT
+├── LICENSE-Apache-2.0
 └── README.md
-```
-
-Runtime edition only provides minimum runtime environment for compiler without develop toolkits.
-
-```plaintext
-├── bin
-│   ├── vsp
-│   └── vspc -> vsp
-├── conf
-│   └── env
-├── etc -> conf
-├── legal
-├── lib
-│   ├── src.tar.gz
-│   └── tzdb.dat
-├── share
-├── COPYRIGHT
-└── README.md
-```
-
-while the container edition provides a single binary executable.
-
-```plaintext
-└── bin
-    ├── vsp
-    └── vspc -> vsp
 ```

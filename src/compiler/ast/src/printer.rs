@@ -1,12 +1,12 @@
 use std::collections::HashMap;
 
-use vsp_span::span::Span;
+use vsp_span::Span;
 
 use crate::ast::annotation::Annotation;
-use crate::ast::CompilationUnit;
 use crate::ast::function::Function;
 use crate::ast::function::FunctionSignature;
 use crate::ast::module::Module;
+use crate::ast::CompilationUnit;
 use crate::visitor::CompilationUnitASTVisitor;
 use crate::visitor::FunctionASTVisitor;
 
@@ -114,10 +114,9 @@ impl FunctionASTVisitor for ASTPrinter {
 
 #[cfg(test)]
 mod test {
+  use super::*;
   use crate::ast::CompilationUnit;
   use crate::visitor::CompilationUnitASTVisitable;
-
-  use super::*;
 
   #[test]
   fn test_indent() {

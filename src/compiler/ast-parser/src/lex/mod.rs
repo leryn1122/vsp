@@ -2,8 +2,8 @@ use std::iter::Peekable;
 use std::str::Chars;
 
 use vsp_error::VspResult;
-use vsp_span::span::Position;
-use vsp_span::span::Span;
+use vsp_span::Position;
+use vsp_span::Span;
 
 use crate::parser::token::LocatableToken;
 use crate::parser::token::TokenStream;
@@ -14,7 +14,7 @@ pub struct DefaultLexer;
 
 impl DefaultLexer {
   pub fn tokenize(&mut self, str: &str) -> VspResult<TokenStream> {
-    let mut ctx = CharContext::from_str(str);
+    let mut ctx = CharContext::from(str);
 
     let mut tokens = vec![];
     let mut pos = Position::new();
@@ -53,20 +53,20 @@ pub(crate) type CharIterator<'a> = Peekable<Chars<'a>>;
 /// information on the position and location.
 struct CharContext<'a> {
   chars: CharIterator<'a>,
-  pos: Position,
-  loc: usize,
-  curr: Option<char>,
-  prev: Option<char>,
+  pos:   Position,
+  loc:   usize,
+  curr:  Option<char>,
+  prev:  Option<char>,
 }
 
 impl<'a> CharContext<'a> {
-  pub fn from_str(str: &'a str) -> Self {
+  pub fn from(str: &'a str) -> Self {
     Self {
       chars: str.chars().peekable(),
-      pos: Position::new(),
-      loc: 0,
-      curr: None,
-      prev: None,
+      pos:   Position::new(),
+      loc:   0,
+      curr:  None,
+      prev:  None,
     }
   }
 
@@ -105,7 +105,7 @@ impl<'a> Iterator for CharContext<'a> {
       self.prev = self.curr;
       self.curr = res;
     }
-    res.clone()
+    res.to_owned()
   }
 }
 
@@ -117,7 +117,7 @@ impl<'a> AsRef<CharIterator<'a>> for CharContext<'a> {
 
 /// Common punctuation handler for .
 fn punctuation_handler(tokens: &mut TokenStream, ctx: &mut CharContext, expected: Token) {
-  let token = LocatableToken::new(expected, Span::single_char(ctx.current_position().clone()));
+  let token = LocatableToken::new(expected, Span::at_single(ctx.current_position().clone()));
   tokens.push(token);
 }
 
@@ -128,7 +128,7 @@ fn readout_blank(_: &mut CharContext, pos: &mut Position) {
 fn readout_numeric(tokens: &mut TokenStream, ctx: &mut CharContext) {
   let digit = ctx.current_unchecked().to_digit(10).unwrap().into();
   let token = Token::LiteralInteger(digit);
-  let span = Span::single_char(ctx.current_position().clone());
+  let span = Span::at_single(ctx.current_position().clone());
   let token = LocatableToken::new(token, span);
   tokens.push(token);
 }

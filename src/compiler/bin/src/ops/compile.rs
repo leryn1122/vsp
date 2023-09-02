@@ -2,7 +2,6 @@ use std::path::PathBuf;
 
 use clap::arg;
 use clap::Args;
-
 use vsp_compiler::SimpleCompilerInstance;
 use vsp_error::VspResult;
 

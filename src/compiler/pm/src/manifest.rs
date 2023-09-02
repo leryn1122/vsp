@@ -10,7 +10,7 @@ pub struct Manifest {
 impl Manifest {
   fn new(name: impl Into<String>) -> Self {
     let project = Project {
-      name: name.into(),
+      name:    name.into(),
       version: Version::parse("0.1.0").unwrap(),
     };
 
@@ -28,7 +28,7 @@ impl Default for Manifest {
 // #[derive(Deserialize, Serialize, Debug)]
 #[allow(dead_code)]
 pub(crate) struct Project {
-  name: String,
+  name:    String,
   version: Version,
 }
 

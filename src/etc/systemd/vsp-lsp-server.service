@@ -1,0 +1,12 @@
+[Unit]
+Description=Vespera LSP Server
+Wants=network-online.target
+After=network.target
+After=network-online.target
+Documentation=https://github.com/leryn1122/vsp/docs/README.md
+
+[Service]
+ExecStart=/uss/bin/vsp lsp --addr 0.0.0.0:41122
+
+[Install]
+WantedBy=multi-user.target

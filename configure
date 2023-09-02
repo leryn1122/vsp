@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+
+script="$(cd -P "$(dirname "${0-${BASH_SOURCE[0]}}")" && pwd || exit 1)/src/distro/main.py"
+
+if [[ ! -f "${script}" ]] || [[ ! -x "${script}" ]]; then
+  echo -e "Error: Failed to get the main python script: ${script}" >&2
+  exit 1
+fi
+
+cd -P "$(dirname "${script}")" || exit 1
+exec python3 "$script" "$@"

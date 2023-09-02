@@ -31,9 +31,9 @@ mod tests {
   fn test_resources_macro() {
     assert_eq!(
       include_str!(concat!(
-      env!("CARGO_MANIFEST_DIR"),
-      "/resources/",
-      "lorem_ipsum.txt"
+        env!("CARGO_MANIFEST_DIR"),
+        "/resources/",
+        "lorem_ipsum.txt"
       )),
       include_str!(resources!("lorem_ipsum.txt"))
     );

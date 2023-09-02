@@ -23,7 +23,7 @@ use crate::vcs::VersionControl;
 /// ```
 pub struct NewProjectConfig {
   name: String,
-  vcs: Option<VersionControl>,
+  vcs:  Option<VersionControl>,
   path: PathBuf,
 }
 
@@ -54,7 +54,7 @@ impl NewProjectConfig {
     let project = project.as_path();
 
     match self.vcs {
-      None => std::fs::create_dir(path.clone()).expect("Fail to create project: {}"),
+      None => std::fs::create_dir(path.to_owned()).expect("Fail to create project: {}"),
       Some(VersionControl::Git) => GitRepo::init(project, cwd).unwrap(),
       #[cfg(not(target_env = "musl"))]
       Some(VersionControl::Fossil) => FossilRepo::init(project, cwd).unwrap(),
@@ -78,8 +78,8 @@ impl NewProjectConfig {
             "manifest.toml" => resources_bytes!("new/manifest.toml"),
             _ => unreachable!(),
           })
-            .map_err(VspError::from)
-            .expect("Failed to create file.");
+          .map_err(VspError::from)
+          .expect("Failed to create file.");
         }
         Err(e) => return Err(VspError::from(e)),
       }

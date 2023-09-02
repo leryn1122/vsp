@@ -8,8 +8,8 @@ use inkwell::context::Context;
 use inkwell::execution_engine::ExecutionEngine;
 use inkwell::execution_engine::JitFunction;
 use inkwell::module::Module;
-use inkwell::OptimizationLevel;
 use inkwell::values::AnyValue;
+use inkwell::OptimizationLevel;
 
 pub mod llvm;
 pub(crate) mod types;
@@ -199,9 +199,9 @@ type SumFunc = unsafe extern "C" fn(u64, u64, u64) -> u64;
 type VoidFunc = unsafe extern "C" fn() -> c_void;
 
 pub struct CodeGenerator<'ctx> {
-  context: &'ctx Context,
-  module: Module<'ctx>,
-  builder: Builder<'ctx>,
+  context:          &'ctx Context,
+  module:           Module<'ctx>,
+  builder:          Builder<'ctx>,
   execution_engine: ExecutionEngine<'ctx>,
 }
 
@@ -232,8 +232,8 @@ fn main0() -> Result<(), Box<dyn Error>> {
   let module = context.create_module("sum");
   let execution_engine = module.create_jit_execution_engine(OptimizationLevel::None)?;
 
-  let module1 = module.clone();
-  println!("{}", module1.clone().print_to_string().to_string());
+  let module1 = module.to_owned();
+  println!("{}", module1.to_owned().print_to_string().to_string());
 
   let iter = module1.get_functions();
   iter.for_each(|f| {

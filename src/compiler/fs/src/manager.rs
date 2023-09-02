@@ -10,20 +10,22 @@ pub struct VFSManager {
 }
 
 impl VFSManager {
-  fn as_ref_vfs(&self) -> &dyn FileSystem {
-    self.vfs.vfs.as_ref()
-  }
-
   pub fn get_file(&self, file: &VFSPath) -> Option<Box<dyn FileObject>> {
-    let vfs = self.as_ref_vfs();
+    let vfs = self.as_ref();
     None
+  }
+}
+
+impl AsRef<dyn FileSystem> for VFSManager {
+  fn as_ref(&self) -> &dyn FileSystem {
+    self.vfs.vfs.as_ref()
   }
 }
 
 impl VFSManager {
   pub fn from<VFS>(vfs: VFS) -> VFSManager
-    where
-      VFS: FileSystem + Sized,
+  where
+    VFS: FileSystem + Sized,
   {
     Self {
       vfs: VFSWrapper::from(vfs),

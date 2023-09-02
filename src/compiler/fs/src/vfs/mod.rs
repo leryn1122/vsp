@@ -5,8 +5,8 @@ use std::path::PathBuf;
 
 use getset::Getters;
 use getset::MutGetters;
-
-use vsp_error::{VspError, VspResult};
+use vsp_error::VspError;
+use vsp_error::VspResult;
 use vsp_support::exitcode;
 use vsp_support::exitcode::ExitCode;
 
@@ -47,7 +47,7 @@ enum AccessMode {
 #[derive(Debug)]
 pub struct VFSMetadata {
   file_type: VFSFileType,
-  len: u64,
+  len:       u64,
 }
 
 impl VFSMetadata {
@@ -81,7 +81,7 @@ impl VFSMetadata {
 #[derive(Getters, MutGetters)]
 pub struct DirectoryEntry {
   #[getset(get)]
-  path: VFSPath,
+  path:      VFSPath,
   #[getset(get)]
   file_type: VFSFileType,
   // #[getset(get)]
@@ -95,7 +95,7 @@ impl DirectoryEntry {
 }
 
 /// An iterator over a directory.
-pub trait DirectoryEntryIterator: Iterator<Item=DirectoryEntry> {}
+pub trait DirectoryEntryIterator: Iterator<Item = DirectoryEntry> {}
 
 pub(crate) struct DirectoryEntryIteratorImpl {
   current: DirectoryEntry,
@@ -125,8 +125,8 @@ pub(crate) struct VFSWrapper {
 
 impl VFSWrapper {
   pub(crate) fn from<VFS>(vfs: VFS) -> Self
-    where
-      VFS: FileSystem + Sized,
+  where
+    VFS: FileSystem + Sized,
   {
     Self { vfs: Box::new(vfs) }
   }
@@ -163,14 +163,14 @@ pub trait FileSystem: Sync + Send + 'static {
   fn read_dir(
     &self,
     path: &VFSPath,
-  ) -> VspResult<Box<dyn DirectoryEntryIterator<Item=DirectoryEntry>>>;
+  ) -> VspResult<Box<dyn DirectoryEntryIterator<Item = DirectoryEntry>>>;
 
   fn create_dir(&self, path: &VFSPath) -> VspResult<()>;
 }
 
 /// A normal and default implementation of `VirtualFileSystem` refers to the real filesystem.
 pub struct RealFileSystem {
-  cwd: VFSPath,
+  cwd:      VFSPath,
   real_cwd: PathBuf,
 }
 
@@ -214,7 +214,7 @@ impl FileSystem for RealFileSystem {
   fn read_dir(
     &self,
     path: &VFSPath,
-  ) -> VspResult<Box<dyn DirectoryEntryIterator<Item=DirectoryEntry>>> {
+  ) -> VspResult<Box<dyn DirectoryEntryIterator<Item = DirectoryEntry>>> {
     todo!()
   }
 

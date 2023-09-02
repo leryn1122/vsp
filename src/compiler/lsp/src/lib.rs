@@ -1,9 +1,6 @@
 use log::LevelFilter;
 use lsp_server::Connection;
-use lsp_server::IoThreads;
 use lsp_types::InitializeParams;
-use lsp_types::InitializeResult;
-use lsp_types::ServerInfo;
 use simplelog::ColorChoice;
 use simplelog::CombinedLogger;
 use simplelog::Config;
@@ -15,50 +12,11 @@ use vsp_error::VspResult;
 use vsp_support::json::from_json;
 
 use crate::config::Configuration;
-use crate::server::server_capabilities;
+use crate::server::connection_by_type;
+use crate::server::initialize_result;
 
 pub mod config;
 pub(crate) mod server;
-
-/// Run language server.
-pub fn start_server(config: Configuration) -> VspResult<()> {
-  // Initialize.
-  init_logger();
-
-  log::trace!("Ready to run server: {}", env!("CARGO_PKG_VERSION"));
-
-  let (connection, io_threads) = match connection_by_type(&config) {
-    Ok(res) => res,
-    Err(e) => return Err(VspError::from(e)),
-  };
-  let (initialize_id, initialize_params) = connection.initialize_start().unwrap();
-  log::trace!("InitializeParams: {}", initialize_params);
-
-  let initialize_params =
-    from_json::<InitializeParams>("InitializeParams", &initialize_params).unwrap();
-
-  let initialize_result = InitializeResult {
-    capabilities: server_capabilities(),
-    server_info:  Some(ServerInfo {
-      name:    String::from(""),
-      version: Some(String::from(env!("CARGO_PKG_VERSION"))),
-    }),
-  };
-  let initialize_result = serde_json::to_value(initialize_result).unwrap();
-
-  io_threads.join().unwrap();
-  Ok(())
-}
-
-pub fn connection_by_type(config: &Configuration) -> std::io::Result<(Connection, IoThreads)> {
-  if let Some(addr) = config.address {
-    Connection::connect(addr)
-  } else if let Some(addr) = &config.socket {
-    Connection::connect(addr.as_str())
-  } else {
-    Ok(Connection::stdio())
-  }
-}
 
 pub fn init_logger() {
   let loggers: Vec<Box<dyn SharedLogger>> = vec![TermLogger::new(
@@ -68,4 +26,42 @@ pub fn init_logger() {
     ColorChoice::Auto,
   )];
   CombinedLogger::init(loggers).unwrap();
+}
+
+/// Run language server.
+pub fn start_server(config: Configuration) -> VspResult<()> {
+  // Initialize.
+  init_logger();
+
+  let (connection, io_threads) = match connection_by_type(&config) {
+    Ok(res) => res,
+    Err(e) => return Err(VspError::from(e)),
+  };
+  accept_initialize_request(&connection)
+    .and_then(|_| main_loop(&connection))
+    .and_then(|_| io_threads.join().map_err(VspError::from))
+}
+
+pub fn accept_initialize_request(connection: &Connection) -> VspResult<()> {
+  let (initialize_id, initialize_params) = connection.initialize_start().unwrap();
+  log::trace!("InitializeParams: {}", initialize_params);
+
+  let initialize_params = from_json::<InitializeParams>("InitializeParams", &initialize_params);
+  if initialize_params.is_err() {
+    return Err(VspError::from(initialize_params.unwrap_err()));
+  }
+
+  let result = connection.initialize_finish(
+    initialize_id,
+    serde_json::to_value(initialize_result()).unwrap(),
+  );
+  if result.is_err() {
+    return Err(VspError::from(result.unwrap_err()));
+  }
+  Ok(())
+}
+
+pub fn main_loop(connection: &Connection) -> VspResult<()> {
+  // TODO: Implement your LSP here.
+  Ok(())
 }

@@ -11,8 +11,8 @@ pub enum Token {
 
   /*  `.`   */Dot = 0,
   /*  `,`   */Comma,
-  /*  `;`   */Colon,
-  /*  `:`   */SemiColon,
+  /*  `:`   */Colon,
+  /*  `;`   */SemiColon,
   /*  `+`   */Plus,
   /*  `-`   */Minus,
   /*  `*`   */Asterisk,
@@ -109,7 +109,7 @@ impl Token {
   pub fn token_type(&self) -> TokenType {
     let ord = self.into_u8();
     // Use branch prediction.
-    if ord < Self::Dot.into_u8() {
+    if ord > Token::Self_.into_u8() {
       match self {
         Token::Identifier(_) => TokenType::Identifier,
         Token::LiteralText(_) => TokenType::LiteralText,
@@ -132,8 +132,8 @@ pub fn mapping_non_literal_token(s: &str) -> Option<Token> {
   match s {
     "." => Some(Token::Dot),
     "," => Some(Token::Comma),
-    ";" => Some(Token::Colon),
-    ":" => Some(Token::SemiColon),
+    ":" => Some(Token::Colon),
+    ";" => Some(Token::SemiColon),
     "+" => Some(Token::Plus),
     "-" => Some(Token::Minus),
     "*" => Some(Token::Asterisk),
@@ -211,13 +211,12 @@ pub enum TokenType {
   LiteralFloat,
 }
 
-/// Base of numeric literal value.
+/// Base of numeric literal value. Default numeric base is decimal.
 #[allow(dead_code)]
 #[derive(Clone, Debug, Eq, PartialEq)]
 pub(crate) enum Base {
   Binary = 2,
   Octal = 8,
-  /// Default numeric base.
   Decimal = 10,
   Hexadecimal = 16,
 }

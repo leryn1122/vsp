@@ -1,4 +1,4 @@
-use vsp_span::span::Span;
+use vsp_span::Span;
 
 use crate::ast::expr::Expression;
 use crate::ast::ASTNode;
@@ -25,7 +25,7 @@ pub enum Statement {
   // Blocks
   Return(Option<Expression>),
   /// Statement block consisting of statements
-  StatementBlock(Box<StatementBlock>),
+  Block(Box<StatementBlock>),
 }
 
 impl ASTNode for Statement {}
@@ -55,6 +55,10 @@ pub struct StatementBlock {
 impl StatementBlock {
   pub fn new() -> Self {
     Self { stmts: vec![] }
+  }
+
+  pub fn from(stmts: Vec<Statement>) -> Self {
+    Self { stmts: stmts }
   }
 
   pub fn add_stmt(&mut self, stmt: Statement) -> &Self {

@@ -40,6 +40,9 @@ members = [
   [workspace.dependencies.combine]
   version = "^4.6.6"
 
+  [workspace.dependencies.flate2]
+  version = "^1.0.26"
+
   [workspace.dependencies.getset]
   version = "^0.1.2"
 
@@ -91,5 +94,11 @@ members = [
   [workspace.dependencies.smallvec]
   version = "^1.11.0"
 
+  [workspace.dependencies.tar]
+  version = "^0.4.38"
+
   [workspace.dependencies.target-lexicon]
   version = "^0.12.6"
+
+  [workspace.dependencies.zip]
+  version = "^0.6.6"

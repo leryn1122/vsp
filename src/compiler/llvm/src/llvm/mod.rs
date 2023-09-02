@@ -1,19 +1,18 @@
 use inkwell::builder::Builder;
 use inkwell::context::Context;
 use inkwell::module::Module;
-use inkwell::OptimizationLevel;
 use inkwell::passes::PassManager;
 use inkwell::passes::PassManagerBuilder;
 use inkwell::targets::InitializationConfig;
 use inkwell::targets::Target;
-
+use inkwell::OptimizationLevel;
 use vsp_ast::ast::function::Function;
 
 pub mod ir;
 
 pub struct CodegenContext<'ctx> {
   context: &'ctx Context,
-  module: Module<'ctx>,
+  module:  Module<'ctx>,
   builder: Builder<'ctx>,
 }
 

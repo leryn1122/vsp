@@ -4,30 +4,23 @@ import os
 import sys
 import tarfile
 import zipfile
-from os import PathLike
+
+from type import Path
 
 
-def compress(
-    name: str | bytes | PathLike[str] | PathLike[bytes],
-    src: str | bytes | PathLike[str] | PathLike[bytes],
-    wd: str | bytes | PathLike[str] | PathLike[bytes] = os.getcwd(),
-) -> int:
+def compress(name: Path, src: Path, wd: Path = os.getcwd()) -> int:
     """
     Compress the final release package using `gz`, i.e. gnu zip,
     while using `zip` instead on Windows.
     :return:
     """
     if 'windows' in sys.platform:
-        return compress_by_zip(name=name, wd=wd, src=src)
+        return compress_by_zip(name=name + '.zip', wd=wd, src=src)
     else:
-        return compress_by_tar(name=name, wd=wd, src=src)
+        return compress_by_tar(name=name + '.tar.gz', wd=wd, src=src)
 
 
-def compress_by_tar(
-    name: str | bytes | PathLike[str] | PathLike[bytes],
-    src: str | bytes | PathLike[str] | PathLike[bytes],
-    wd: str | bytes | PathLike[str] | PathLike[bytes] = os.getcwd(),
-) -> int:
+def compress_by_tar(name: Path, src: Path, wd: Path = os.getcwd()) -> int:
     """
     Equivalent to `tar -cf <name> <src>`
     """
@@ -40,11 +33,7 @@ def compress_by_tar(
     return 0
 
 
-def compress_by_zip(
-    name: str | bytes | PathLike[str] | PathLike[bytes],
-    src: str | bytes | PathLike[str] | PathLike[bytes],
-    wd: str | bytes | PathLike[str] | PathLike[bytes] = os.getcwd(),
-) -> int:
+def compress_by_zip(name: Path, src: Path, wd: Path = os.getcwd()) -> int:
     archive = os.path.join(wd, name)
     l = len(src)
     with zipfile.ZipFile(

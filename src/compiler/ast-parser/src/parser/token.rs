@@ -2,7 +2,7 @@ use std::fmt::Debug;
 use std::fmt::Formatter;
 
 use vsp_span::Locatable;
-use vsp_span::span::Span;
+use vsp_span::Span;
 
 use crate::token::Token;
 
@@ -13,7 +13,7 @@ pub type TokenStream = Vec<LocatableToken>;
 #[derive(Clone)]
 pub struct LocatableToken {
   token: Token,
-  span: Span,
+  span:  Span,
 }
 
 impl LocatableToken {
@@ -30,6 +30,29 @@ impl LocatableToken {
   #[inline]
   pub fn span(&self) -> &Span {
     &self.span
+  }
+
+  pub(crate) unsafe fn get_string_unchecked(&self) -> String {
+    match self.token() {
+      Token::Identifier(s) => s.to_owned(),
+      Token::LiteralText(s) => s.to_owned(),
+      _ => unreachable!(),
+    }
+  }
+
+  pub(crate) unsafe fn get_i64_unchecked(&self) -> i64 {
+    match self.token() {
+      Token::LiteralInteger(i) => i.to_owned(),
+      _ => unreachable!(),
+    }
+  }
+
+  pub(crate) unsafe fn get_bool_unchecked(&self) -> bool {
+    match self.token() {
+      Token::False => false,
+      Token::True => true,
+      _ => unreachable!(),
+    }
   }
 }
 

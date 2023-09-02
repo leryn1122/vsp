@@ -1,0 +1,9 @@
+Package: vespera
+Version: 0.0.1
+Section: custom
+Maintainer: leryn1122@gmail.com
+Priority: optional
+Architecture: any
+Description: Vespera language toolchains
+Build-Depends: debhelper (>= 9)
+Homepage: https://github.com/leryn1122/vsp

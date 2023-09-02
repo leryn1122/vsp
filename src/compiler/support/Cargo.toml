@@ -28,3 +28,12 @@ edition = "2021"
 
   [dependencies.vsp-error]
   path = "../error"
+
+  [dependencies.flate2]
+  workspace = true
+
+  [dependencies.tar]
+  workspace = true
+
+  [dependencies.zip]
+  workspace = true

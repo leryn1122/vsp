@@ -13,7 +13,6 @@
 use clap::builder::Styles;
 use clap::Parser;
 use clap::Subcommand;
-
 use vsp_error::VspError;
 use vsp_support::exitcode;
 use vsp_support::resources_str;
@@ -27,7 +26,6 @@ use crate::ops::completion;
 use crate::ops::debug;
 #[cfg(debug_assertions)]
 use crate::ops::dump;
-use crate::ops::Entrypoint;
 #[cfg(debug_assertions)]
 use crate::ops::lsp;
 use crate::ops::new;
@@ -37,6 +35,7 @@ use crate::ops::pm;
 use crate::ops::repl;
 #[cfg(debug_assertions)]
 use crate::ops::test;
+use crate::ops::Entrypoint;
 
 pub(crate) mod ops;
 

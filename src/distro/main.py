@@ -4,8 +4,8 @@ import logging as log
 import os
 import sys
 
-from src.distro import project
-from src.distro import support
+import project
+import support
 
 if __name__ == '__main__':
     """
@@ -23,6 +23,5 @@ if __name__ == '__main__':
                 os.execvp('python3', ['python3'] + sys.argv)
             except OSError:
                 pass
-
     support.init_logger()
     project.package_project()

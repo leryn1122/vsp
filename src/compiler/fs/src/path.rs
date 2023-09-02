@@ -62,13 +62,13 @@ impl VFSPath {
 
   fn join_internal(&self, path: &str) -> Self {
     if path.is_empty() {
-      return self.clone();
+      return self.to_owned();
     }
     let mut new_segments: Vec<&str> = vec![];
     let mut base_path = if path.starts_with(SEPERATOR) {
       Self::root()
     } else {
-      self.clone()
+      self.to_owned()
     };
 
     if path.len() > 1 && path.ends_with(SEPERATOR) {

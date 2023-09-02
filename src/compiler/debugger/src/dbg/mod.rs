@@ -6,13 +6,12 @@ use std::io::Write;
 
 use clap::ArgMatches;
 use clap::Command;
-
 use vsp_error::VspResult;
 use vsp_support::debug_println;
 
 /// The debugger instance.
 pub struct DebuggerInstance {
-  prompt: Cow<'static, str>,
+  prompt:  Cow<'static, str>,
   command: Command,
 }
 
@@ -57,7 +56,7 @@ impl DebuggerInstance {
   }
 
   pub(crate) fn match_(&self, args: Vec<String>) -> Result<bool, String> {
-    let matches = self.command.clone().try_get_matches_from(args);
+    let matches = self.command.to_owned().try_get_matches_from(args);
     match matches {
       Ok(mut matches) => self.parse_argument(&mut matches),
       Err(e) => Err(format!("Unknown command: {}", e.to_string())),
@@ -92,7 +91,7 @@ impl DebuggerInstance {
 impl Default for DebuggerInstance {
   fn default() -> Self {
     Self {
-      prompt: Cow::from("> "),
+      prompt:  Cow::from("> "),
       command: DebugInstructionProvider::construct_debug_instruction_set(),
     }
   }

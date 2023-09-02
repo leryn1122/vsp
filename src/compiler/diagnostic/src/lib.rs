@@ -14,8 +14,8 @@ pub struct DiagnosticConsumer {}
 pub struct DiagnosticEngine {
   suppressed: bool,
   show_color: bool,
-  level: Level,
-  owner: DiagnosticConsumer,
+  level:      Level,
+  owner:      DiagnosticConsumer,
 }
 
 impl DiagnosticEngine {}
@@ -25,8 +25,8 @@ impl Default for DiagnosticEngine {
     Self {
       suppressed: false,
       show_color: false,
-      level: Level::Remark,
-      owner: DiagnosticConsumer {},
+      level:      Level::Remark,
+      owner:      DiagnosticConsumer {},
     }
   }
 }

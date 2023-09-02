@@ -1,0 +1,34 @@
+---
+name: CI
+on:
+  push:
+    branches:
+      - unstable
+defaults:
+  run:
+    shell: bash
+jobs:
+  autobuild-pipeline:
+    name: "auto-ci-pipeline-${{ matrix.name }}"
+    runs-on: "${{ matrix.name }}"
+    env:
+      CI: "true"
+      CI_JOB_NAME: "${{ matrix.name }}"
+    if: "github.event_name == 'push' || github.repository == 'leryn1122/vsp'"
+    strategy:
+      matrix:
+        include:
+          - name: ubuntu-22.04
+            os: ubuntu-22.04
+            env: {}
+    steps:
+      - name: checkout the source code
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 2
+      - name: add extra environment variables
+        run: src/ci/scripts/setup-environment.sh
+        if: "success()"
+      - name: run the CI build script
+        run: src/ci/scripts/run-ci-build.sh
+        if: "success()"

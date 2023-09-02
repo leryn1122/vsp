@@ -2,9 +2,8 @@ use core::str::FromStr;
 use std::path::PathBuf;
 
 use clap::arg;
-use clap::Args;
 use clap::builder::PossibleValuesParser;
-
+use clap::Args;
 use vsp_error::VspResult;
 use vsp_pm::new::NewProjectConfig;
 use vsp_pm::vcs::VersionControl;
@@ -18,16 +17,16 @@ pub struct CandidateArgument {
   project: String,
   /// Path to the project
   #[arg(long)]
-  path: Option<PathBuf>,
+  path:    Option<PathBuf>,
   /// Version control service. Initialize the project with given version control system.
   #[arg(long, value_parser = get_vcs_value_parser())]
-  vcs: Option<String>,
+  vcs:     Option<String>,
 }
 
 impl Entrypoint for CandidateArgument {
   fn entrypoint(&mut self) -> VspResult<()> {
-    let vcs = self.vcs.clone().map(|s| VersionControl::from_str(s.as_str()).unwrap());
-    let config = NewProjectConfig::new(&self.project, vcs, self.path.clone());
+    let vcs = self.vcs.to_owned().map(|s| VersionControl::from_str(s.as_str()).unwrap());
+    let config = NewProjectConfig::new(&self.project, vcs, self.path.to_owned());
     config.create_new_project()
   }
 }

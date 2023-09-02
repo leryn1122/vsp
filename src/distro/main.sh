@@ -1,11 +1,11 @@
 #!/usr/bin/env bash
 
-set -eu
+set -eux
 
 declare extra_arg;
 declare build_py;
 
-build_py="$(cd "$(dirname "${0-${BASH_SOURCE[0]}}")" && pwd || exit 1)/distro.py"
+build_py="$(cd -P "$(dirname "${0-${BASH_SOURCE[0]}}")" && pwd || exit 1)/distro.py"
 
 SEARCH_PYTHON=("python3" "py" "python" "python2")
 for search_python in "${SEARCH_PYTHON[@]}" ; do
