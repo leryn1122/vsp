@@ -1,5 +1,0 @@
-# Target file tree for release package
-# All lines start with `#` would be ignored.
-bin
-conf
-lib
