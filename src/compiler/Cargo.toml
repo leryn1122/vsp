@@ -16,6 +16,7 @@ members = [
   "span",
   "support",
 ]
+resolver = "2"
 
 [workspace.dependencies]
 

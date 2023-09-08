@@ -1,4 +1,4 @@
-use core::cmp::Ordering;
+use std::cmp::Ordering;
 
 /// A trait for objects, such as lexeme, token, or something else, give the span itself.
 pub trait Locatable {
@@ -129,21 +129,25 @@ impl Span {
 
   /// Expand the span as a tuple.
   pub fn expand(&self) -> (usize, usize, usize, usize) {
-    (
-      self.start.line,
-      self.start.column,
-      self.end.line,
-      self.end.column,
-    )
+    unsafe {
+      (
+        self.start.line,
+        self.start.column,
+        self.end.line,
+        self.end.column,
+      )
+    }
   }
 
   /// Expand the span as an array.
   pub fn expand_as_array(&self) -> [usize; 4] {
-    [
-      self.start.line,
-      self.start.column,
-      self.end.line,
-      self.end.column,
-    ]
+    unsafe {
+      [
+        self.start.line,
+        self.start.column,
+        self.end.line,
+        self.end.column,
+      ]
+    }
   }
 }

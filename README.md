@@ -43,17 +43,32 @@ Long term:
 This project uses [rust](https://www.rust-lang.org/) and [cargo](https://npmjs.com). Go check them out if you don't have them locally installed.
 
 ### Prerequisites
-- Rust runtime environment, version >=1.60.
+
+- Rust toolchain, 1.72.0-nightly.
 - LLVM 14
-- Python 3 or 2.7
+- Python 3+
 - make
 - static library
   - OpenSSL (libssl-dev or openssl-devel on most Unix distros)
 
 ```bash
 git clone https://github.com/leryn1122/vsp.git
-cd vsp/src/distro-rust
-cargo run -- build
+
+# Method 1: recommended
+cd vsp && ./configure
+
+# Method 2: using bash
+cd vsp/src/distro && ./main.sh
+
+# Method 3: using python
+cd vsp/src/distro && python3 main.py
+```
+
+For more options,
+
+```bash
+./configure --module compiler  \
+            --target-triplet aarch64-apple-darwin \
 ```
 
 ## Usage
@@ -86,4 +101,4 @@ Those repos are referenced on:
 
 ## License
 
-[MIT](LICENSE) © Leryn
+[MIT](LICENSE-MIT) © Leryn

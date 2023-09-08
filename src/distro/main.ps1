@@ -1,6 +1,6 @@
 #!/usr/bin/env pwsh
 
-$build_py = Join-Path $PSScriptRoot src distro distro.py
+$build_py = Join-Path $PSScriptRoot src distro main.py
 $build_py_args = @("""$build_py""")
 foreach ($arg in $args) {
   $build_py_args += """$arg"""

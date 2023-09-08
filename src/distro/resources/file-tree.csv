@@ -7,8 +7,10 @@
 #
 
 d,bin
-f,bin/vsp,../../src/compiler/target/debug/vsp
+f,bin/vsp,../../src/compiler/target/release/vsp
 d,etc
 s,conf,etc
 d,lib
 fx,,LICENSE-*
+d,lib/systemd
+f,lib/systemd,../../src/etc/systemd/vsp-lsp-server.service

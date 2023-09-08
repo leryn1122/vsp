@@ -1,11 +1,13 @@
 #!/usr/bin/env bash
 
-set -eux
+set -eu
 
 declare extra_arg;
 declare build_py;
 
-build_py="$(cd -P "$(dirname "${0-${BASH_SOURCE[0]}}")" && pwd || exit 1)/distro.py"
+work_dir="$(cd -P "$(dirname "$(readlink -f "${0-${BASH_SOURCE[0]}}")")" && pwd || exit 1)"
+cd -P "${work_dir}" && pwd || exit 1
+build_py="./main.py"
 
 SEARCH_PYTHON=("python3" "py" "python" "python2")
 for search_python in "${SEARCH_PYTHON[@]}" ; do

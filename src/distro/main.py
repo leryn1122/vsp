@@ -24,4 +24,4 @@ if __name__ == '__main__':
             except OSError:
                 pass
     support.init_logger()
-    project.package_project()
+    project.entrypoint()

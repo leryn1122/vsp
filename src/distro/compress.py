@@ -5,7 +5,7 @@ import sys
 import tarfile
 import zipfile
 
-from type import Path
+from support import Path
 
 
 def compress(name: Path, src: Path, wd: Path = os.getcwd()) -> int:
