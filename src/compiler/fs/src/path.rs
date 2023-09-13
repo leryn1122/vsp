@@ -1,5 +1,6 @@
 use std::path::Path;
 use std::path::PathBuf;
+use std::str::FromStr;
 
 /// File seperator.
 pub(crate) const SEPERATOR: char = '/';
@@ -22,12 +23,6 @@ impl VFSPath {
 }
 
 impl VFSPath {
-  pub fn from_str(s: &str) -> Self {
-    Self {
-      inner: s.to_string(),
-    }
-  }
-
   /// Construct a new VFS path from `OsString`.
   pub fn from(path: impl Into<String>) -> Self {
     Self { inner: path.into() }
@@ -43,7 +38,7 @@ impl VFSPath {
     self.inner.is_empty() || self.inner == SEPERATOR_STR
   }
 
-  pub fn starts_with(&self, path: impl Into<String>) -> bool {
+  pub fn starts_with(&self, _path: impl Into<String>) -> bool {
     todo!()
   }
 
@@ -95,7 +90,7 @@ impl VFSPath {
       path += segments;
     }
 
-    return Self::from(path);
+    Self::from(path)
   }
 
   /// Returns the parent path.
@@ -105,7 +100,17 @@ impl VFSPath {
       .map(|idx| Self {
         inner: self.inner[..idx].to_string(),
       })
-      .unwrap_or_else(|| Self::root())
+      .unwrap_or_else(Self::root)
+  }
+}
+
+impl FromStr for VFSPath {
+  type Err = ();
+
+  fn from_str(s: &str) -> Result<Self, Self::Err> {
+    Ok(Self {
+      inner: s.to_string(),
+    })
   }
 }
 

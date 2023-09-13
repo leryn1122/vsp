@@ -1,35 +1,29 @@
-use vsp_support::ptr::SharedPtr;
-
 use crate::ast::ASTNode;
 use crate::ast::ExprNode;
 
 /// # Expression
 ///
 /// Expression indicates ...
-#[derive(Debug)]
+#[derive(Clone, Debug)]
 pub enum Expression {
-  //============================================================================//
+  Unit,
+
   // Literal
-  //============================================================================//
   LiteralInteger(i64),
   LiteralFloat(f64),
   LiteralBoolean(bool),
   LiteralString(String),
   Identifier(String),
 
-  //============================================================================//
   // Operations
-  //============================================================================//
   /// Unary operation expression, such as `!foo`.
-  Unary(UnaryOp, SharedPtr<Expression>),
+  Unary(UnaryOp, Box<Expression>),
   /// Binary operation expression, such as `foo + bar`.
-  Binary(BinaryOp, SharedPtr<Expression>, SharedPtr<Expression>),
+  Binary(BinaryOp, Box<Expression>, Box<Expression>),
 
-  //============================================================================//
   // Call
-  //============================================================================//
-  MethodCall(String, SharedPtr<Expression>),
-  LambdaExpression(Vec<String>, SharedPtr<Expression>),
+  MethodCall(String, Box<Expression>),
+  LambdaExpression(Vec<String>, Box<Expression>),
 }
 
 impl ASTNode for Expression {}

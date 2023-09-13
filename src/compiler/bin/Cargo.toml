@@ -34,6 +34,9 @@ dev-tools-only = []
   [dependencies.vsp-compiler]
   path = "../compiler"
 
+  [dependencies.vsp-dump]
+  path = "../dump"
+
   [dependencies.vsp-dbg]
   path = "../debugger"
 

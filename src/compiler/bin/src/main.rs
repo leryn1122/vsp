@@ -17,16 +17,12 @@ use vsp_error::VspError;
 use vsp_support::exitcode;
 use vsp_support::resources_str;
 
-#[cfg(debug_assertions)]
-use crate::ops::build;
 use crate::ops::clean;
 use crate::ops::compile;
 use crate::ops::completion;
 #[cfg(debug_assertions)]
 use crate::ops::debug;
-#[cfg(debug_assertions)]
 use crate::ops::dump;
-#[cfg(debug_assertions)]
 use crate::ops::lsp;
 use crate::ops::new;
 #[cfg(debug_assertions)]
@@ -39,6 +35,7 @@ use crate::ops::Entrypoint;
 
 pub(crate) mod ops;
 
+/// Struct for `clap_derive` main command.
 #[derive(Parser)]
 #[command(name = env!("CARGO_BIN_NAME"))]
 #[command(author = env!("CARGO_PKG_AUTHORS"))]
@@ -59,11 +56,10 @@ pub struct MainCommand {
 }
 
 /// Registered subcommand for the application, following `clap::derive` as an enumeration.
+///
+/// Those candidate commands is not featured is previewed in the debug mode.
 #[derive(Subcommand)]
 pub enum CandidateCommand {
-  /// Build tools for language compiler
-  #[cfg(debug_assertions)]
-  Build(build::CandidateArgument),
   /// Clean target directory
   Clean(clean::CandidateArgument),
   /// Language compiler
@@ -74,10 +70,8 @@ pub enum CandidateCommand {
   #[cfg(debug_assertions)]
   Debug(debug::CandidateArgument),
   /// Dump tools for miscellaneous utilities on source codes
-  #[cfg(debug_assertions)]
   Dump(dump::CandidateArgument),
   /// Language server based on LSP (language server protocol)
-  #[cfg(debug_assertions)]
   LSP(lsp::CandidateArgument),
   /// Create new project
   New(new::CandidateArgument),
@@ -99,16 +93,12 @@ fn main() {
   let command = MainCommand::parse();
   #[rustfmt::skip]
   match command.subcommand {
-    #[cfg(debug_assertions)]
-    CandidateCommand::Build(mut args) => args.entrypoint(),
     CandidateCommand::Clean(mut args) => args.entrypoint(),
     CandidateCommand::Compile(mut args) => args.entrypoint(),
     CandidateCommand::Completion(mut args) => args.entrypoint(),
     #[cfg(debug_assertions)]
     CandidateCommand::Debug(mut args) => args.entrypoint(),
-    #[cfg(debug_assertions)]
     CandidateCommand::Dump(mut args) => args.entrypoint(),
-    #[cfg(debug_assertions)]
     CandidateCommand::LSP(mut args) => args.entrypoint(),
     CandidateCommand::New(mut args) => args.entrypoint(),
     #[cfg(debug_assertions)]
@@ -123,6 +113,10 @@ fn main() {
 
 /// Prints the error message simply and exits the process once error occurred.
 /// The application must do the error handling itself.
+///
+/// If exceptions occurred when using a commandline tool, the simple error handling
+/// is to exit the process with exit code `-1`. Otherwise, handle exceptions gracefully
+/// in your application.
 fn exit_with_error(error: VspError) {
   eprintln!("{}", error);
   std::process::exit(exitcode::EXIT_FAILURE);

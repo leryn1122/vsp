@@ -1,6 +1,5 @@
 use std::fs::File;
 use std::path::Path;
-use std::path::PathBuf;
 
 use flate2::write::GzEncoder;
 use flate2::Compression;
@@ -52,15 +51,17 @@ where
   Ok(())
 }
 
-fn strip_prefix<P>(path: &PathBuf, dir: P) -> String
+fn strip_prefix<P1, P2>(path: P1, dir: P2) -> String
 where
-  P: AsRef<Path>,
+  P1: AsRef<Path>,
+  P2: AsRef<Path>,
 {
-  return path
+  path
+    .as_ref()
     .strip_prefix(dir.as_ref().to_str().unwrap())
     .unwrap()
     .to_path_buf()
     .to_str()
     .unwrap()
-    .to_string();
+    .to_string()
 }

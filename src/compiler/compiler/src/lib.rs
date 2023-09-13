@@ -47,12 +47,12 @@ pub struct CompilerInstance {
   #[getset(get = "pub", set = "pub")]
   diagnostics:    DiagnosticEngine,
   dispatcher:     CompilationDispatcher,
-  lang_options:   LangOptions,
   preprocessor:   Option<()>,
   vfs_manager:    VFSManager,
   #[getset(get = "pub", set = "pub")]
   source_manager: SourceManager,
   module_cache:   InMemoryModuleCache,
+  lang_options:   LangOptions,
   #[getset(get = "pub", set = "pub")]
   target_options: TargetOptions,
 }
@@ -92,29 +92,26 @@ impl CompilerInstance {
   pub fn run(&mut self, file: &PathBuf) -> VspResult<()> {
     use vsp_fs::path::VFSPath;
 
-    let path = VFSPath::from_str(file.to_str().unwrap());
+    let path = VFSPath::from(file.to_str().unwrap());
     let mut file = self.vfs_manager.get_file(&path).unwrap();
-    let main_file = self.source_manager.create_main_file_id(&file);
+    let main_file = self.source_manager.create_main_file_id(file.as_ref());
 
     let mut buf = String::new();
-    let _ = file.as_mut().read_to_string(&mut buf).unwrap();
+    file.as_mut().read_to_string(&mut buf).unwrap();
 
     Ok(())
   }
 }
 
+#[derive(Default)]
 pub struct SimpleCompilerInstance;
 
 impl SimpleCompilerInstance {
-  pub fn new() -> Self {
-    Self {}
-  }
-
   pub fn compile(&mut self, path: &PathBuf) -> VspResult<()> {
     use vsp_ast_parser::lex::DefaultLexer;
     use vsp_ast_parser::parser::TraditionalParser;
 
-    let mut file = std::fs::File::open(path).map_err(|e| VspError::from(e))?;
+    let mut file = std::fs::File::open(path).map_err(VspError::from)?;
     let mut buf = String::new();
     let _ = file.read_to_string(&mut buf);
 

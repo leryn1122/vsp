@@ -5,6 +5,8 @@ use std::fmt::Formatter;
 
 use anyhow::anyhow;
 
+use crate::VspResult;
+
 /// Wrapper of `anyhow::Error`.
 pub struct Error(anyhow::Error);
 
@@ -22,6 +24,10 @@ impl Error {
 
   pub fn message(&self) -> String {
     self.0.to_string()
+  }
+
+  pub fn to_err<T>(self) -> VspResult<T> {
+    Err(self)
   }
 
   // pub fn backtrace(&self) -> &Backtrace {

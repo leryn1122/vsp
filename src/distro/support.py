@@ -137,11 +137,7 @@ class switch:
     @classmethod
     def __eval(cls, handler, *args):
         if callable(handler):
-            if args == ((),):
-                return handler()
-            else:
-                print(*args)
-                return handler(*args)
+            return handler(*args) if args != ((),) else handler()
         else:
             return handler
 
@@ -171,16 +167,20 @@ def symlink(src: Path, dst: Path) -> None:
         return os.symlink(src=src, dst=dst)
 
 
-def run_command(cmd, cwd=os.getcwd(), suppress=False) -> int:
-    p = subprocess.Popen(cmd, shell=True, text=True,
+def run_command(cmd,
+                name: AnyStr = 'anonymous',
+                cwd: Path = os.getcwd(),
+                suppressed: bool = False) -> int:
+    p = subprocess.Popen(cmd,
+                         shell=True, text=True,
                          stdout=None,
                          stderr=None,
                          cwd=cwd)
     while p.poll() is None:
         ""
     if p.returncode == 0:
-        log.info('Subprogram success')
+        log.info('Subprocess [%s] success', name)
         return 0
     else:
-        log.error('Subprogram failed')
+        log.error('Subprogram [%s] failed', name)
         return 1

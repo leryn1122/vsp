@@ -32,9 +32,9 @@ help: ## Print help info.
 install: ## Install dependencies.
 	$(CARGO) fetch --locked
 
-.PHONY: check
-check: ## Check
-	$(CARGO) check
+.PHONY: lint
+lint: ## Check
+	$(CARGO) clippy
 
 .PHONY: format
 format: ## Format against code.

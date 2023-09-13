@@ -9,21 +9,20 @@ use target_lexicon::Triple;
 #[derive(Getters, Setters)]
 pub struct TargetOptions {
   /// Semantic version for target artifact.
-  #[getset(get, set)]
-  version:       Version,
+  pub(crate) version: Version,
   #[getset(get = "pub", set = "pub")]
-  binary:        Option<Cow<'static, str>>,
+  binary:             Option<Cow<'static, str>>,
   #[getset(get = "pub", set = "pub")]
-  library:       bool,
+  library:            bool,
   /// Host triple
   #[getset(get = "pub", set = "pub")]
-  host_triple:   Triple,
+  host_triple:        Triple,
   /// Target triple
   #[getset(get = "pub", set = "pub")]
-  target_triple: Triple,
+  target_triple:      Triple,
   /// Optimization level
   #[getset(get = "pub", set = "pub")]
-  optimization:  u8,
+  optimization:       u8,
 }
 
 impl TargetOptions {
@@ -53,10 +52,5 @@ impl Default for TargetOptions {
   }
 }
 
-pub struct LangOptions {}
-
-impl Default for LangOptions {
-  fn default() -> Self {
-    Self {}
-  }
-}
+#[derive(Default)]
+pub struct LangOptions;

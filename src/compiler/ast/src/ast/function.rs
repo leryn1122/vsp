@@ -1,5 +1,3 @@
-use vsp_support::ptr::SharedPtr;
-
 use crate::ast::annotation::Annotation;
 use crate::ast::modifier::Accessibility;
 use crate::ast::modifier::Constancy;
@@ -27,7 +25,7 @@ pub struct Function {
   /** Function signature */
   pub signature:   FunctionSignature,
   /** Function body (statements) */
-  pub body:        Option<SharedPtr<StatementBlock>>,
+  pub body:        Option<Box<StatementBlock>>,
 }
 
 impl Function {

@@ -5,11 +5,11 @@ use crate::ast::ASTNode;
 use crate::ast::StmtNode;
 
 /// # Statement
-#[derive(Debug)]
+#[derive(Clone, Debug)]
 pub enum Statement {
   /// No operations: Just a single `;`
   NoOp,
-  // Expression(SharedPtr<Expression>),
+  // Expression(Box<Expression>),
   // Assignment(String, Expression),
 
   //================================================================//
@@ -37,17 +37,17 @@ pub struct NoOpStatement;
 impl NoOpStatement {}
 
 /// Statement represents a if / else statement.
-#[derive(Debug)]
+#[derive(Clone, Debug)]
 pub struct IfStatement {
   pub span: Span,
 }
 
 /// Statement represents a while statement.
-#[derive(Debug)]
+#[derive(Clone, Debug)]
 pub struct WhileStatement {}
 
 /// Statement block contains list of statements.
-#[derive(Debug)]
+#[derive(Clone, Debug)]
 pub struct StatementBlock {
   stmts: Vec<Statement>,
 }
@@ -58,7 +58,7 @@ impl StatementBlock {
   }
 
   pub fn from(stmts: Vec<Statement>) -> Self {
-    Self { stmts: stmts }
+    Self { stmts }
   }
 
   pub fn add_stmt(&mut self, stmt: Statement) -> &Self {

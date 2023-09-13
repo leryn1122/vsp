@@ -1,4 +1,6 @@
-use std::cmp::Ordering;
+use core::cmp::Ordering;
+use core::fmt::Debug;
+use core::fmt::Formatter;
 
 /// A trait for objects, such as lexeme, token, or something else, give the span itself.
 pub trait Locatable {
@@ -52,6 +54,11 @@ impl Position {
     self.column += 1;
     *self
   }
+
+  pub fn forwards(&mut self, step: usize) -> Self {
+    self.column += step;
+    *self
+  }
 }
 
 impl PartialOrd for Position {
@@ -92,7 +99,7 @@ impl Default for Position {
 /// let end = Position::at(0, 12);
 /// let span = Span::range(start, end);
 /// ```
-#[derive(Clone, Debug)]
+#[derive(Clone)]
 pub struct Span {
   pub start: Position,
   pub end:   Position,
@@ -107,6 +114,18 @@ impl Default for Span {
   }
 }
 
+impl Debug for Span {
+  fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
+    f.write_str(
+      format!(
+        "[{}:{}~{}:{}]",
+        &self.start.line, &self.start.column, &self.end.line, &self.end.column
+      )
+      .as_str(),
+    )
+  }
+}
+
 impl Span {
   /// Return a span with range of start and end positions.
   pub fn range(start: Position, end: Position) -> Self {
@@ -115,7 +134,7 @@ impl Span {
 
   /// Return a span at the single point.
   #[allow(clippy::clone_on_copy)]
-  pub fn at_single(pos: Position) -> Self {
+  pub fn at(pos: Position) -> Self {
     Self {
       start: pos,
       end:   pos,
@@ -128,6 +147,7 @@ impl Span {
   }
 
   /// Expand the span as a tuple.
+  #[allow(unused_unsafe)]
   pub fn expand(&self) -> (usize, usize, usize, usize) {
     unsafe {
       (
@@ -140,6 +160,7 @@ impl Span {
   }
 
   /// Expand the span as an array.
+  #[allow(unused_unsafe)]
   pub fn expand_as_array(&self) -> [usize; 4] {
     unsafe {
       [

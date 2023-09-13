@@ -1,6 +1,5 @@
 use vsp_error::VspResult;
 
-pub(crate) mod build;
 pub(crate) mod clean;
 pub(crate) mod compile;
 pub(crate) mod completion;
@@ -13,6 +12,10 @@ pub(crate) mod repl;
 pub(crate) mod test;
 
 #[doc(hidden)]
-pub trait Entrypoint: clap::Args {
+pub trait Entrypoint {
+  /// Entrypoint for CLI.
+  /// Implementations should include early processing the arguments and passing them to the related
+  /// module entrypoint functions.
+  /// Early processing is required to adapt the parameters list of entrypoints respective.
   fn entrypoint(&mut self) -> VspResult<()>;
 }

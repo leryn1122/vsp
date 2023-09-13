@@ -22,9 +22,9 @@ pub struct CandidateArgument {
   /// Communicate with LSP server through the given IP address.
   #[arg(long = "addr")]
   pub address:             Option<SocketAddr>,
-  /// Log file to record the log
-  #[arg(long)]
-  pub log_file:            Option<String>,
+  // /// Log file to record the log
+  // #[arg(long)]
+  // pub log_file:            Option<String>,
   /// Enable verbose mode
   #[arg(short, long)]
   pub verbose:             bool,
@@ -36,21 +36,18 @@ pub struct CandidateArgument {
 impl Entrypoint for CandidateArgument {
   fn entrypoint(&mut self) -> VspResult<()> {
     let config = convert_to_configuration(self);
-    let result = vsp_lsp::start_server(config);
-    result
+    vsp_lsp::start_lsp_server(config)
   }
 }
 
 /// Converto the command line arguments to the configuration and fulfill the default values.
 fn convert_to_configuration(arg: &mut CandidateArgument) -> Configuration {
-  let config = Configuration {
+  Configuration {
     daemon:              arg.daemon.to_owned(),
     stdio:               arg.stdio.to_owned(),
     socket:              arg.socket.to_owned(),
     address:             arg.address.to_owned(),
-    log_file:            None,
     verbose:             false,
     print_config_schema: false,
-  };
-  config
+  }
 }

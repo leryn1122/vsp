@@ -6,18 +6,18 @@ use std::sync::Arc;
 pub struct CompilationDatabase;
 
 impl CompilationDatabase {
-  pub fn load_from_directory(base_dir: String, err_msg: impl Into<String>) -> Option<Arc<Self>> {
+  pub fn load_from_directory(base_dir: String, message: impl Into<String>) -> Option<Arc<Self>> {
     let instance = Self {};
     Some(Arc::new(instance))
   }
 
-  pub fn auto_detect_from_source(source: String, err_msg: impl Into<String>) -> Option<Arc<Self>> {
+  pub fn auto_detect_from_source(source: String, message: impl Into<String>) -> Option<Arc<Self>> {
     todo!()
   }
 
   pub fn auto_detect_from_directory(
     base_dir: String,
-    err_msg: impl Into<String>,
+    message: impl Into<String>,
   ) -> Option<Arc<Self>> {
     todo!()
   }

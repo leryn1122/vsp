@@ -1,29 +1,21 @@
-/// Module system
-///
-///
-/// ```plaintext
-/// ```
-use crate::node::NodeId;
+//! Module system
+//!
+//!
+//! ```plaintext
+//! ```
+
+use std::borrow::Cow;
 
 ///
-#[allow(dead_code)]
 pub struct Path {
-  segments: Vec<PathSegment>,
+  segments: Vec<Cow<'static, str>>,
 }
 
-#[allow(dead_code)]
-pub struct PathSegment {
-  pub id: NodeId,
-}
-
-/// <h1>Package</h1>
-#[allow(dead_code)]
+/// # Package
 pub struct Package {
-  pub id: NodeId,
+  pub name:   String,
+  pub author: String,
 }
 
-/// <h1>Module</h1>
-#[allow(dead_code)]
-pub struct Module {
-  pub id: NodeId,
-}
+/// # Module
+pub struct Module {}

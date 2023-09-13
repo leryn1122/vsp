@@ -8,8 +8,7 @@ use crate::parser::token::LocatableToken;
 use crate::parser::token::TokenStream;
 use crate::token::Token;
 
-mod context;
-mod state;
+pub mod state;
 pub mod token;
 
 /// Kind of parser.

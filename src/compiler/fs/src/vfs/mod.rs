@@ -183,15 +183,15 @@ pub fn get_real_file_system() -> RealFileSystem {
 }
 
 impl FileSystem for RealFileSystem {
-  fn status(&self, path: &VFSPath) -> Result<ExitCode, ()> {
+  fn status(&self, _path: &VFSPath) -> Result<ExitCode, ()> {
     todo!()
   }
 
-  fn set_cwd(&mut self, path: &VFSPath) -> ExitCode {
+  fn set_cwd(&mut self, _path: &VFSPath) -> ExitCode {
     todo!()
   }
 
-  fn get_cwd(&self, path: &VFSPath) -> Result<&VFSPath, ()> {
+  fn get_cwd(&self, _path: &VFSPath) -> Result<&VFSPath, ()> {
     todo!()
   }
 
@@ -199,26 +199,26 @@ impl FileSystem for RealFileSystem {
     path.to_path_buf().exists()
   }
 
-  fn get_real_path(&self, path: &VFSPath) -> Result<VFSPath, ()> {
+  fn get_real_path(&self, _path: &VFSPath) -> Result<VFSPath, ()> {
     todo!()
   }
 
-  fn get_file(&self, path: &VFSPath) -> Result<Box<dyn FileObject>, ()> {
+  fn get_file(&self, _path: &VFSPath) -> Result<Box<dyn FileObject>, ()> {
     todo!()
   }
 
-  fn open(&mut self, path: &VFSPath) -> Result<(), ()> {
+  fn open(&mut self, _path: &VFSPath) -> Result<(), ()> {
     todo!()
   }
 
   fn read_dir(
     &self,
-    path: &VFSPath,
+    _path: &VFSPath,
   ) -> VspResult<Box<dyn DirectoryEntryIterator<Item = DirectoryEntry>>> {
     todo!()
   }
 
-  fn create_dir(&self, path: &VFSPath) -> VspResult<()> {
+  fn create_dir(&self, _path: &VFSPath) -> VspResult<()> {
     todo!()
   }
 }

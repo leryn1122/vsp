@@ -1,20 +1,22 @@
 use semver::Version;
 
+use crate::dep::Dependencies;
+
 #[allow(dead_code)]
-// #[derive(Deserialize, Serialize, Debug)]
 pub struct Manifest {
-  project: Project,
-  // dependencies: Dependencies,
+  project:      Project,
+  dependencies: Dependencies,
 }
 
 impl Manifest {
   fn new(name: impl Into<String>) -> Self {
-    let project = Project {
-      name:    name.into(),
-      version: Version::parse("0.1.0").unwrap(),
-    };
-
-    Self { project }
+    Self {
+      project:      Project {
+        name:    name.into(),
+        version: Version::parse("0.1.0").unwrap(),
+      },
+      dependencies: vec![],
+    }
   }
 }
 

@@ -1,11 +1,13 @@
 use lsp_server::Connection;
 use lsp_server::IoThreads;
 use lsp_types::InitializeResult;
+use lsp_types::OneOf;
 use lsp_types::ServerCapabilities;
 use lsp_types::ServerInfo;
 
 use crate::config::Configuration;
 
+/// Create the transport depending on the configuration type.
 pub(crate) fn connection_by_type(
   config: &Configuration,
 ) -> std::io::Result<(Connection, IoThreads)> {
@@ -29,7 +31,15 @@ pub fn initialize_result() -> InitializeResult {
 }
 
 pub fn server_capabilities() -> ServerCapabilities {
-  ServerCapabilities::default()
+  ServerCapabilities {
+    definition_provider: Some(OneOf::Left(true)),
+    ..Default::default()
+  }
+}
+
+pub fn server_capabilities_as_value() -> serde_json::Value {
+  // Unnecessary to check.
+  serde_json::to_value(server_capabilities()).unwrap()
 }
 
 pub fn server_info() -> ServerInfo {

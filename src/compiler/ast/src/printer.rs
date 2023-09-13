@@ -30,8 +30,8 @@ impl ASTPrinter {
   }
 
   fn print_location(&self, span: &Span) -> String {
-    let arr = span.expand_as_array();
-    format!("start:{}:{}, end:{}:{}", arr[0], arr[1], arr[2], arr[3])
+    let arr = span.expand();
+    format!("start:{}:{}, end:{}:{}", arr.0, arr.1, arr.2, arr.3)
   }
 
   fn print_segment(&self, types: &str, span: &Span) -> String {

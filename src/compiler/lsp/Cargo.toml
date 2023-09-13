@@ -22,6 +22,9 @@ edition = "2021"
   [dependencies.simplelog]
   workspace = true
 
+  [dependencies.threadpool]
+  workspace = true
+
   [dependencies.vsp-error]
   path = "../error"
 

@@ -3,7 +3,6 @@
 import logging as log
 import os
 import shutil
-import subprocess
 from typing import AnyStr
 
 import compress
@@ -50,7 +49,7 @@ def __make_project_file_entries() -> int:
     """
     Make the project file-trees depending on `file-tree.csv`.
     """
-    log.info("Make project file-trees.")
+    log.info("Make project file entries.")
     entries = __read_project_file_entries()
     with cd(os.path.join(support.project_root(), 'target', __compiler_package_name())):
         for e in entries:
@@ -98,4 +97,4 @@ def __compress_project_package() -> int:
 def __compile_compiler(suppressed: bool) -> int:
     cmd = ['make install && make build']
     cwd = os.path.join(support.project_root(), 'src', 'compiler')
-    return support.run_command(cmd, cwd, suppressed)
+    return support.run_command(cmd, name='cargo', cwd=cwd, suppressed=suppressed)

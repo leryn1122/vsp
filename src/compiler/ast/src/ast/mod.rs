@@ -1,4 +1,7 @@
 //! # AST for Abstract Syntax Tree
+//!
+//! Only type definitions for AST.
+//! No parser implementation for this module.
 use std::collections::HashMap;
 
 use vsp_span::Span;
@@ -17,18 +20,26 @@ pub mod types;
 
 pub type AST = Box<dyn ASTNode>;
 
-/// AST node
+/// # AST node
+///
+/// AST node is any type of abstract syntax tree node.
 pub trait ASTNode {
+  /// True if the AST node is an expression. Default false.
+  /// Overwrite this if true.
   #[inline]
   fn is_expr(&self) -> bool {
     false
   }
 
+  /// True if the AST node is a statement. Default false.
+  /// Overwrite this if true.
   #[inline]
   fn is_stmt(&self) -> bool {
     false
   }
 
+  /// True if the AST node is a declaration. Default false.
+  /// Overwrite this if true.
   #[inline]
   fn is_decl(&self) -> bool {
     false
@@ -99,3 +110,16 @@ pub struct FsMeta {
 
 #[derive(Clone)]
 struct Identifier {}
+
+pub enum Declaration {
+  ///
+  Struct,
+  /// Define the alias of the type.
+  TypeAlias,
+  /// Use package and module statements.
+  Use,
+}
+
+impl ASTNode for Declaration {}
+
+impl DeclNode for Declaration {}

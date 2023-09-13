@@ -1,8 +1,15 @@
-/// ```plaintext
+use std::collections::HashMap;
+
+/// # Annotations
+///
+/// ```vsp
 /// @Inline
 ///
 /// @Allocator(Global)
 /// ```
 pub struct Annotation {
-  name: String,
+  name:       String,
+  attributes: HashMap<String, AnnotationAttribute>,
 }
+
+pub type AnnotationAttribute = ();

@@ -19,8 +19,8 @@ pub enum Type {
 
 impl Type {
   #[inline]
-  pub fn void() -> Self {
-    Self::Primitive(PrimitiveType::Void)
+  pub fn unit() -> Self {
+    Self::Primitive(PrimitiveType::Unit)
   }
 
   #[inline]
@@ -67,7 +67,7 @@ impl Hash for Type {
 
 #[derive(Clone, PartialEq, Eq)]
 pub enum PrimitiveType {
-  Void,
+  Unit,
   Bool,
   Int8,
   Int16,
@@ -81,7 +81,7 @@ pub enum PrimitiveType {
 impl PrimitiveType {
   pub fn get_name(&self) -> String {
     match self {
-      PrimitiveType::Void => "Void",
+      PrimitiveType::Unit => "Void",
       PrimitiveType::Bool => "Bool",
       PrimitiveType::Int8 => "Int8",
       PrimitiveType::Int16 => "Int16",
@@ -96,7 +96,7 @@ impl PrimitiveType {
 
   pub fn from_name(name: &str) -> Option<PrimitiveType> {
     match name {
-      "Void" => Some(Self::Void),
+      "Void" => Some(Self::Unit),
       "Bool" => Some(Self::Bool),
       "Int8" => Some(Self::Int8),
       "Int16" => Some(Self::Int16),
@@ -154,7 +154,7 @@ impl Default for FunctionType {
   fn default() -> Self {
     Self {
       params: vec![],
-      ret:    Box::new(Type::void()),
+      ret:    Box::new(Type::unit()),
     }
   }
 }
@@ -166,8 +166,18 @@ pub struct StructType {
 
 #[derive(Clone, PartialEq, Eq)]
 pub struct ArrayType {
-  pub element_type: Box<Type>,
-  pub size:         u8,
+  element: Box<Type>,
+  size:    usize,
+}
+
+impl ArrayType {
+  pub fn element(&self) -> &Type {
+    self.element.as_ref()
+  }
+
+  pub fn size(&self) -> usize {
+    self.size.to_owned()
+  }
 }
 
 pub struct Parameter;

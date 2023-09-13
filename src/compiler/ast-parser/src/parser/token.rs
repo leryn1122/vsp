@@ -1,4 +1,5 @@
 use std::fmt::Debug;
+use std::fmt::Display;
 use std::fmt::Formatter;
 
 use vsp_span::Locatable;
@@ -58,11 +59,22 @@ impl LocatableToken {
 
 impl Debug for LocatableToken {
   fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
-    let arr = self.span.expand_as_array();
+    let arr = self.span.expand();
     write!(
       f,
-      "Token = [{:?}]:{},{}:{},{}",
-      self.token, arr[0], arr[1], arr[2], arr[3],
+      "Token[{:?}]:{},{}:{},{}",
+      self.token, arr.0, arr.1, arr.2, arr.3,
+    )
+  }
+}
+
+impl Display for LocatableToken {
+  fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
+    let arr = self.span.expand();
+    write!(
+      f,
+      "{:?}:{},{}:{},{}",
+      self.token, arr.0, arr.1, arr.2, arr.3,
     )
   }
 }

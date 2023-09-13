@@ -7,6 +7,7 @@ members = [
   "compiler",
   "debugger",
   "diagnostic",
+  "dump",
   "error",
   "fs",
   "llvm",
@@ -100,6 +101,9 @@ resolver = "2"
 
   [workspace.dependencies.target-lexicon]
   version = "^0.12.6"
+
+  [workspace.dependencies.threadpool]
+  version = "^1.8.1"
 
   [workspace.dependencies.zip]
   version = "^0.6.6"

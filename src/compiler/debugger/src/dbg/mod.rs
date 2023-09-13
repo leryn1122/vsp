@@ -1,7 +1,4 @@
 use std::borrow::Cow;
-use std::io::stderr;
-use std::io::stdin;
-use std::io::stdout;
 use std::io::Write;
 
 use clap::ArgMatches;
@@ -41,8 +38,8 @@ impl DebuggerInstance {
         }
         Ok(false) => {}
         Err(err_msg) => {
-          write!(stderr(), "{}", err_msg).expect("");
-          stderr().flush().expect("");
+          write!(std::io::stderr(), "{}", err_msg).expect("");
+          std::io::stderr().flush().expect("");
         }
       }
     }
@@ -59,20 +56,20 @@ impl DebuggerInstance {
     let matches = self.command.to_owned().try_get_matches_from(args);
     match matches {
       Ok(mut matches) => self.parse_argument(&mut matches),
-      Err(e) => Err(format!("Unknown command: {}", e.to_string())),
+      Err(e) => Err(format!("Unknown command: {}", e)),
     }
   }
 
   pub(crate) fn readline(&self) -> Result<String, String> {
     self.print_prompt();
     let mut buffer = String::new();
-    stdin().read_line(&mut buffer).map_err(|e| e.to_string())?;
+    std::io::stdin().read_line(&mut buffer).map_err(|e| e.to_string())?;
     Ok(buffer)
   }
 
   fn print_prompt(&self) {
-    write!(stdout(), "{}", self.get_prompt()).expect("");
-    stdout().flush().expect("");
+    write!(std::io::stdout(), "{}", self.get_prompt()).expect("");
+    std::io::stdout().flush().expect("");
   }
 
   pub fn parse_argument(&self, matches: &mut ArgMatches) -> Result<bool, String> {

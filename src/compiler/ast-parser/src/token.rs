@@ -1,5 +1,10 @@
 use core::fmt::Debug;
 
+#[allow(deprecated)]
+pub const IDENTIFIER_TYPE_ID: u8 = std::u8::MAX - 4;
+#[allow(deprecated)]
+pub const LITERAL_TYPE_ID: u8 = std::u8::MAX - 3;
+
 /// A token in lexical analysis.
 #[rustfmt::skip]
 #[derive(Clone, Debug, Eq, PartialEq)]
@@ -65,6 +70,10 @@ pub enum Token {
   If,
   Impl,
   Int,
+  Int8,
+  Int16,
+  Int32,
+  Int64,
   Let,
   Loop,
   Module,
@@ -82,6 +91,11 @@ pub enum Token {
   // U-Z
   Unsafe,
   Use,
+  Uint,
+  Uint8,
+  Uint16,
+  Uint32,
+  Uint64,
   Var,
   Where,
   While,
@@ -91,8 +105,7 @@ pub enum Token {
   //============================================================================//
   //  Literals
   //============================================================================//
-  #[allow(deprecated)]
-  Identifier(String) = std::u8::MAX - 4,
+  Identifier(String) = IDENTIFIER_TYPE_ID,
   LiteralText(String),
   LiteralInteger(i64),
   LiteralFloat(String),
@@ -101,7 +114,7 @@ pub enum Token {
 impl Token {
   /// Internal implementation, don't use.
   #[allow(clippy::wrong_self_convention)]
-  fn into_u8(&self) -> u8 {
+  pub(crate) fn into_u8(&self) -> u8 {
     unsafe { *(self as *const Self as *const u8) }
   }
 
@@ -179,6 +192,10 @@ pub fn mapping_non_literal_token(s: &str) -> Option<Token> {
     "if" => Some(Token::If),
     "impl" => Some(Token::Impl),
     "int" => Some(Token::Int),
+    "int8" => Some(Token::Int8),
+    "int16" => Some(Token::Int16),
+    "int32" => Some(Token::Int32),
+    "int64" => Some(Token::Int64),
     "let" => Some(Token::Let),
     "loop" => Some(Token::Loop),
     "module" => Some(Token::Module),
@@ -193,6 +210,11 @@ pub fn mapping_non_literal_token(s: &str) -> Option<Token> {
     "unsafe" => Some(Token::Unsafe),
     "use" => Some(Token::Use),
     "var" => Some(Token::Var),
+    "uint" => Some(Token::Uint8),
+    "uint8" => Some(Token::Uint8),
+    "uint16" => Some(Token::Uint16),
+    "uint32" => Some(Token::Uint32),
+    "uint64" => Some(Token::Uint64),
     "where" => Some(Token::Where),
     "while" => Some(Token::While),
     "self" => Some(Token::Self_),

@@ -8,20 +8,20 @@ pub trait Substring {
 impl Substring for str {
   #[must_use]
   #[allow(deprecated)]
-  fn substring(&self, start_index: usize, end_index: usize) -> &str {
-    if end_index <= start_index {
+  fn substring(&self, start: usize, end: usize) -> &str {
+    if end <= start {
       return "";
     }
 
     let mut indices = self.char_indices();
 
-    let obtain_index = |(index, _char)| index;
-    let str_len = self.len();
+    let obtain = |(index, _char)| index;
+    let len = self.len();
 
     unsafe {
       self.slice_unchecked(
-        indices.nth(start_index).map_or(str_len, obtain_index),
-        indices.nth(end_index - start_index - 1).map_or(str_len, obtain_index),
+        indices.nth(start).map_or(len, obtain),
+        indices.nth(end - start - 1).map_or(len, obtain),
       )
     }
   }

@@ -61,7 +61,7 @@ impl<'ctx> CodegenContext<'ctx> {
   }
 }
 
-pub fn convert_to_llvm_optimization_level(num: u8) -> () {
+pub fn convert_to_llvm_optimization_level(num: u8) {
   debug_assert!(num <= 3);
 }
 

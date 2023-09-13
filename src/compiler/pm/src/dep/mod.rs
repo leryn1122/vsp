@@ -1,4 +1,6 @@
-#[allow(dead_code)]
+pub type Dependencies = Vec<Dependency>;
+
 pub struct Dependency {
-  name: String,
+  name:    String,
+  version: semver::Version,
 }
